@@ -216,8 +216,11 @@ const Samsung = () => {
 
   // Highcharts options
   const options = {
+    legend: {
+      enabled: false,
+    },
     chart: {
-      type: "spline",
+      type: "areaspline",
       width: 290,
       height: 195,
     },
@@ -227,7 +230,7 @@ const Samsung = () => {
     xAxis: {
       categories: dates,
       title: {
-        text: "Date",
+        // text: "Date",
       },
       labels: {
         formatter: function () {
@@ -235,16 +238,23 @@ const Samsung = () => {
           return Highcharts.dateFormat("%m-%d", date.getTime());
         },
       },
+      enabled: false,
     },
     yAxis: {
+      //   tickInterval: 100000,
       title: {
-        // text: "Closing Price (KRW)",
+        text: null,
+      },
+      labels: {
+        enabled: false,
+        visible: false,
       },
     },
     series: [
       {
         name: "Samsung",
         data: prices,
+        color: "rgba(30,100,255,0.5)",
       },
     ],
   };

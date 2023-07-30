@@ -241,7 +241,7 @@ const Samsung = () => {
       enabled: false,
     },
     yAxis: {
-      //   tickInterval: 100000,
+      //   tickInterval: 10,
       title: {
         text: null,
       },
@@ -252,11 +252,28 @@ const Samsung = () => {
     },
     series: [
       {
+        type: "areaspline",
         name: "Samsung",
         data: prices,
-        color: "rgba(30,100,255,0.5)",
+        color: {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, "rgb(0, 0, 255)"], // blue at the top
+            [1, "rgb(255, 255, 255)"], // white at the bottom
+          ],
+        },
+        fillOpacity: 0.4,
       },
     ],
+    plotOptions: {
+      areaspline: {
+        lineWidth: 1,
+        lineColor: "blue", //blackborder
+        marker: {
+          enabled: false,
+        },
+      },
+    },
   };
 
   return (

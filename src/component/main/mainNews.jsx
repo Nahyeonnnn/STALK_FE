@@ -38,13 +38,11 @@ const NewsSource = styled.div`
 `;
 
 const MainNews = () => {
-
   const navigate = useNavigate();
 
   const handleNewsClick = () => {
     navigate("/newsdetail");
   };
-
 
   return (
     <>

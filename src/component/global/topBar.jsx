@@ -23,6 +23,7 @@ const TopBarBox = styled.div`
   right: 0;
   height: 7vh;
   width: 100vw;
+  z-index: 2;
 `;
 
 const TopBarBackBtn = styled.div`

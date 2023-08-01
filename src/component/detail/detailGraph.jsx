@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState , useEffect } from "react";
+import axios from "axios";
 
 const SpaceBox = styled.div`
   display: flex;
@@ -65,8 +66,23 @@ const BtnBox = styled.div`
   color: ${({ isActive }) => (isActive ? "#FF3165" : "#3E497A")};
 `;
 
-const DetailGraph = () => {
+const DetailGraph = (props) => {
   const [active, setActive] = useState("Day");
+
+  useEffect(()=>{
+    axios
+        .get(`https://stalksound.store/sonification/boon_bong/` , {
+        params: {
+            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
+            end : "140000"
+        }})
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch((e)=>{
+            console.log(e);
+        })
+},[]);
 
   return (
     <>

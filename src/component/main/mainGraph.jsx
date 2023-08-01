@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import Samsung from "./graphlist/samsung";
 
 const ChartBox = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const MainGraph = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveButton((prevButton) => (prevButton % 6) + 1);
+      // setActiveButton((prevButton) => (prevButton % 6) + 1);
     }, 5000);
 
     return () => {
@@ -52,7 +53,7 @@ const MainGraph = () => {
       case 1:
         return (
           <>
-            <div>ddd</div>
+            <Samsung></Samsung>
           </>
         );
       case 2:

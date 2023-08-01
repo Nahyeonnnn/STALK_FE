@@ -88,23 +88,49 @@ const NumberBox = styled.div`
   justify-content: space-around;
   flex-direction: column;
 `;
-
 const ThreeNumberBox = styled.div`
   display: flex;
   justify-content: space-around;
+  padding:1rem;
+`;
+
+const LastNumberBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const NumberEach = styled.button`
   font-size: 2rem;
   font-weight: bold;
+  background-color: rgba(255, 255, 255, 0);
+  border: 0rem;
 `;
 
-const TradePage = () => {
+const TextEach = styled.button`
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0);
+  border: 0rem;
+  margin-left: -1rem;
+  margin-right: -1rem;
+`;
+
+const SellPage = () => {
   const [inputValue, setInputValue] = useState("");
+  const [active, setActive] = useState(0);
+  const [inputLength, setInputLength] = useState(0); // State to keep track of input length
 
   // This function adds the passed digit to the current input
   const addDigit = (digit) => {
     setInputValue((prevValue) => prevValue + digit);
+    setInputLength((prevLength) => prevLength + 1);
+  };
+
+  const removeDigit = () => {
+    setInputValue((prevValue) => prevValue.slice(0, -1));
+    setInputLength((prevLength) => prevLength - 1);
   };
 
   const handleInputChange = (event) => {
@@ -116,37 +142,46 @@ const TradePage = () => {
       <TopBar></TopBar>
       <StockName>삼성전자</StockName>
       <PriceBox>
-        <PriceBoxLeft>구매할 가격</PriceBoxLeft>
+        <PriceBoxLeft>판매할 가격</PriceBoxLeft>
         <PriceBoxRight>70,500원</PriceBoxRight>
       </PriceBox>
-      <PurchastText>몇 주를 구매할까요?</PurchastText>
+      <PurchastText>몇 주를 판매할까요?</PurchastText>
       <FormContainer>
         <PurchaseBox
           value={inputValue}
           onChange={handleInputChange}
+          onClick={() => setActive(1)}
         ></PurchaseBox>
-        <PurchaseConfirm>확인</PurchaseConfirm>
+        <PurchaseConfirm onClick={() => setActive(0)}>확인</PurchaseConfirm>
       </FormContainer>
-      <NumberBox>
-        <ThreeNumberBox>
-          <NumberEach onClick={() => addDigit(1)}>1</NumberEach>
-          <NumberEach onClick={() => addDigit(2)}>2</NumberEach>
-          <NumberEach onClick={() => addDigit(3)}>3</NumberEach>
-        </ThreeNumberBox>
-        <ThreeNumberBox>
-          <NumberEach onClick={() => addDigit(4)}>4</NumberEach>
-          <NumberEach onClick={() => addDigit(5)}>5</NumberEach>
-          <NumberEach onClick={() => addDigit(6)}>6</NumberEach>
-        </ThreeNumberBox>
-        <ThreeNumberBox>
-          <NumberEach onClick={() => addDigit(7)}>7</NumberEach>
-          <NumberEach onClick={() => addDigit(8)}>8</NumberEach>
-          <NumberEach onClick={() => addDigit(9)}>9</NumberEach>
-        </ThreeNumberBox>
-      </NumberBox>
+      {active === 1 && (
+        <NumberBox>
+          <ThreeNumberBox>
+            <NumberEach onClick={() => addDigit(1)}>1</NumberEach>
+            <NumberEach onClick={() => addDigit(2)}>2</NumberEach>
+            <NumberEach onClick={() => addDigit(3)}>3</NumberEach>
+          </ThreeNumberBox>
+          <ThreeNumberBox>
+            <NumberEach onClick={() => addDigit(4)}>4</NumberEach>
+            <NumberEach onClick={() => addDigit(5)}>5</NumberEach>
+            <NumberEach onClick={() => addDigit(6)}>6</NumberEach>
+          </ThreeNumberBox>
+          <ThreeNumberBox>
+            <NumberEach onClick={() => addDigit(7)}>7</NumberEach>
+            <NumberEach onClick={() => addDigit(8)}>8</NumberEach>
+            <NumberEach onClick={() => addDigit(9)}>9</NumberEach>
+          </ThreeNumberBox>
+          <LastNumberBox>
+            <TextEach onClick={() => setInputValue("")}>전체삭제</TextEach>
+            <NumberEach onClick={() => addDigit(0)}>0</NumberEach>
+            <NumberEach onClick={() => removeDigit()}>⬅</NumberEach>
+          </LastNumberBox>
+        </NumberBox>
+      )}
+
       <BottomBar></BottomBar>
     </>
   );
 };
 
-export default TradePage;
+export default SellPage;

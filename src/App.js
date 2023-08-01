@@ -4,7 +4,8 @@ import LoginPage from "./page/loginPage";
 import MainPage from "./page/mainPage";
 import DetailPage from "./page/detailPage";
 import SearchPage from "./page/searchPage";
-import TradePage from "./page/tradePage";
+import BuyPage from "./page/buyPage";
+import SellPage from "./page/sellPage";
 import MyInfoPage from "./page/myInfoPage";
 import NewsPage from "./page/newsPage";
 import NewsdetailPage from "./page/newsdetailPage";
@@ -35,7 +36,8 @@ function App() {
             <Route path="/main" element={<MainPage />} />
             <Route path="/detail" element={<DetailPage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/trade" element={<TradePage />} />
+            <Route path="/buy" element={<BuyPage />} />
+            <Route path="/sell" element={<SellPage />} />
             <Route path="/myInfo" element={<MyInfoPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/newsdetail" element={<NewsdetailPage />} />

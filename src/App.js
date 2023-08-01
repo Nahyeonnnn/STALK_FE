@@ -34,7 +34,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/detail" element={<DetailPage />} />
+            <Route path="/detail/:StockID" element={<DetailPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/buy" element={<BuyPage />} />
             <Route path="/sell" element={<SellPage />} />

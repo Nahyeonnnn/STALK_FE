@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import TopBar from "../component/global/topBar";
@@ -56,6 +57,7 @@ const NewsBtn = styled.button`
 `;
 
 const DetailPage = () => {
+  const {StockID} = useParams();
   const [active, setActive] = useState("Static");
 
   return (

@@ -68,7 +68,7 @@ const NotFoundPage = () => {
     return (
         <NotFoundDiv>
             <CautionIcon icon={faTriangleExclamation} size="3x"></CautionIcon>
-            <NotFound>페이지를 찾을 수 없습니다.</NotFound>
+            <NotFound>페이지를 찾을 수 없습니다. </NotFound>
             <HorizonLine></HorizonLine>
             <ButtonDiv>
                 <BackToMain onClick={BackToMainClick}>메인으로 돌아가기</BackToMain>

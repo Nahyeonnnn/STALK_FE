@@ -9,6 +9,8 @@ const SamsungStockBox = styled.div`
   height: 12rem;
   margin: auto;
   background-color: coral;
+  position: relative;
+  z-index: 1;
 `;
 
 const Samsung = () => {

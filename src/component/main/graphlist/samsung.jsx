@@ -6,7 +6,7 @@ import Highcharts from "highcharts";
 const SamsungStockBox = styled.div`
   display: flex;
   width: 18rem;
-  height: 12rem;
+  height: 13.5rem;
   margin: auto;
   background-color: coral;
   z-index: 1;
@@ -223,7 +223,7 @@ const Samsung = () => {
     chart: {
       type: "areaspline",
       width: 290,
-      height: 195,
+      height: 220,
     },
     title: {
       text: "삼성전자",

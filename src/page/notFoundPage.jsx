@@ -55,7 +55,6 @@ const BackToPrevious = styled.button`
 `;
 
 const NotFoundPage = () => {
-
     const navigate = useNavigate();
 
     function BackToMainClick(){

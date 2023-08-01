@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const TextBox = styled.div`
   display: flex;
@@ -10,37 +10,37 @@ const TextBox = styled.div`
 `;
 
 const Text = styled.p`
-color: #FFF;
-text-align: center;
-font-size: 1.25rem;
-font-style: normal;
-font-weight: 700;
-line-height: 110%; /* 22px */
-letter-spacing: -0.0313rem;
-margin-top: 5rem;
+  color: #fff;
+  text-align: center;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 110%; /* 22px */
+  letter-spacing: -0.0313rem;
+  margin-top: 5rem;
 `;
 
 const EmailText = styled.p`
-color: #8F8F8F;
-text-align: center;
-font-family: Inter;
-font-size: .625rem;
-font-style: normal;
-font-weight: 500;
-line-height: 220%; /* 22px */
-letter-spacing: -0.0156rem;
-margin-top:-1rem;
+  color: #8f8f8f;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 220%; /* 22px */
+  letter-spacing: -0.0156rem;
+  margin-top: -1rem;
 `;
 
 const MyInform = () => {
-    return (
-        <>
-        <TextBox>
-            <Text>props님 안녕하세요! </Text>
-            <EmailText>props의 이메일</EmailText>
-        </TextBox>
-        </>
-    );
+  return (
+    <>
+      <TextBox>
+        <Text>props님 안녕하세요! </Text>
+        <EmailText>props의 이메일</EmailText>
+      </TextBox>
+    </>
+  );
 };
 
 export default MyInform;

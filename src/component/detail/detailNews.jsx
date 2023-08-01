@@ -1,21 +1,21 @@
-import React from 'react';
-import { styled } from 'styled-components';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React from "react";
+import { styled } from "styled-components";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const NewsBox = styled.div`
-    display : flex;
-    flex-direction : column;
-    align-items : center;
-    justify-content : center;
-    width : 85vw;
-    height : 30vh;
-    background-color : white;
-    border-radius : .625rem;
-    margin-left: auto;
-    margin-right : auto;
-    margin-top : 1.5rem;
-    margin-bottom : 2rem;
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 85vw;
+  height: 30vh;
+  background-color: white;
+  border-radius: 0.625rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+`;
 const NewsEach = styled.div`
   display: flex;
   justify-content: space-around;
@@ -44,43 +44,42 @@ const NewsSource = styled.div`
 `;
 
 const DetailNews = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleNewsClick = () => {
     navigate("/newsdetail");
   };
-    
-    return (
-        <>
-            <NewsBox>
-                <br/>
-            <NewsEach onClick={handleNewsClick}>
-                <NewsTitle>
-                    테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-                <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-                </NewsTitle>
-                <NewsImg></NewsImg>
-            </NewsEach>
 
-            <NewsEach onClick={handleNewsClick}>
-                <NewsTitle>
-                    테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-                <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-                </NewsTitle>
-                <NewsImg></NewsImg>
-            </NewsEach>
+  return (
+    <>
+      <NewsBox>
+        <br />
+        <NewsEach onClick={handleNewsClick}>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
 
-            <NewsEach onClick={handleNewsClick}>
-                <NewsTitle>
-                    테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-                <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-                </NewsTitle>
-                <NewsImg></NewsImg>
-            </NewsEach>
+        <NewsEach onClick={handleNewsClick}>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
 
-            </NewsBox>
-        </>
-    );
+        <NewsEach onClick={handleNewsClick}>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
+      </NewsBox>
+    </>
+  );
 };
 
 export default DetailNews;

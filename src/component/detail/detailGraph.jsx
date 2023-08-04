@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts";
 import axios from "axios";
 
 const SpaceBox = styled.div`
@@ -27,13 +29,6 @@ const ChartBox = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 1rem 1rem 0rem 0rem;
-`;
-
-const DayChart = styled.div`
-  display: flex;
-  width: 78vw;
-  height: 26vh;
-  background-color: gray;
 `;
 
 const WeekChart = styled.div`
@@ -66,30 +61,204 @@ const BtnBox = styled.div`
   color: ${({ isActive }) => (isActive ? "#FF3165" : "#3E497A")};
 `;
 
-const DetailGraph = (props) => {
-  const [active, setActive] = useState("Day");
+const StockBox = styled.div`
+  display: flex;
+  width: 18rem;
+  height: 13.5rem;
+  margin: auto;
+  background-color: coral;
+  z-index: 1;
+`;
 
-  useEffect(()=>{
-    axios
-        .get(`https://stalksound.store/sonification/boon_bong/` , {
-        params: {
+const DetailGraph = (props) => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+  const date = today.getDate();
+
+  const [active, setActive] = useState("Day");
+  const [currentTime, setCurrentTime] = useState("");
+  const [stockData, setStockData] = useState([]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const today = new Date();
+      let hours = today.getHours();
+      let minutes = today.getMinutes();
+      let seconds = today.getSeconds();
+
+      if (hours < 10) {
+        hours = "0" + hours;
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+      setCurrentTime(`${hours}${minutes}${seconds}`);
+    }, 60000);
+    // 컴포넌트가 언마운트될 때 interval 해제
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async (end) => {
+      try {
+        const res = await axios.get(`https://stalksound.store/sonification/minute_data/`, {
+          params: {
             symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
-            end : "140000"
-        }})
-        .then((res)=>{
-            console.log(res);
+            end: end,
+          },
+        });
+  
+        const newData = res.data.data.map((item) => ({
+          종목: item.종목,
+          날짜: item.날짜,
+          시가: item.시가,
+          현재가: item.현재가,
+          고가: item.고가,
+          // ... 여기에 필요한 다른 종목 정보를 추가로 추출할 수 있습니다.
+        }));
+  
+        // 이전 데이터와 새로운 데이터를 합쳐서 업데이트
+        setStockData((prevData) => prevData.concat(newData));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (active === "Day") {
+      fetchData("093000");
+      fetchData("100000");
+      fetchData("103000");
+      fetchData("110000");
+      fetchData("113000");
+      fetchData("120000");
+      fetchData("123000");
+      fetchData("130000");
+      fetchData("133000");
+      fetchData("140000");
+      fetchData("143000");
+      fetchData("150000");
+      fetchData("153000");
+
+    } else if (active === "Week") {
+      axios
+        .get(`https://stalksound.store/sonification/day_data/`, {
+          params: {
+            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
+            begin: "20230601",
+            end: "20230607",
+          },
         })
-        .catch((e)=>{
-            console.log(e);
+        .then((res) => {
+          console.log(res.data);
         })
-},[]);
+        .catch((e) => {
+          console.log(e);
+        });
+    } else if (active === "Month") {
+      axios
+        .get(`https://stalksound.store/sonification/day_data/`, {
+          params: {
+            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
+            begin: "20230601",
+            end: "20230701",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [active, currentTime]);
+
+  // 날짜와 종가 데이터 추출
+  var dates = stockData.map(function (item) {
+    return item.날짜;
+  });
+
+  var prices = stockData
+    .map(function (item) {
+      return parseInt(item.현재가, 10);
+    })
+    .reverse();
+
+  // Highcharts options
+  const options = {
+    legend: {
+      enabled: false,
+    },
+    chart: {
+      type: "areaspline",
+      width: 290,
+      height: 220,
+    },
+    title: {
+      text: stockData.length > 0 ? stockData[0].종목 : "",
+    },
+    xAxis: {
+      categories: dates, // 날짜
+      title: {
+        // text: "Date",
+      },
+      labels: {
+        formatter: function () {
+          const date = new Date(this.value);
+          return Highcharts.dateFormat("%m-%d", date.getTime());
+        },
+      },
+      enabled: false,
+    },
+    yAxis: {
+      tickPositions: [68000, 68500, 69000, 69500],
+      title: {
+        text: null,
+      },
+      labels: {
+        enabled: false,
+        visible: false,
+      },
+    },
+    series: [
+      {
+        type: "areaspline",
+        name: "Samsung",
+        data: prices,
+        color: {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, "rgb(0, 0, 255)"], // blue at the top
+            [1, "rgb(255, 255, 255)"], // white at the bottom
+          ],
+        },
+        fillOpacity: 0.4,
+      },
+    ],
+    plotOptions: {
+      areaspline: {
+        lineWidth: 1,
+        lineColor: "blue", //blackborder
+        marker: {
+          enabled: false,
+        },
+      },
+    },
+  };
 
   return (
     <>
       <SpaceBox></SpaceBox>
       <ChartContainer>
         <ChartBox>
-          {active === "Day" && <DayChart></DayChart>}
+          {active === "Day" && (
+            <StockBox>
+              <HighchartsReact highcharts={Highcharts} options={options} />
+            </StockBox>
+          )}
           {active === "Week" && <WeekChart></WeekChart>}
           {active === "Month" && <MonthChart></MonthChart>}
         </ChartBox>

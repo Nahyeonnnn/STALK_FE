@@ -98,6 +98,7 @@ const NumberBox = styled.div`
   border-radius: 1rem;
   justify-content: space-around;
   flex-direction: column;
+  z-index: 3;
 `;
 const ThreeNumberBox = styled.div`
   display: flex;
@@ -208,6 +209,18 @@ const ReserveConfirmBtn = styled.button`
   cursor: pointer;
 `;
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); // 검은색으로 반투명
+  z-index: 1; // 다른 요소들보다 위에 위치
+  display: ${(props) =>
+    props.active ? "block" : "none"}; // active 상태에 따라 표시
+`;
+
 const BuyPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
@@ -301,9 +314,10 @@ const BuyPage = () => {
         </NumberBox>
       )}
 
+      <Overlay active={confirmation}></Overlay>
       {confirmation && (
         <NumberBox>
-          <ReserveLine1> 삼성전자 {inputValue}주 판매 예약</ReserveLine1>
+          <ReserveLine1> 삼성전자 {inputValue}주 구매 예약</ReserveLine1>
           <ReserveLine2>
             <div> 1주 희망 가격 </div> <div> {StockPrice}원</div>
           </ReserveLine2>
@@ -317,7 +331,14 @@ const BuyPage = () => {
           <ReserveLine5>
             <div>
               {" "}
-              <ReserveCancleBtn>취소</ReserveCancleBtn>{" "}
+              <ReserveCancleBtn
+                onClick={() => {
+                  setActive(1);
+                  setConfirmation(false);
+                }}
+              >
+                취소
+              </ReserveCancleBtn>{" "}
             </div>{" "}
             <div>
               {" "}

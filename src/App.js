@@ -5,6 +5,7 @@ import MainPage from "./page/mainPage";
 import DetailPage from "./page/detailPage";
 import SearchPage from "./page/searchPage";
 import BuyPage from "./page/buyPage";
+import BuyConfirmPage from "./page/buyConfirmPage";
 import SellPage from "./page/sellPage";
 import MyInfoPage from "./page/myInfoPage";
 import NewsPage from "./page/newsPage";
@@ -37,6 +38,7 @@ function App() {
             <Route path="/detail/:StockID" element={<DetailPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/buy" element={<BuyPage />} />
+            <Route path="/buy/confirm" element={<BuyConfirmPage />} />
             <Route path="/sell" element={<SellPage />} />
             <Route path="/myInfo" element={<MyInfoPage />} />
             <Route path="/news" element={<NewsPage />} />

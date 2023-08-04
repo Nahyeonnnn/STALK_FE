@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
@@ -43,7 +44,6 @@ const FormContainer = styled.div`
   margin-top: 1.5rem;
   background-color: #f1d00a;
   border-radius: 2rem;
-  opacity: 0.85;
   height: auto;
 `;
 
@@ -57,7 +57,6 @@ const PurchaseBox = styled.input`
   margin: auto;
   padding: 1rem 0 1rem 1rem;
   border-style: none;
-  color: rgb(255, 255, 255);
   &:focus {
     outline: none;
   }
@@ -74,6 +73,19 @@ const PurchaseConfirm = styled.button`
   width: 5rem;
   white-space: nowrap;
   font-size: 1rem;
+  cursor: pointer;
+`;
+
+const TotalAmountBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: white;
+  /* background-color: coral; */
+  width: 70vw;
+  font-size: 1.5rem;
+  height: auto;
+  margin: auto;
+  margin-top: 1rem;
 `;
 
 const NumberBox = styled.div`
@@ -87,6 +99,7 @@ const NumberBox = styled.div`
   border-radius: 1rem;
   justify-content: space-around;
   flex-direction: column;
+  z-index: 3;
 `;
 const ThreeNumberBox = styled.div`
   display: flex;
@@ -106,6 +119,7 @@ const NumberEach = styled.button`
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0);
   border: 0rem;
+  cursor: pointer;
 `;
 
 const TextEach = styled.button`
@@ -117,24 +131,144 @@ const TextEach = styled.button`
   margin-right: -1rem;
 `;
 
+const ReserveLine1 = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 90vw;
+  height: 6vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const ReserveLine2 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto;
+  width: 85vw;
+  height: 3vh;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const ReserveLine3 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto;
+  width: 85vw;
+  height: 3vh;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const ReserveLine4 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto;
+  width: 85vw;
+  height: 3vh;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const ReserveLine5 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  width: 90vw;
+  height: 6vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const ReserveCancleBtn = styled.button`
+  width: 9rem;
+  height: 2.5rem;
+  background-color: #b6b6b6;
+  border-style: none;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+  font-size: 1rem;
+  color: #2b50f6;
+  cursor: pointer;
+`;
+
+const ReserveConfirmBtn = styled.button`
+  width: 9rem;
+  height: 2.5rem;
+  background-color: #2b50f6;
+  border-style: none;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); // 검은색으로 반투명
+  z-index: 1; // 다른 요소들보다 위에 위치
+  display: ${(props) =>
+    props.active ? "block" : "none"}; // active 상태에 따라 표시
+`;
+
 const BuyPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
   const [inputLength, setInputLength] = useState(0); // State to keep track of input length
+  const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
 
-  // This function adds the passed digit to the current input
   const addDigit = (digit) => {
-    setInputValue((prevValue) => prevValue + digit);
+    setInputValue((prevValue) => {
+      const newValue = prevValue + digit;
+      setTotalAmountStockPrice(newValue * StockPriceWithoutComma); // Update the total amount when input changes
+      return newValue;
+    });
     setInputLength((prevLength) => prevLength + 1);
   };
 
   const removeDigit = () => {
-    setInputValue((prevValue) => prevValue.slice(0, -1));
+    setInputValue((prevValue) => {
+      const newValue = prevValue.slice(0, -1);
+      setTotalAmountStockPrice(newValue * StockPriceWithoutComma); // Update the total amount when input changes
+      return newValue;
+    });
     setInputLength((prevLength) => prevLength - 1);
   };
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
+    setTotalAmountStockPrice(event.target.value * StockPriceWithoutComma); // Update the total amount when input changes
+  };
+
+  const StockPriceWithoutComma = 70500;
+  const StockPrice = StockPriceWithoutComma.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
+
+  // Convert the TotalAmountStockPrice back to a string with commas for displaying
+  const TotalAmountStockPriceDisplay =
+    TotalAmountStockPrice.toLocaleString("ko-KR");
+
+  const [confirmation, setConfirmation] = useState(false); // New state for the confirmation message
+
+  const handleConfirmClick = () => {
+    setActive(0);
+    setConfirmation(true); // Set the confirmation to true when the confirm button is clicked
+  };
+
+  const navigate = useNavigate();
+
+  const 예약구매버튼 = () => {
+    navigate("/buy/confirm");
   };
 
   return (
@@ -143,7 +277,7 @@ const BuyPage = () => {
       <StockName>삼성전자</StockName>
       <PriceBox>
         <PriceBoxLeft>구매할 가격</PriceBoxLeft>
-        <PriceBoxRight>70,500원</PriceBoxRight>
+        <PriceBoxRight>{StockPrice}원</PriceBoxRight>
       </PriceBox>
       <PurchastText>몇 주를 구매할까요?</PurchastText>
       <FormContainer>
@@ -152,8 +286,9 @@ const BuyPage = () => {
           onChange={handleInputChange}
           onClick={() => setActive(1)}
         ></PurchaseBox>
-        <PurchaseConfirm onClick={() => setActive(0)}>확인</PurchaseConfirm>
+        <PurchaseConfirm onClick={handleConfirmClick}>확인</PurchaseConfirm>
       </FormContainer>
+      <TotalAmountBox>총 {TotalAmountStockPriceDisplay}원</TotalAmountBox>
       {active === 1 && (
         <NumberBox>
           <ThreeNumberBox>
@@ -172,13 +307,55 @@ const BuyPage = () => {
             <NumberEach onClick={() => addDigit(9)}>9</NumberEach>
           </ThreeNumberBox>
           <LastNumberBox>
-            <TextEach onClick={() => setInputValue("")}>전체삭제</TextEach>
+            <TextEach
+              onClick={() => {
+                setInputValue("");
+                setTotalAmountStockPrice(0);
+              }}
+            >
+              전체삭제
+            </TextEach>
             <NumberEach onClick={() => addDigit(0)}>0</NumberEach>
             <NumberEach onClick={() => removeDigit()}>⬅</NumberEach>
           </LastNumberBox>
         </NumberBox>
       )}
 
+      <Overlay active={confirmation}></Overlay>
+      {confirmation && (
+        <NumberBox>
+          <ReserveLine1> 삼성전자 {inputValue}주 구매 예약</ReserveLine1>
+          <ReserveLine2>
+            <div> 1주 희망 가격 </div> <div> {StockPrice}원</div>
+          </ReserveLine2>
+          <ReserveLine3>
+            <div> 예상 수수료 </div> <div> {}0원</div>
+          </ReserveLine3>
+          <ReserveLine4>
+            <div> 총 주문 금액 </div>{" "}
+            <div> {TotalAmountStockPriceDisplay}원</div>
+          </ReserveLine4>
+          <ReserveLine5>
+            <div>
+              {" "}
+              <ReserveCancleBtn
+                onClick={() => {
+                  setActive(1);
+                  setConfirmation(false);
+                }}
+              >
+                취소
+              </ReserveCancleBtn>{" "}
+            </div>{" "}
+            <div>
+              {" "}
+              <ReserveConfirmBtn onClick={예약구매버튼}>
+                확인
+              </ReserveConfirmBtn>{" "}
+            </div>
+          </ReserveLine5>
+        </NumberBox>
+      )}
       <BottomBar></BottomBar>
     </>
   );

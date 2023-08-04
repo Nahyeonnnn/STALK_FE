@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
@@ -264,6 +265,12 @@ const BuyPage = () => {
     setConfirmation(true); // Set the confirmation to true when the confirm button is clicked
   };
 
+  const navigate = useNavigate();
+
+  const 예약구매버튼 = () => {
+    navigate("/buy/confirm");
+  };
+
   return (
     <>
       <TopBar></TopBar>
@@ -342,7 +349,9 @@ const BuyPage = () => {
             </div>{" "}
             <div>
               {" "}
-              <ReserveConfirmBtn>확인</ReserveConfirmBtn>{" "}
+              <ReserveConfirmBtn onClick={예약구매버튼}>
+                확인
+              </ReserveConfirmBtn>{" "}
             </div>
           </ReserveLine5>
         </NumberBox>

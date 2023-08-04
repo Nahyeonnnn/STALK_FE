@@ -43,7 +43,6 @@ const FormContainer = styled.div`
   margin-top: 1.5rem;
   background-color: #f1d00a;
   border-radius: 2rem;
-  opacity: 0.85;
   height: auto;
 `;
 
@@ -57,7 +56,6 @@ const PurchaseBox = styled.input`
   margin: auto;
   padding: 1rem 0 1rem 1rem;
   border-style: none;
-  color: rgb(255, 255, 255);
   &:focus {
     outline: none;
   }
@@ -74,6 +72,19 @@ const PurchaseConfirm = styled.button`
   width: 5rem;
   white-space: nowrap;
   font-size: 1rem;
+  cursor: pointer;
+`;
+
+const TotalAmountBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: white;
+  /* background-color: coral; */
+  width: 70vw;
+  font-size: 1.5rem;
+  height: auto;
+  margin: auto;
+  margin-top: 1rem;
 `;
 
 const NumberBox = styled.div`
@@ -106,6 +117,7 @@ const NumberEach = styled.button`
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0);
   border: 0rem;
+  cursor: pointer;
 `;
 
 const TextEach = styled.button`
@@ -121,21 +133,37 @@ const BuyPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
   const [inputLength, setInputLength] = useState(0); // State to keep track of input length
+  const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
 
-  // This function adds the passed digit to the current input
   const addDigit = (digit) => {
-    setInputValue((prevValue) => prevValue + digit);
+    setInputValue((prevValue) => {
+      const newValue = prevValue + digit;
+      setTotalAmountStockPrice(newValue * StockPriceWithoutComma); // Update the total amount when input changes
+      return newValue;
+    });
     setInputLength((prevLength) => prevLength + 1);
   };
 
   const removeDigit = () => {
-    setInputValue((prevValue) => prevValue.slice(0, -1));
+    setInputValue((prevValue) => {
+      const newValue = prevValue.slice(0, -1);
+      setTotalAmountStockPrice(newValue * StockPriceWithoutComma); // Update the total amount when input changes
+      return newValue;
+    });
     setInputLength((prevLength) => prevLength - 1);
   };
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
+    setTotalAmountStockPrice(event.target.value * StockPriceWithoutComma); // Update the total amount when input changes
   };
+
+  const StockPriceWithoutComma = 70500;
+  const StockPrice = StockPriceWithoutComma.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
+
+  // Convert the TotalAmountStockPrice back to a string with commas for displaying
+  const TotalAmountStockPriceDisplay =
+    TotalAmountStockPrice.toLocaleString("ko-KR");
 
   return (
     <>
@@ -143,7 +171,7 @@ const BuyPage = () => {
       <StockName>삼성전자</StockName>
       <PriceBox>
         <PriceBoxLeft>구매할 가격</PriceBoxLeft>
-        <PriceBoxRight>70,500원</PriceBoxRight>
+        <PriceBoxRight>{StockPrice}원</PriceBoxRight>
       </PriceBox>
       <PurchastText>몇 주를 구매할까요?</PurchastText>
       <FormContainer>
@@ -154,6 +182,7 @@ const BuyPage = () => {
         ></PurchaseBox>
         <PurchaseConfirm onClick={() => setActive(0)}>확인</PurchaseConfirm>
       </FormContainer>
+      <TotalAmountBox>총 {TotalAmountStockPriceDisplay}원</TotalAmountBox>
       {active === 1 && (
         <NumberBox>
           <ThreeNumberBox>
@@ -172,7 +201,14 @@ const BuyPage = () => {
             <NumberEach onClick={() => addDigit(9)}>9</NumberEach>
           </ThreeNumberBox>
           <LastNumberBox>
-            <TextEach onClick={() => setInputValue("")}>전체삭제</TextEach>
+            <TextEach
+              onClick={() => {
+                setInputValue("");
+                setTotalAmountStockPrice(0);
+              }}
+            >
+              전체삭제
+            </TextEach>
             <NumberEach onClick={() => addDigit(0)}>0</NumberEach>
             <NumberEach onClick={() => removeDigit()}>⬅</NumberEach>
           </LastNumberBox>

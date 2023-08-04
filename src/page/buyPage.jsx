@@ -165,6 +165,13 @@ const BuyPage = () => {
   const TotalAmountStockPriceDisplay =
     TotalAmountStockPrice.toLocaleString("ko-KR");
 
+  const [confirmation, setConfirmation] = useState(false); // New state for the confirmation message
+
+  const handleConfirmClick = () => {
+    setActive(0);
+    setConfirmation(true); // Set the confirmation to true when the confirm button is clicked
+  };
+
   return (
     <>
       <TopBar></TopBar>
@@ -180,7 +187,7 @@ const BuyPage = () => {
           onChange={handleInputChange}
           onClick={() => setActive(1)}
         ></PurchaseBox>
-        <PurchaseConfirm onClick={() => setActive(0)}>확인</PurchaseConfirm>
+        <PurchaseConfirm onClick={handleConfirmClick}>확인</PurchaseConfirm>
       </FormContainer>
       <TotalAmountBox>총 {TotalAmountStockPriceDisplay}원</TotalAmountBox>
       {active === 1 && (
@@ -215,6 +222,9 @@ const BuyPage = () => {
         </NumberBox>
       )}
 
+      {confirmation && (
+        <NumberBox>{`총 가격 ${TotalAmountStockPrice}원`}</NumberBox>
+      )}
       <BottomBar></BottomBar>
     </>
   );

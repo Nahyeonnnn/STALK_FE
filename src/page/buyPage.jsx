@@ -145,7 +145,7 @@ const ReserveLine2 = styled.div`
   justify-content: space-between;
   margin: auto;
   width: 85vw;
-  height: 6vh;
+  height: 3vh;
   font-size: 1.1rem;
   font-weight: bold;
 `;
@@ -156,7 +156,7 @@ const ReserveLine3 = styled.div`
   justify-content: space-between;
   margin: auto;
   width: 85vw;
-  height: 6vh;
+  height: 3vh;
   font-size: 1.1rem;
   font-weight: bold;
 `;
@@ -167,7 +167,7 @@ const ReserveLine4 = styled.div`
   justify-content: space-between;
   margin: auto;
   width: 85vw;
-  height: 6vh;
+  height: 3vh;
   font-size: 1.1rem;
   font-weight: bold;
 `;
@@ -177,10 +177,35 @@ const ReserveLine5 = styled.div`
   align-items: flex-start;
   justify-content: space-evenly;
   margin: auto;
+  margin-bottom: 1.5rem;
   width: 90vw;
   height: 6vh;
   font-size: 1.5rem;
   font-weight: bold;
+`;
+
+const ReserveCancleBtn = styled.button`
+  width: 9rem;
+  height: 2.5rem;
+  background-color: #b6b6b6;
+  border-style: none;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+  font-size: 1rem;
+  color: #2b50f6;
+  cursor: pointer;
+`;
+
+const ReserveConfirmBtn = styled.button`
+  width: 9rem;
+  height: 2.5rem;
+  background-color: #2b50f6;
+  border-style: none;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
 `;
 
 const BuyPage = () => {
@@ -290,7 +315,14 @@ const BuyPage = () => {
             <div> {TotalAmountStockPriceDisplay}원</div>
           </ReserveLine4>
           <ReserveLine5>
-            <div> 버튼1 </div> <div> 버튼2</div>
+            <div>
+              {" "}
+              <ReserveCancleBtn>취소</ReserveCancleBtn>{" "}
+            </div>{" "}
+            <div>
+              {" "}
+              <ReserveConfirmBtn>확인</ReserveConfirmBtn>{" "}
+            </div>
           </ReserveLine5>
         </NumberBox>
       )}

@@ -129,6 +129,60 @@ const TextEach = styled.button`
   margin-right: -1rem;
 `;
 
+const ReserveLine1 = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 90vw;
+  height: 6vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const ReserveLine2 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto;
+  width: 85vw;
+  height: 6vh;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const ReserveLine3 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto;
+  width: 85vw;
+  height: 6vh;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const ReserveLine4 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto;
+  width: 85vw;
+  height: 6vh;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+const ReserveLine5 = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  margin: auto;
+  width: 90vw;
+  height: 6vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
 const BuyPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
@@ -223,7 +277,22 @@ const BuyPage = () => {
       )}
 
       {confirmation && (
-        <NumberBox>{`총 가격 ${TotalAmountStockPrice}원`}</NumberBox>
+        <NumberBox>
+          <ReserveLine1> 삼성전자 {inputValue}주 판매 예약</ReserveLine1>
+          <ReserveLine2>
+            <div> 1주 희망 가격 </div> <div> {StockPrice}원</div>
+          </ReserveLine2>
+          <ReserveLine3>
+            <div> 예상 수수료 </div> <div> {}0원</div>
+          </ReserveLine3>
+          <ReserveLine4>
+            <div> 총 주문 금액 </div>{" "}
+            <div> {TotalAmountStockPriceDisplay}원</div>
+          </ReserveLine4>
+          <ReserveLine5>
+            <div> 버튼1 </div> <div> 버튼2</div>
+          </ReserveLine5>
+        </NumberBox>
       )}
       <BottomBar></BottomBar>
     </>

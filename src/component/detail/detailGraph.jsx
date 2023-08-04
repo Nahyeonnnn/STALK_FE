@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
@@ -76,6 +77,7 @@ const DetailGraph = (props) => {
   const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
   const date = today.getDate();
 
+  const { StockID } = useParams();
   const [active, setActive] = useState("Day");
   const [currentTime, setCurrentTime] = useState("");
   const [stockData, setStockData] = useState([]);
@@ -107,7 +109,7 @@ const DetailGraph = (props) => {
       try {
         const res = await axios.get(`https://stalksound.store/sonification/minute_data/`, {
           params: {
-            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
+            symbol: StockID, // 삼성전자 : 005930 `${props.StockID}`
             end: end,
           },
         });
@@ -240,7 +242,7 @@ const DetailGraph = (props) => {
     ],
     plotOptions: {
       areaspline: {
-        lineWidth: 1,
+        lineWidth: 0.2,
         lineColor: "blue", //blackborder
         marker: {
           enabled: false,

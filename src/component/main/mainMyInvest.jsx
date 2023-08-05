@@ -22,7 +22,7 @@ const AmountTextRight = styled.div`
 
 const AmountTextRightRate = styled.div`
   display: flex;
-  color: skyblue;
+  color: ${props => (props.value.startsWith("-") ? "skyblue" : "red")};
 `;
 
 const InvestBox = styled.div`
@@ -49,10 +49,10 @@ const Invest_1_price = styled.div`
 `;
 
 const Invest_1_rate = styled.div`
-  color: skyblue;
   width: 25vw;
   display: flex;
   justify-content: flex-end;
+  color: ${props => (props.value.startsWith("-") ? "skyblue" : "red")};
 `;
 
 const MainMyInvest = () => {
@@ -61,44 +61,44 @@ const MainMyInvest = () => {
       <AmountBox>
         <AmountTextLeft>총 자산</AmountTextLeft>
         <AmountTextRight>
-          93,214,620원 <AmountTextRightRate> (+ 15.2%)</AmountTextRightRate>
+          93,214,620원 <AmountTextRightRate value="+ 15.2%"> (+ 15.2%)</AmountTextRightRate>
         </AmountTextRight>
       </AmountBox>
       <InvestBox>
         <Invest_1>
           <Invest_1_name>AT&T Inc.</Invest_1_name>
           <Invest_1_price>32,445 $</Invest_1_price>
-          <Invest_1_rate>0,09%</Invest_1_rate>
+          <Invest_1_rate value="+0,09%">+0,09%</Invest_1_rate>
         </Invest_1>
         <Invest_1>
           <Invest_1_name>TESLA</Invest_1_name>
           <Invest_1_price>2,341 $</Invest_1_price>
-          <Invest_1_rate>0,84%</Invest_1_rate>
+          <Invest_1_rate value="+0,84%">+0,84%</Invest_1_rate>
         </Invest_1>
         <Invest_1>
           <Invest_1_name>MICROSOFT</Invest_1_name>
           <Invest_1_price>10,321 $</Invest_1_price>
-          <Invest_1_rate>-10,32%</Invest_1_rate>
+          <Invest_1_rate value="-10,32%">-10,32%</Invest_1_rate>
         </Invest_1>
         <Invest_1>
           <Invest_1_name>APPLE</Invest_1_name>
           <Invest_1_price>132,389 $</Invest_1_price>
-          <Invest_1_rate>8,39%</Invest_1_rate>
+          <Invest_1_rate value="+8,39%">+8,39%</Invest_1_rate>
         </Invest_1>
         <Invest_1>
           <Invest_1_name>Alphabet</Invest_1_name>
           <Invest_1_price>32,445 $</Invest_1_price>
-          <Invest_1_rate>-5,39%</Invest_1_rate>
+          <Invest_1_rate value="-5,39%">-5,39%</Invest_1_rate>
         </Invest_1>
         <Invest_1>
           <Invest_1_name>NETFLIX</Invest_1_name>
           <Invest_1_price>3,429 $</Invest_1_price>
-          <Invest_1_rate>-0,51%</Invest_1_rate>
+          <Invest_1_rate value="-0,51%">-0,51%</Invest_1_rate>
         </Invest_1>
         <Invest_1>
           <Invest_1_name>AT&T Inc.</Invest_1_name>
           <Invest_1_price>32,445 $</Invest_1_price>
-          <Invest_1_rate>0,09%</Invest_1_rate>
+          <Invest_1_rate value="+0,09%">+0,09%</Invest_1_rate>
         </Invest_1>
       </InvestBox>
     </>

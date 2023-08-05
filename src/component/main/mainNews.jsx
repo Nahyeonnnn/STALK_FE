@@ -103,6 +103,34 @@ const MainNews = () => {
           </NewsTitle>
           <NewsImg></NewsImg>
         </NewsEach>
+        <NewsEach>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
+        <NewsEach>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
+        <NewsEach>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
+        <NewsEach>
+          <NewsTitle>
+            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
+            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
+          </NewsTitle>
+          <NewsImg></NewsImg>
+        </NewsEach>
       </NewsBox>
     </>
   );

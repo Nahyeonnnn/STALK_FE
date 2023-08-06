@@ -215,13 +215,6 @@ const RecentSearch = styled.p`
 `;
 
 const SearchBar = () => {
-  //axios 연결 시 주식 리스트를 저장할 변수
-  const [stockList, setStockList] = useState(testList);
-  //검색어를 저장하기 위한 useState
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [recentSearchData, setRecentSearch] = useState([]); //최근 검색한 데이터 useState
 
   function handleInputSearch(e) {
     const { value } = e.target;

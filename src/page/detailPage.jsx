@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import TopBar from '../component/global/topBar';
-import DetailGraph from '../component/detail/detailGraph';
-import DetailStatic from '../component/detail/detailStatic';
-import DetailInfo from '../component/detail/detailInfo';
-import DetailNews from '../component/detail/detailNews';
-import DetailButton from '../component/detail/detailButton';
-import BottomBar from '../component/global/bottomBar';
+import TopBar from "../component/global/topBar";
+import DetailGraph from "../component/detail/detailGraph";
+import DetailStatic from "../component/detail/detailStatic";
+import DetailInfo from "../component/detail/detailInfo";
+import DetailNews from "../component/detail/detailNews";
+import DetailButton from "../component/detail/detailButton";
+import BottomBar from "../component/global/bottomBar";
 
 const MiddleBar = styled.div`
   display: flex;
@@ -56,35 +57,37 @@ const NewsBtn = styled.button`
 `;
 
 const DetailPage = () => {
-    const [active, setActive] = useState("Static");
+  const {StockID} = useParams();
+  const [active, setActive] = useState("Static");
 
-    return (
-        <> 
-            <TopBar></TopBar>
-            <DetailGraph styled="margin-top : 3rem"></DetailGraph>
-            <MiddleBar>
+  return (
+    <>
+      <TopBar></TopBar>
+      <DetailGraph styled="margin-top : 3rem"></DetailGraph>
+      <MiddleBar>
+        <StaticBtn
+          isActive={active === "Static"}
+          onClick={() => setActive("Static")}
+        >
+          통계
+        </StaticBtn>
 
-                <StaticBtn isActive={active === "Static"} onClick={() => setActive("Static")}>
-                통계
-                </StaticBtn>
-        
-                <InfoBtn isActive={active === "Info"} onClick={() => setActive("Info")}>
-                종목정보
-                </InfoBtn>
-        
-                <NewsBtn isActive={active === "News"} onClick={() => setActive("News")}>
-                뉴스
-                </NewsBtn>
+        <InfoBtn isActive={active === "Info"} onClick={() => setActive("Info")}>
+          종목정보
+        </InfoBtn>
 
-            </MiddleBar>
+        <NewsBtn isActive={active === "News"} onClick={() => setActive("News")}>
+          뉴스
+        </NewsBtn>
+      </MiddleBar>
 
-            {active === "Static" && <DetailStatic></DetailStatic>}
-            {active === "Info" && <DetailInfo></DetailInfo>}
-            {active === "News" && <DetailNews></DetailNews>}
-            
-            <BottomBar></BottomBar>
-        </>
-    );
+      {active === "Static" && <DetailStatic></DetailStatic>}
+      {active === "Info" && <DetailInfo></DetailInfo>}
+      {active === "News" && <DetailNews></DetailNews>}
+
+      <BottomBar></BottomBar>
+    </>
+  );
 };
 
 export default DetailPage;

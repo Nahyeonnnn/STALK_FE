@@ -1,14 +1,19 @@
-import React from 'react';
-import axios from 'axios';
-import { styled } from 'styled-components';
-import LoginButton from './kakao_login_large_narrow.png';
+import React from "react";
+import axios from "axios";
+import { styled } from "styled-components";
+import LoginButton from "./kakao_login_large_narrow.png";
 
 const ButtonImg = styled.img`
-    width: 16rem;
-    max-width: 250px;
+  width: 16rem;
+  max-width: 250px;
 `;
 
 const KakaoLoginBox = () => {
+  function LoginClick() {
+    // axios
+    //     .get()
+    //
+  }
 
     const REST_API_KEY = 'd17a93ba147f55c5bfab1c1091b16b8e';
     const REDIRECT_URI = 'http://localhost:3000/kakao/callback';//kakao_callback_url

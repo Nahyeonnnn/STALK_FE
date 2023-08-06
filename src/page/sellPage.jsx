@@ -91,7 +91,7 @@ const NumberBox = styled.div`
 const ThreeNumberBox = styled.div`
   display: flex;
   justify-content: space-around;
-  padding:1rem;
+  padding: 1rem;
 `;
 
 const LastNumberBox = styled.div`

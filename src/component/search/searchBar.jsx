@@ -277,7 +277,7 @@ const SearchBar = () => {
     //         });
     // })
 
-    console.log(stockList);
+    
 
     function handleInputSearch(e){
         const {value} = e.target;

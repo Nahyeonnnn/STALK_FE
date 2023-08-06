@@ -107,8 +107,9 @@ const DetailGraph = (props) => {
   useEffect(() => {
     const fetchData = async (end) => {
       try {
-        const res = await axios.get(`https://stalksound.store/sonification/minute_data/`, {
+        const res = await axios.get(`https://stalksound.store/sonification/repeat_minute_data/`, {
           params: {
+            count : 6,
             symbol: StockID, // 삼성전자 : 005930 `${props.StockID}`
             end: end,
           },
@@ -131,21 +132,12 @@ const DetailGraph = (props) => {
     };
 
     if (active === "Day") {
-      fetchData("093000");
-      fetchData("100000");
-      fetchData("103000");
-      fetchData("110000");
-      fetchData("113000");
-      fetchData("120000");
-      fetchData("123000");
-      fetchData("130000");
-      fetchData("133000");
-      fetchData("140000");
-      fetchData("143000");
-      fetchData("150000");
-      fetchData("153000");
+      setStockData([])
+      fetchData("150000"); // 30
+      console.log(stockData);
 
     } else if (active === "Week") {
+      setStockData([]);
       axios
         .get(`https://stalksound.store/sonification/day_data/`, {
           params: {
@@ -161,12 +153,13 @@ const DetailGraph = (props) => {
           console.log(e);
         });
     } else if (active === "Month") {
+      setStockData([]);
       axios
-        .get(`https://stalksound.store/sonification/day_data/`, {
+        .get(`https://stalksound.store/sonification/now_data/`, {
           params: {
             symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
-            begin: "20230601",
-            end: "20230701",
+            // begin: "20230601",
+            // end: "20230701",
           },
         })
         .then((res) => {
@@ -191,6 +184,9 @@ const DetailGraph = (props) => {
 
   // Highcharts options
   const options = {
+    credits:{
+      enabled: false,
+    },
     legend: {
       enabled: false,
     },
@@ -228,7 +224,7 @@ const DetailGraph = (props) => {
     series: [
       {
         type: "areaspline",
-        name: "Samsung",
+        name: stockData.length > 0 ? stockData[0].종목 : "",
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },

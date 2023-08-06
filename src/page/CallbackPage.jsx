@@ -18,6 +18,8 @@ const CallbackPage = () => {
             .then((res)=>{
                 console.log('로그인 성공~');
                 console.log(res);
+                localStorage.setItem('accessToken', res.data.token.access);
+                localStorage.setItem('refreshToken',res.data.token.refresh);
             })
             .catch((e)=>{
                 console.log(e);

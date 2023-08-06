@@ -9,6 +9,7 @@ const ChartBox = styled.div`
   background-color: rgba(241, 208, 10, 0.92);
   border-radius: 1rem;
   margin: auto;
+  position: relative;
 `;
 
 const ChartType = styled.p`
@@ -34,13 +35,32 @@ const ChartButton = styled.button`
   cursor: pointer;
 `;
 
+const ArrowButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+`;
+
+const LeftArrow = styled(ArrowButton)`
+  left: 0;
+`;
+
+const RightArrow = styled(ArrowButton)`
+  right: 0;
+`;
+
 const MainGraph = () => {
   const [activeButton, setActiveButton] = useState(1);
-  const [shouldAnimate, setShouldAnimate] = useState(true);
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // setActiveButton((prevButton) => (prevButton % 6) + 1);
+      setActiveButton((prevButton) => (prevButton % 6) + 1);
     }, 5000);
 
     return () => {
@@ -48,12 +68,20 @@ const MainGraph = () => {
     };
   }, []);
 
+  const handleNextChart = () => {
+    setActiveButton((prevButton) => (prevButton % 6) + 1);
+  };
+
+  const handlePreviousChart = () => {
+    setActiveButton((prevButton) => (prevButton - 2 + 6) % 6 + 1);
+  };
+
   const renderInfo = () => {
     switch (activeButton) {
       case 1:
         return (
           <>
-            <Samsung></Samsung>
+            <Samsung />
           </>
         );
       case 2:
@@ -74,6 +102,8 @@ const MainGraph = () => {
   return (
     <>
       <ChartBox>
+        <LeftArrow onClick={handlePreviousChart}>&#8249;</LeftArrow>
+        <RightArrow onClick={handleNextChart}>&#8250;</RightArrow>
         <ChartType>{renderInfo()}</ChartType>
       </ChartBox>
       <ChartButtonBox>

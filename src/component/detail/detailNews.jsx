@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const NewsBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  //display: flex;
+  //flex-direction: column;
+  //align-items: center;
+  //justify-content: center;
   width: 85vw;
-  height: 30vh;
+  height: 100%;
   background-color: white;
   border-radius: 0.625rem;
   margin-left: auto;
@@ -18,14 +19,17 @@ const NewsBox = styled.div`
 `;
 const NewsEach = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   width: 80vw;
   margin-bottom: 1rem;
+  margin-left: 1rem;
 `;
 
 const NewsTitle = styled.div`
-  width: 60vw;
+  width: 80vw;
   font-weight: bold;
+  margin-top: 1rem;
 `;
 
 const NewsImg = styled.div`
@@ -43,8 +47,22 @@ const NewsSource = styled.div`
   color: lightgray;
 `;
 
-const DetailNews = () => {
+const DetailNews = (props) => {
+  const [newsData, setNewsData] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const apiUrl = `https://stalksound.store/news/stockcode/?stock_code=${props.stockID}`;
+    
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        setNewsData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching news data:", error);
+      });
+  }, [props.stockID]);
 
   const handleNewsClick = () => {
     navigate("/newsdetail");
@@ -53,30 +71,12 @@ const DetailNews = () => {
   return (
     <>
       <NewsBox>
-        <br />
-        <NewsEach onClick={handleNewsClick}>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-
-        <NewsEach onClick={handleNewsClick}>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-
-        <NewsEach onClick={handleNewsClick}>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
+        {Object.values(newsData).map((news, index) => (
+          <NewsEach key={index} onClick={handleNewsClick}>
+            <NewsTitle>{news.title}</NewsTitle>
+            <NewsSource>{`${news.time_difference}`}</NewsSource>
+          </NewsEach>
+        ))}
       </NewsBox>
     </>
   );

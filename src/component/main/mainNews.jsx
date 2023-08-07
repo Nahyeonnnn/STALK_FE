@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const NewsBox = styled.div`
   width: 90vw;
@@ -11,14 +12,14 @@ const NewsBox = styled.div`
 `;
 
 const NewsEach = styled.div`
-  display: flex;
+  //display: flex;
   justify-content: space-around;
   width: 90vw;
   margin-bottom: 1rem;
+  border: 0.0625 solid #F1D00A;
 `;
 
 const NewsTitle = styled.div`
-  width: 60vw;
   font-weight: bold;
 `;
 
@@ -38,99 +39,45 @@ const NewsSource = styled.div`
 `;
 
 const MainNews = () => {
+  const [newsData, setNewsData] = useState([]);
   const navigate = useNavigate();
 
-  const handleNewsClick = () => {
-    navigate("/newsdetail");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://stalksound.store/news/newslist/");
+        setNewsData(response.data); 
+      } catch (error) {
+        console.error("Error fetching news data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Pass article_id and office_id as parameters when navigating to /newsdetail
+  const handleNewsClick = (articleId, officeId) => {
+    navigate("/newsdetail", { state: { articleId, officeId } });
   };
 
   return (
     <>
       <NewsBox>
-        <NewsEach onClick={handleNewsClick}>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
-        <NewsEach>
-          <NewsTitle>
-            테슬라 머시기 일론 머스크 머시기 화성 머시기 도지코인
-            <NewsSource>파이낸셜 타임스 · 9분</NewsSource>
-          </NewsTitle>
-          <NewsImg></NewsImg>
-        </NewsEach>
+        {newsData &&
+          Object.keys(newsData).map((key) => {
+            const newsItem = newsData[key];
+            return (
+              <NewsEach
+                key={newsItem.article_id}
+                onClick={() => handleNewsClick(newsItem.article_id, newsItem.office_id)}
+              >
+                <NewsTitle>{newsItem.news_title}</NewsTitle>
+                <NewsSource>
+                  {newsItem.news_provider} · {newsItem.time_difference}
+                </NewsSource>
+              </NewsEach>
+            );
+          })}
       </NewsBox>
     </>
   );

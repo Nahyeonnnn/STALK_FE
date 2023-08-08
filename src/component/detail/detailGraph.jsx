@@ -6,6 +6,9 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 
+import Week from "./graphlist/week";
+import Month from "./graphlist/month";
+
 const SpaceBox = styled.div`
   display: flex;
   width: 3rem;
@@ -30,20 +33,6 @@ const ChartBox = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 1rem 1rem 0rem 0rem;
-`;
-
-const WeekChart = styled.div`
-  display: flex;
-  width: 78vw;
-  height: 26vh;
-  background-color: pink;
-`;
-
-const MonthChart = styled.div`
-  display: flex;
-  width: 78vw;
-  height: 26vh;
-  background-color: green;
 `;
 
 const ChartBtnBox = styled.div`
@@ -71,23 +60,19 @@ const StockBox = styled.div`
   z-index: 1;
 `;
 
-const DetailGraph = (props) => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
-  const date = today.getDate();
-
+const DetailGraph = () => {
   const { StockID } = useParams();
   const [active, setActive] = useState("Day");
+  const [currentDay, setCurrentDay] = useState("");
   const [currentTime, setCurrentTime] = useState("");
   const [stockData, setStockData] = useState([]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const today = new Date();
-      let hours = today.getHours();
-      let minutes = today.getMinutes();
-      let seconds = today.getSeconds();
+      const today2 = new Date();
+      let hours = today2.getHours();
+      let minutes = today2.getMinutes();
+      let seconds = today2.getSeconds();
 
       if (hours < 10) {
         hours = "0" + hours;
@@ -105,11 +90,10 @@ const DetailGraph = (props) => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async (end) => {
+    const fetchData1 = async (end) => {
       try {
-        const res = await axios.get(`https://stalksound.store/sonification/repeat_minute_data/`, {
+        const res = await axios.get(`https://stalksound.store/sonification/minute_data/`, {
           params: {
-            count : 6,
             symbol: StockID, // 삼성전자 : 005930 `${props.StockID}`
             end: end,
           },
@@ -121,6 +105,7 @@ const DetailGraph = (props) => {
           시가: item.시가,
           현재가: item.현재가,
           고가: item.고가,
+          저가: item.저가,
           // ... 여기에 필요한 다른 종목 정보를 추가로 추출할 수 있습니다.
         }));
   
@@ -132,43 +117,10 @@ const DetailGraph = (props) => {
     };
 
     if (active === "Day") {
-      setStockData([])
-      fetchData("150000"); // 30
+      fetchData1("150000"); // 30
       console.log(stockData);
 
-    } else if (active === "Week") {
-      setStockData([]);
-      axios
-        .get(`https://stalksound.store/sonification/day_data/`, {
-          params: {
-            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
-            begin: "20230601",
-            end: "20230607",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    } else if (active === "Month") {
-      setStockData([]);
-      axios
-        .get(`https://stalksound.store/sonification/now_data/`, {
-          params: {
-            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
-            // begin: "20230601",
-            // end: "20230701",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
+    } 
   }, [active, currentTime]);
 
   // 날짜와 종가 데이터 추출
@@ -212,7 +164,7 @@ const DetailGraph = (props) => {
       enabled: false,
     },
     yAxis: {
-      tickPositions: [68000, 68500, 69000, 69500],
+      tickPositions: [67000, 67500, 68000, 68500, 69000, 69500],
       title: {
         text: null,
       },
@@ -252,13 +204,9 @@ const DetailGraph = (props) => {
       <SpaceBox></SpaceBox>
       <ChartContainer>
         <ChartBox>
-          {active === "Day" && (
-            <StockBox>
-              <HighchartsReact highcharts={Highcharts} options={options} />
-            </StockBox>
-          )}
-          {active === "Week" && <WeekChart></WeekChart>}
-          {active === "Month" && <MonthChart></MonthChart>}
+          {active === "Day" && (<StockBox><HighchartsReact highcharts={Highcharts} options={options} /></StockBox>)}
+          {active === "Week" && (<StockBox><Week StockID={StockID}/></StockBox>)}
+          {active === "Month" && (<StockBox><Month StockID={StockID}/></StockBox>)}
         </ChartBox>
 
         <ChartBtnBox>

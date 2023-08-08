@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -166,6 +167,9 @@ const EachDataDiv = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const EachStockDataDiv = styled.div`
@@ -214,6 +218,7 @@ const RecentSearch = styled.p`
 `;
 
 const SearchBar = () => {
+    const navigate = useNavigate();
   const [stockList, setStockList] = useState(testList); //axios 연결 시 주식 리스트를 저장할 변수
   const [query, setQuery] = useState(""); //검색어를 저장하기 위한 useState
   const [suggestions, setSuggestions] = useState([]);
@@ -285,6 +290,28 @@ const SearchBar = () => {
     }
   }, []); //처음 렌더링 될 때만 실행되게 함
 
+  useEffect(()=>{
+
+    const recentArray = JSON.parse(localStorage.getItem('recent'));
+    const filteredArray = stockList.filter((obj)=>recentArray.includes(obj.prdt_name));
+
+    console.log(filteredArray);
+    for( const recentData of filteredArray ) {
+        axios
+            .get(`https://stalksound.store/sonification/now_data/`,{
+                params : {
+                    symbol : recentData.code
+                }
+            })
+            .then((res)=>{
+                console.log(res);
+            })
+            .catch((e)=>{
+                console.log(e);
+            });
+    }
+  },[]);
+
   return (
     <>
       <SearchContainer>
@@ -301,7 +328,7 @@ const SearchBar = () => {
         {query.length > 0 && showSuggestions && (
           <AutoSearchContainer>
             {suggestions.map((result) => (
-              <EachDataDiv>
+              <EachDataDiv onClick={()=>navigate(`/detail/${result.code}`)}>
                 <EachStockDataDiv>
                   <EachStockIcon src={NaverIcon}></EachStockIcon>
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
@@ -320,7 +347,7 @@ const SearchBar = () => {
             <RecentSearch>최근 검색 기록</RecentSearch>
             {recentSearchData !== null ? (
               recentSearchData.map((recent) => (
-                <EachDataDiv>
+                <EachDataDiv onClick={()=>navigate(`/detail/${recent.code}`)}>
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon}></EachStockIcon>
                     <AutoSearchData>{recent}</AutoSearchData>

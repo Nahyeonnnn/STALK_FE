@@ -43,7 +43,7 @@ function App() {
             <Route path="/sell" element={<SellPage />} />
             <Route path="/myInfo" element={<MyInfoPage />} />
             <Route path="/news" element={<NewsPage />} />
-            <Route path="/newsdetail" element={<NewsdetailPage />} />
+            <Route path="/newsdetail/:ArticleID" element={<NewsdetailPage />} />
             <Route exact path="/kakao/callback" element={<CallbackPage/>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

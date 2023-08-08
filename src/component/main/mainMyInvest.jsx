@@ -61,6 +61,12 @@ const MainMyInvest = () => {
   const [stockData, setStockData] = useState([]);
   const navigate = useNavigate();
 
+  const stockCode = "005930"; // 이 부분은 실제 주식 코드 값으로 대체되어야 합니다.
+
+  const handleStockClick = () => {
+    navigate(`/detail/${stockCode}`);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,7 +75,7 @@ const MainMyInvest = () => {
           {
             params: {
               // symbol: `${props.StockID}`,
-              symbol: "005930",
+              symbol: stockCode,
               begin: "20230807",
               end: "20230807",
             },
@@ -87,11 +93,6 @@ const MainMyInvest = () => {
 
     fetchData();
   }, []);
-
-  const handleStockClick = () => {
-    const stockCode = "someValue"; // 이 부분은 실제 주식 코드 값으로 대체되어야 합니다.
-    navigate(`/detail/${stockCode}`);
-  };
 
   const stockName =
     stockData.data && stockData.data[0] ? stockData.data[0].종목 : null;

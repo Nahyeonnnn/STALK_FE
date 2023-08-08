@@ -121,23 +121,6 @@ const DetailGraph = () => {
       console.log(stockData);
 
     } 
-    else if (active === "Month") {
-      setStockData([]);
-      axios
-        .get(`https://stalksound.store/sonification/now_data/`, {
-          params: {
-            symbol: "005930", // 삼성전자 : 005930 `${props.StockID}`
-            // begin: "20230601",
-            // end: "20230701",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
   }, [active, currentTime]);
 
   // 날짜와 종가 데이터 추출

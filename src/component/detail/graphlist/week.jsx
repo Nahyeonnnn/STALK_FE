@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
@@ -69,7 +67,11 @@ const Week = (props) => {
     .reverse();
 
   let gap = 500;
-  for(let i = minPrice - 500; i<=maxPrice; i+=gap){ // graph 간격 조정
+  if (maxPrice >= 100000) {
+    gap = 1000;
+  }
+  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+    // graph 간격 조정
     interval.push(i);
   }
 

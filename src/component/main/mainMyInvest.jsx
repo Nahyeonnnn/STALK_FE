@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AmountBox = styled.div`
   display: flex;
@@ -22,7 +24,7 @@ const AmountTextRight = styled.div`
 
 const AmountTextRightRate = styled.div`
   display: flex;
-  color: ${props => (props.value.startsWith("-") ? "skyblue" : "red")};
+  color: ${(props) => (props.value.startsWith("-") ? "skyblue" : "red")};
 `;
 
 const InvestBox = styled.div`
@@ -52,22 +54,61 @@ const Invest_1_rate = styled.div`
   width: 25vw;
   display: flex;
   justify-content: flex-end;
-  color: ${props => (props.value.startsWith("-") ? "skyblue" : "red")};
+  color: ${(props) => (props.value.startsWith("-") ? "skyblue" : "red")};
 `;
 
 const MainMyInvest = () => {
+  const [stockData, setStockData] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://stalksound.store/sonification/week_data/",
+          {
+            params: {
+              // symbol: `${props.StockID}`,
+              symbol: "005930",
+              begin: "20230807",
+              end: "20230807",
+            },
+          }
+        );
+        setStockData(response.data);
+        console.log(response.data);
+        console.log(response.data.data);
+        console.log(response.data.data[0]);
+        console.log(response.data.data[0].종목);
+      } catch (error) {
+        console.error("종목명 가져오기 실패 ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleStockClick = () => {
+    const stockCode = "someValue"; // 이 부분은 실제 주식 코드 값으로 대체되어야 합니다.
+    navigate(`/detail/${stockCode}`);
+  };
+
+  const stockName = stockData.data[0].종목;
+  const stockPrice = stockData.data[0].시가;
+
   return (
     <>
       <AmountBox>
         <AmountTextLeft>총 자산</AmountTextLeft>
         <AmountTextRight>
-          93,214,620원 <AmountTextRightRate value="+ 15.2%"> (+ 15.2%)</AmountTextRightRate>
+          93,214,620원{" "}
+          <AmountTextRightRate value="+ 15.2%"> (+ 15.2%)</AmountTextRightRate>
         </AmountTextRight>
       </AmountBox>
       <InvestBox>
         <Invest_1>
-          <Invest_1_name>AT&T Inc.</Invest_1_name>
-          <Invest_1_price>32,445 $</Invest_1_price>
+          <Invest_1_name>{stockName}</Invest_1_name>
+          <Invest_1_price>{stockPrice} $</Invest_1_price>
           <Invest_1_rate value="+0,09%">+0,09%</Invest_1_rate>
         </Invest_1>
         <Invest_1>

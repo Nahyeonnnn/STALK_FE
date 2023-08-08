@@ -67,7 +67,7 @@ const Week = (props) => {
     .reverse();
 
   let gap = 500;
-  if (maxPrice >= 100000) {
+  if (maxPrice >= 100000) { // 10만 이상 단위면 눈금 1000원
     gap = 1000;
   }
   for (let i = minPrice - 500; i <= maxPrice; i += gap) {

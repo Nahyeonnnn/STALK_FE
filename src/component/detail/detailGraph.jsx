@@ -92,11 +92,10 @@ const DetailGraph = () => {
   useEffect(() => {
     const fetchData1 = async (end) => {
       try {
-        const res = await axios.get(`https://stalksound.store/sonification/repeat_minute_data/`, {
+        const res = await axios.get(`https://stalksound.store/sonification/minute_data/`, {
           params: {
-            count : 6,
             symbol: StockID, // 삼성전자 : 005930 `${props.StockID}`
-            end: "140000",
+            end: end,
           },
         });
   
@@ -118,7 +117,6 @@ const DetailGraph = () => {
     };
 
     if (active === "Day") {
-      setStockData([])
       fetchData1("150000"); // 30
       console.log(stockData);
 
@@ -183,7 +181,7 @@ const DetailGraph = () => {
       enabled: false,
     },
     yAxis: {
-      tickPositions: [68000, 68500, 69000, 69500],
+      tickPositions: [67000, 67500, 68000, 68500, 69000, 69500],
       title: {
         text: null,
       },

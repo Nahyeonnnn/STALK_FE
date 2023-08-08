@@ -28,9 +28,6 @@ const Month = (props) => {
 
     const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
-    console.log(beginDate);
-    console.log(endDate);
-
     axios
       .get(`https://stalksound.store/sonification/day_data/`, {
         params: {
@@ -41,7 +38,6 @@ const Month = (props) => {
       })
       .then((res) => {
         setStockData(res.data.data);
-        console.log(res.data.data);
 
         setMaxPrice(
           Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
@@ -66,11 +62,26 @@ const Month = (props) => {
     })
     .reverse();
 
-  let gap = 500;
-  if (maxPrice >= 100000) { // 10만 이상 단위면 눈금 1000원
+  let gap; // 그래프 간격 조정 변수
+  if (maxPrice >= 100000) {
+    // 10만 이상, 간격 : 1000원
     gap = 1000;
+  } else if (maxPrice >= 50000) {
+    // 5만 이상, 간격 : 500원
+    gap = 500;
+  } else if (maxPrice >= 10000) {
+    // 1만 이상, 간격 : 100원
+    gap = 100;
+  } else if (maxPrice >= 5000) {
+    // 5천 이상, 간격 : 50원
+    gap = 50;
+  } else {
+    // 5천 미만, 간격 : 10원
+    gap = 10;
   }
-  for(let i = minPrice - 500; i<=maxPrice; i+=gap){ // graph 간격 조정
+
+  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+    // graph 간격 조정
     interval.push(i);
   }
 

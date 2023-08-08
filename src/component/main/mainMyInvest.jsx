@@ -31,7 +31,7 @@ const InvestBox = styled.div`
   padding: 1rem 2rem 3rem 2rem;
 `;
 
-const Invest_1 = styled.div`
+const InvestContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80vw;
@@ -40,17 +40,17 @@ const Invest_1 = styled.div`
   font-size: 1.2rem;
 `;
 
-const Invest_1_name = styled.div`
+const InvestName = styled.div`
   width: 30vw;
 `;
 
-const Invest_1_price = styled.div`
+const InvestPrice = styled.div`
   width: 25vw;
   display: flex;
   justify-content: flex-end;
 `;
 
-const Invest_1_rate = styled.div`
+const InvestRate = styled.div`
   width: 25vw;
   display: flex;
   justify-content: flex-end;
@@ -109,41 +109,41 @@ const MainMyInvest = () => {
         </AmountTextRight>
       </AmountBox>
       <InvestBox>
-        <Invest_1 onClick={() => handleStockClick()}>
-          <Invest_1_name>{stockName}</Invest_1_name>
-          <Invest_1_price>{stockPrice} $</Invest_1_price>
-          <Invest_1_rate value="+0,09%">+0,09%</Invest_1_rate>
-        </Invest_1>
-        <Invest_1>
-          <Invest_1_name>TESLA</Invest_1_name>
-          <Invest_1_price>2,341 $</Invest_1_price>
-          <Invest_1_rate value="+0,84%">+0,84%</Invest_1_rate>
-        </Invest_1>
-        <Invest_1>
-          <Invest_1_name>MICROSOFT</Invest_1_name>
-          <Invest_1_price>10,321 $</Invest_1_price>
-          <Invest_1_rate value="-10,32%">-10,32%</Invest_1_rate>
-        </Invest_1>
-        <Invest_1>
-          <Invest_1_name>APPLE</Invest_1_name>
-          <Invest_1_price>132,389 $</Invest_1_price>
-          <Invest_1_rate value="+8,39%">+8,39%</Invest_1_rate>
-        </Invest_1>
-        <Invest_1>
-          <Invest_1_name>Alphabet</Invest_1_name>
-          <Invest_1_price>32,445 $</Invest_1_price>
-          <Invest_1_rate value="-5,39%">-5,39%</Invest_1_rate>
-        </Invest_1>
-        <Invest_1>
-          <Invest_1_name>NETFLIX</Invest_1_name>
-          <Invest_1_price>3,429 $</Invest_1_price>
-          <Invest_1_rate value="-0,51%">-0,51%</Invest_1_rate>
-        </Invest_1>
-        <Invest_1>
-          <Invest_1_name>AT&T Inc.</Invest_1_name>
-          <Invest_1_price>32,445 $</Invest_1_price>
-          <Invest_1_rate value="+0,09%">+0,09%</Invest_1_rate>
-        </Invest_1>
+        <InvestContainer>
+          <InvestName>{stockName}</InvestName>
+          <InvestPrice>{stockPrice} $</InvestPrice>
+          <InvestRate value="+0,09%">+0,09%</InvestRate>
+        </InvestContainer>
+        <InvestContainer>
+          <InvestName>TESLA</InvestName>
+          <InvestPrice>2,341 $</InvestPrice>
+          <InvestRate value="+0,84%">+0,84%</InvestRate>
+        </InvestContainer>
+        <InvestContainer>
+          <InvestName>MICROSOFT</InvestName>
+          <InvestPrice>10,321 $</InvestPrice>
+          <InvestRate value="-10,32%">-10,32%</InvestRate>
+        </InvestContainer>
+        <InvestContainer>
+          <InvestName>APPLE</InvestName>
+          <InvestPrice>132,389 $</InvestPrice>
+          <InvestRate value="+8,39%">+8,39%</InvestRate>
+        </InvestContainer>
+        <InvestContainer>
+          <InvestName>Alphabet</InvestName>
+          <InvestPrice>32,445 $</InvestPrice>
+          <InvestRate value="-5,39%">-5,39%</InvestRate>
+        </InvestContainer>
+        <InvestContainer>
+          <InvestName>NETFLIX</InvestName>
+          <InvestPrice>3,429 $</InvestPrice>
+          <InvestRate value="-0,51%">-0,51%</InvestRate>
+        </InvestContainer>
+        <InvestContainer>
+          <InvestName>AT&T Inc.</InvestName>
+          <InvestPrice>32,445 $</InvestPrice>
+          <InvestRate value="+0,09%">+0,09%</InvestRate>
+        </InvestContainer>
       </InvestBox>
     </>
   );

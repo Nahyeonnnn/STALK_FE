@@ -92,7 +92,7 @@ const DetailGraph = () => {
             isActive={active === "Week"}
             onClick={() => setActive("Week")}
           >
-            1주
+            2주
           </BtnBox>
           <BtnBox
             isActive={active === "Month"}

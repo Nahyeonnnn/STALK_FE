@@ -7,7 +7,6 @@ import DetailGraph from "../component/detail/detailGraph";
 import DetailStatic from "../component/detail/detailStatic";
 import DetailInfo from "../component/detail/detailInfo";
 import DetailNews from "../component/detail/detailNews";
-import DetailButton from "../component/detail/detailButton";
 import BottomBar from "../component/global/bottomBar";
 
 const MiddleBar = styled.div`

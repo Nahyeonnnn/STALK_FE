@@ -12,7 +12,7 @@ const Week = (props) => {
   useEffect(() => {
     // 일주일 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 7; // 빼고 싶은 날짜 수
+    const daysToSubtract = 14; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");

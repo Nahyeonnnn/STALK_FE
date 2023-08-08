@@ -32,7 +32,7 @@ const Day = (props) => {
           `https://stalksound.store/sonification/minute_data/`,
           {
             params: {
-              symbol: props.StockID,
+              symbol: `${props.StockID}`,
               end: end,
             },
           }
@@ -65,8 +65,6 @@ const Day = (props) => {
     fetchData("143000");
     fetchData("140000");
     fetchData("133000"); // 30
-    console.log(stockData);
-    console.log(currentTime);
   }, [currentTime]);
 
   // 날짜와 종가 데이터 추출
@@ -94,7 +92,7 @@ const Day = (props) => {
     gap = 5;
   }
 
-  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - (2 * gap); i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

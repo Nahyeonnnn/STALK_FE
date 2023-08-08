@@ -1,14 +1,53 @@
 import axios from 'axios';
 import { React, useEffect} from 'react';
 import { useNavigate} from 'react-router-dom';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { styled } from 'styled-components';
+
+axios.defaults.withCredentials = true;
+
+const CallbackDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const CheckIcon = styled(FontAwesomeIcon)`
+    color: #F1D00A;
+    margin-top: 20vh;
+`;
+
+const LoginMsg = styled.p`
+    color: white;
+    margin: auto;
+`;
+
+const HorizonLine = styled.div`
+    background-color: #ffffff8d;
+    height: 1px;
+    width: 60vw;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+`;
 
 const CallbackPage = () => {
     const navigate = useNavigate();
     // const code = window.location.search;
-    // console.log(code);
-    // const tmpCode = `http://localhost:3000/kakao/callback${code}`;
     const code = new URL(document.location.toString()).searchParams.get('code');
     console.log(code);
+    
+    const setCookie = (name, value, days) => {
+        const expires = new Date(Date.now()+days*24*60*60*1000).toUTCString();
+        document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
+    };
+
+    const deleteCookie = (name) => {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    };
+
     useEffect(()=>{
         axios
             .get(`https://stalksound.store/accounts/kakao/callback/`,{
@@ -20,17 +59,53 @@ const CallbackPage = () => {
                 console.log(res);
                 localStorage.setItem('accessToken', res.data.token.access);
                 localStorage.setItem('refreshToken',res.data.token.refresh);
+                setCookie('accessToken', res.data.token.access, 1);
+                setCookie('refreshToken', res.data.token.refresh, 1);
             })
             .catch((e)=>{
                 console.log(e);
             })
-    },[]);
+    },[code]);
+
+    //사용자 정보 받는 연결
+    // function GetUserInfo(){
+    //     axios
+    //         .get(`https://stalksound.store/accounts/userinfo/`,{withCredentials: true})
+    //         .then((res)=>{
+    //             console.log(res);
+    //         })
+    //         .catch((e)=>{
+    //             console.log(e);
+    //         })
+    // }
+
+    //로그아웃 (403 에러)
+    // function LogOutButton() {
+    //     axios
+    //         .get(`https://stalksound.store/accounts/kakao/logout/`,{withCredentials: true})
+    //         .then((res)=>{
+    //             console.log(res);
+    //             deleteCookie('accessToken');
+    //             deleteCookie('refreshToken');
+    //         })
+    //         .catch((e)=>{
+    //             console.log(e);
+    //         })
+    // }
+
+    setTimeout(function(){
+        navigate(`/main`);
+    },5000);
 
     return (
-        <div>
-            <p>로그인 완료. callback page입니다.</p>
-            <button onClick={()=>{navigate(`/main`)}}>메인으로 돌아가기</button>
-        </div>
+        <CallbackDiv>
+            <CheckIcon icon={faCircleCheck} size="4x"/>
+            <br/>
+            <LoginMsg>로그인 완료.</LoginMsg>
+            <HorizonLine></HorizonLine>
+            <LoginMsg>5초 후에 메인 페이지로 이동합니다.</LoginMsg>
+            {/* <button onClick={GetUserInfo}>userinfo 연습</button>          */}
+        </CallbackDiv>
     );
 };
 

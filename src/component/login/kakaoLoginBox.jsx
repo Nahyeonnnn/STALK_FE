@@ -6,6 +6,9 @@ import LoginButton from "./kakao_login_large_narrow.png";
 const ButtonImg = styled.img`
   width: 16rem;
   max-width: 250px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const KakaoLoginBox = () => {

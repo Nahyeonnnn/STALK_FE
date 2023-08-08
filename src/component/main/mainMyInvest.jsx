@@ -93,8 +93,10 @@ const MainMyInvest = () => {
     navigate(`/detail/${stockCode}`);
   };
 
-  const stockName = stockData.data[0].종목;
-  const stockPrice = stockData.data[0].시가;
+  const stockName =
+    stockData.data && stockData.data[0] ? stockData.data[0].종목 : null;
+  const stockPrice =
+    stockData.data && stockData.data[0] ? stockData.data[0].시가 : null;
 
   return (
     <>

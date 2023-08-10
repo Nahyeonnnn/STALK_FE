@@ -276,11 +276,7 @@ const SearchBar = () => {
   useEffect(() => {
     const recentSearchDataString = localStorage.getItem("recent");
 
-    if (
-      recentSearchDataString === null ||
-      recentSearchDataString === undefined ||
-      recentSearchDataString === {}
-    ) {
+    if (!recentSearchDataString) {
       //localStorage에 데이터가 없을 경우
       setRecentSearch([]);
       //빈 배열 만들기
@@ -293,9 +289,15 @@ const SearchBar = () => {
   useEffect(()=>{
 
     const recentArray = JSON.parse(localStorage.getItem('recent'));
-    const filteredArray = stockList.filter((obj)=>recentArray.includes(obj.prdt_name));
+    // const filteredArray = stockList.filter((obj)=>recentArray.includes(obj.prdt_name));
+    let filteredArray = [];
+    if (recentArray && Array.isArray(recentArray) && recentArray.length > 0) {
+        filteredArray = recentArray
+          .filter((item) => item !== null && item !== undefined)
+          .filter((item) => stockList.some((obj) => obj.prdt_name === item));
+    }
+    console.log(localStorage.getItem('recent'));
 
-    console.log(filteredArray);
     for( const recentData of filteredArray ) {
         axios
             .get(`https://stalksound.store/sonification/now_data/`,{

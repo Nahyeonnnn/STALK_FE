@@ -4,10 +4,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const NewsBox = styled.div`
-  //display: flex;
-  //flex-direction: column;
-  //align-items: center;
-  //justify-content: center;
   width: 85vw;
   height: 100%;
   background-color: white;
@@ -15,7 +11,7 @@ const NewsBox = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 1.5rem;
-  margin-bottom: 2rem;
+  padding-bottom: 4rem;
 `;
 const NewsEach = styled.div`
   display: flex;
@@ -73,7 +69,7 @@ const DetailNews = (props) => {
       <NewsBox>
         {Object.values(newsData).map((news, index) => (
           <NewsEach key={index} onClick={handleNewsClick}>
-            <NewsTitle>{news.title}</NewsTitle>
+            <NewsTitle dangerouslySetInnerHTML={{ __html: news.title }} />
             <NewsSource>{`${news.time_difference}`}</NewsSource>
           </NewsEach>
         ))}

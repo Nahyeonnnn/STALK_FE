@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import Day from "./graphlist/day";
 import Week from "./graphlist/week";
 import Month from "./graphlist/month";
+import Year from "./graphlist/year";
 
 const SpaceBox = styled.div`
   display: flex;
@@ -82,6 +83,11 @@ const DetailGraph = () => {
               <Month StockID={StockID} />
             </StockBox>
           )}
+          {active === "Year" && (
+            <StockBox>
+              <Year StockID={StockID} />
+            </StockBox>
+          )}
         </ChartBox>
 
         <ChartBtnBox>
@@ -98,7 +104,13 @@ const DetailGraph = () => {
             isActive={active === "Month"}
             onClick={() => setActive("Month")}
           >
-            1달
+            3달
+          </BtnBox>
+          <BtnBox
+            isActive={active === "Year"}
+            onClick={() => setActive("Year")}
+          >
+            1년
           </BtnBox>
         </ChartBtnBox>
       </ChartContainer>

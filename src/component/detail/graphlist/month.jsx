@@ -10,9 +10,9 @@ const Month = (props) => {
   let interval = [];
 
   useEffect(() => {
-    // 한달 전 구하기
+    // 3달 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 30; // 빼고 싶은 날짜 수
+    const daysToSubtract = 90; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");

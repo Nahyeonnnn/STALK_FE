@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const StockName = styled.div`
   display: flex;
@@ -357,7 +358,7 @@ const BuyPage = () => {
   };
 
   const StockPriceWithoutComma = 70500;
-  const StockPrice = StockPriceWithoutComma.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
+  // const StockPrice = StockPriceWithoutComma.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
 
   // Convert the TotalAmountStockPrice back to a string with commas for displaying
   const TotalAmountStockPriceDisplay =
@@ -382,13 +383,40 @@ const BuyPage = () => {
   console.log(StockID2);
   console.log(stock);
 
+  const [stockData, setStockData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://stalksound.store/sonification/now_data/",
+          {
+            params: {
+              symbol: StockID2,
+            },
+          }
+        );
+        setStockData(Number(response.data.chart_data.현재가));
+        console.log(response.data);
+        console.log(response.data.chart_data.현재가);
+      } catch (error) {
+        console.error("종목명 가져오기 실패 ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const nowPrice = stockData.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
+  console.log("nowPrice" + nowPrice);
+  console.log("stockData" + stockData);
   return (
     <>
       <TopBar></TopBar>
       <StockName>{stock.prdt_name}</StockName>
       <PriceBox>
         <PriceBoxLeft>구매할 가격</PriceBoxLeft>
-        <PriceBoxRight>{StockPrice}원</PriceBoxRight>
+        <PriceBoxRight>{nowPrice}원</PriceBoxRight>
       </PriceBox>
       <PurchastText>몇 주를 구매할까요?</PurchastText>
       <FormContainer>
@@ -437,7 +465,7 @@ const BuyPage = () => {
         <NumberBox>
           <ReserveLine1> 삼성전자 {inputValue}주 구매 예약</ReserveLine1>
           <ReserveLine2>
-            <div> 1주 희망 가격 </div> <div> {StockPrice}원</div>
+            <div> 1주 희망 가격 </div> <div> {nowPrice}원</div>
           </ReserveLine2>
           <ReserveLine3>
             <div> 예상 수수료 </div> <div> {}0원</div>

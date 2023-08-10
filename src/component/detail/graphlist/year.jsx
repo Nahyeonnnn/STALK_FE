@@ -3,16 +3,16 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 
-const Week = (props) => {
+const Year = (props) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
   useEffect(() => {
-    // 2주일 전 구하기
+    // 1년 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 14; // 빼고 싶은 날짜 수
+    const daysToSubtract = 365; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -29,7 +29,7 @@ const Week = (props) => {
     const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
-      .get(`https://stalksound.store/sonification/day_data/`, {
+      .get(`https://stalksound.store/sonification/week_data/`, {
         params: {
           symbol: `${props.StockID}`,
           begin: beginDate,
@@ -126,8 +126,7 @@ const Week = (props) => {
     },
     series: [
       {
-        //type: "areaspline",
-        type: "line",
+        type: "areaspline",
         name: stockData.length > 0 ? stockData[0].종목 : "",
         data: prices,
         color: {
@@ -158,4 +157,4 @@ const Week = (props) => {
   );
 };
 
-export default Week;
+export default Year;

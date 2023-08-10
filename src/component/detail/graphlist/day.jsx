@@ -12,6 +12,7 @@ const Day = (props) => {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
+    // 2시간 전 구하기
     const intervalId = setInterval(() => {
       const today = new Date();
       let hours = String(today.getHours());

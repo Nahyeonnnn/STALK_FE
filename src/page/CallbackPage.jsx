@@ -79,7 +79,6 @@ const CallbackPage = () => {
     //         })
     // }
 
-    //로그아웃 (403 에러)
     // function LogOutButton() {
     //     axios
     //         .get(`https://stalksound.store/accounts/kakao/logout/`,{withCredentials: true})
@@ -87,6 +86,8 @@ const CallbackPage = () => {
     //             console.log(res);
     //             deleteCookie('accessToken');
     //             deleteCookie('refreshToken');
+    //             localStorage.removeItem('accessToken');
+    //             localStorage.removeItem('refreshToken')
     //         })
     //         .catch((e)=>{
     //             console.log(e);

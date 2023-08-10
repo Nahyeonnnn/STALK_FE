@@ -60,7 +60,7 @@ const StockBox = styled.div`
 `;
 
 const DetailGraph = () => {
-  const { StockID } = useParams();
+  const { StockID1 } = useParams();
   const [active, setActive] = useState("Day");
 
   return (
@@ -70,22 +70,22 @@ const DetailGraph = () => {
         <ChartBox>
           {active === "Day" && (
             <StockBox>
-              <Day StockID={StockID} />
+              <Day StockID={StockID1} />
             </StockBox>
           )}
           {active === "Week" && (
             <StockBox>
-              <Week StockID={StockID} />
+              <Week StockID={StockID1} />
             </StockBox>
           )}
           {active === "Month" && (
             <StockBox>
-              <Month StockID={StockID} />
+              <Month StockID={StockID1} />
             </StockBox>
           )}
           {active === "Year" && (
             <StockBox>
-              <Year StockID={StockID} />
+              <Year StockID={StockID1} />
             </StockBox>
           )}
         </ChartBox>

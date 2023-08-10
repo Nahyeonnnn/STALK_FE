@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { useParams } from "react-router-dom";
 import DetailButton from "./detailButton";
 
 const StaticBox = styled.div`
@@ -35,6 +36,8 @@ const InfoText = styled.div`
 `;
 
 const DetailStatic = () => {
+  const { StockID1 } = useParams();
+
   return (
     <>
       <StaticBox>
@@ -68,7 +71,7 @@ const DetailStatic = () => {
           <InfoText>43.419B</InfoText>
         </StaticInfoBox>
       </StaticBox>
-      <DetailButton></DetailButton>
+      <DetailButton StockID={StockID1}></DetailButton>
     </>
   );
 };

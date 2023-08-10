@@ -18,15 +18,15 @@ const BtnBox = styled.div`
   align-items: center;
 `;
 
-const DetailButton = () => {
+const DetailButton = (props) => {
   const navigate = useNavigate();
 
   function moveToBuy() {
-    navigate(`/buy`);
+    navigate(`/buy/${props.StockID}`);
   }
 
   function moveToSell() {
-    navigate(`/sell`);
+    navigate(`/sell/${props.StockID}`);
   }
 
   return (

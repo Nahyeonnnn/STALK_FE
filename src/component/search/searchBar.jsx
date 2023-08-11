@@ -298,12 +298,12 @@ const SearchBar = () => {
     let foundObjects = stockList.filter((item) =>
       filteredArray.includes(item.prdt_name)
     );
-    console.log(foundObjects);
 
     const axiosRequests = foundObjects.map((recentData) => {
       return axios.get(`https://stalksound.store/sonification/now_data/`, {
         params: {
           symbol: "005930", //일단 nowdata는 삼전만
+          // symbol: `${recentData.code}`
         },
       });
     });
@@ -319,12 +319,13 @@ const SearchBar = () => {
           foundObjects[i].responseData = responseDataArray[i];
         }
         setRecentAxios(foundObjects);
-        console.log(recentAxios);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
+
+  console.log(recentAxios[0].responseData);
 
   return (
     <>
@@ -361,7 +362,17 @@ const SearchBar = () => {
             <RecentSearch>최근 검색 기록</RecentSearch>
             {recentSearchData !== null ? (
               recentSearchData.map((recent) => (
-                <EachDataDiv onClick={() => navigate(`/detail/${recent.code}`)}>
+
+                <EachDataDiv
+                  onClick={() => {
+                    const selectedItem = stockList.find(
+                      (item) => item.prdt_name === recent
+                    );
+                    if (selectedItem) {
+                      navigate(`/detail/${selectedItem.code}`);
+                    }
+                  }}
+                >
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon}></EachStockIcon>
                     <AutoSearchData>{recent}</AutoSearchData>

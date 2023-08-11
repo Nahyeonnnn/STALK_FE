@@ -362,6 +362,7 @@ const SearchBar = () => {
             <RecentSearch>최근 검색 기록</RecentSearch>
             {recentSearchData !== null ? (
               recentSearchData.map((recent) => (
+
                 <EachDataDiv
                   onClick={() => {
                     const selectedItem = stockList.find(

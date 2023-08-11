@@ -36,11 +36,11 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/detail/:StockID" element={<DetailPage />} />
+            <Route path="/detail/:StockID1" element={<DetailPage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/buy" element={<BuyPage />} />
+            <Route path="/buy/:StockID2" element={<BuyPage />} />
             <Route path="/buy/confirm" element={<BuyConfirmPage />} />
-            <Route path="/sell" element={<SellPage />} />
+            <Route path="/sell/:StockID3" element={<SellPage />} />
             <Route path="/myInfo" element={<MyInfoPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/newsdetail/:ArticleID" element={<NewsdetailPage />} />

@@ -10,7 +10,7 @@ import NaverIcon from "./NaverIcon.png";
 library.add(faMagnifyingGlass);
 
 //axios 연결 시 받을 주식 리스트 예시
-const testList = [
+const stockList = [
   { prdt_name: "삼성전자우", code: "005935" },
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG엔솔", code: "373220" },
@@ -218,12 +218,13 @@ const RecentSearch = styled.p`
 `;
 
 const SearchBar = () => {
-    const navigate = useNavigate();
-  const [stockList, setStockList] = useState(testList); //axios 연결 시 주식 리스트를 저장할 변수
+  const navigate = useNavigate();
+  //   const [stockList, setStockList] = useState(testList); //axios 연결 시 주식 리스트를 저장할 변수
   const [query, setQuery] = useState(""); //검색어를 저장하기 위한 useState
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState([]); //자동완성을 위한 suggestions
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]); //최근 검색한 데이터 useState
+  const [recentAxios, setRecentAxios] = useState(); //최근검색 axios 연결 결과
 
   function handleInputSearch(e) {
     // Input tag 내부의 값을 변수에 저장
@@ -237,7 +238,6 @@ const SearchBar = () => {
   const getSuggestions = (value) => {
     //검색어 자동 완성 결과를 가져오는 로직을 구현합니다.
     //예시: 데이터는 배열 형태로 가정하고, 배열 요소 중에 입력된 검색어를 포함하는 항목들을 추출
-
     const filteredSuggestions = stockList.filter((item) =>
       item.prdt_name.includes(value)
     );
@@ -256,7 +256,7 @@ const SearchBar = () => {
         newSearchArray = [];
       }
 
-      let isInList = testList.some((item) => item.prdt_name === newSearch);
+      let isInList = stockList.some((item) => item.prdt_name === newSearch);
 
       if (isInList === true) {
         newSearchArray.unshift(newSearch);
@@ -286,33 +286,46 @@ const SearchBar = () => {
     }
   }, []); //처음 렌더링 될 때만 실행되게 함
 
-  useEffect(()=>{
-
-    const recentArray = JSON.parse(localStorage.getItem('recent'));
+  useEffect(() => {
+    const recentArray = JSON.parse(localStorage.getItem("recent"));
     // const filteredArray = stockList.filter((obj)=>recentArray.includes(obj.prdt_name));
     let filteredArray = [];
     if (recentArray && Array.isArray(recentArray) && recentArray.length > 0) {
-        filteredArray = recentArray
-          .filter((item) => item !== null && item !== undefined)
-          .filter((item) => stockList.some((obj) => obj.prdt_name === item));
+      filteredArray = recentArray
+        .filter((item) => item !== null && item !== undefined)
+        .filter((item) => stockList.some((obj) => obj.prdt_name === item));
     }
-    console.log(localStorage.getItem('recent'));
+    let foundObjects = stockList.filter((item) =>
+      filteredArray.includes(item.prdt_name)
+    );
 
-    for( const recentData of filteredArray ) {
-        axios
-            .get(`https://stalksound.store/sonification/now_data/`,{
-                params : {
-                    symbol : recentData.code
-                }
-            })
-            .then((res)=>{
-                console.log(res);
-            })
-            .catch((e)=>{
-                console.log(e);
-            });
-    }
-  },[]);
+    const axiosRequests = foundObjects.map((recentData) => {
+      return axios.get(`https://stalksound.store/sonification/now_data/`, {
+        params: {
+          symbol: "005930", //일단 nowdata는 삼전만
+          // symbol: `${recentData.code}`
+        },
+      });
+    });
+
+    Promise.all(axiosRequests)
+      .then((responses) => {
+        // responses.forEach((res)=>{
+        //     console.log(res);
+        // }) // 콘솔 창에서 연결 결과 확인
+        const responseDataArray = responses.map((res) => res.data.chart_data); // 응답 데이터만 추출한 배열 생성
+        // 응답 데이터를 foundObjects의 각 객체에 넣어준다.
+        for (let i = 0; i < foundObjects.length; i++) {
+          foundObjects[i].responseData = responseDataArray[i];
+        }
+        setRecentAxios(foundObjects);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
+  console.log(recentAxios[0].responseData);
 
   return (
     <>
@@ -330,7 +343,7 @@ const SearchBar = () => {
         {query.length > 0 && showSuggestions && (
           <AutoSearchContainer>
             {suggestions.map((result) => (
-              <EachDataDiv onClick={()=>navigate(`/detail/${result.code}`)}>
+              <EachDataDiv onClick={() => navigate(`/detail/${result.code}`)}>
                 <EachStockDataDiv>
                   <EachStockIcon src={NaverIcon}></EachStockIcon>
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
@@ -349,7 +362,17 @@ const SearchBar = () => {
             <RecentSearch>최근 검색 기록</RecentSearch>
             {recentSearchData !== null ? (
               recentSearchData.map((recent) => (
-                <EachDataDiv onClick={()=>navigate(`/detail/${recent.code}`)}>
+
+                <EachDataDiv
+                  onClick={() => {
+                    const selectedItem = stockList.find(
+                      (item) => item.prdt_name === recent
+                    );
+                    if (selectedItem) {
+                      navigate(`/detail/${selectedItem.code}`);
+                    }
+                  }}
+                >
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon}></EachStockIcon>
                     <AutoSearchData>{recent}</AutoSearchData>
@@ -357,7 +380,7 @@ const SearchBar = () => {
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
                     <StockPrice>7500</StockPrice>
-                    <PercentData>+500 (+5%)</PercentData>
+                    <PercentData>500 (+5%)</PercentData>
                   </EachPercentDataDiv>
                 </EachDataDiv>
               ))

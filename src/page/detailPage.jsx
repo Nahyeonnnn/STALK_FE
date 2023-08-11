@@ -35,7 +35,7 @@ const Button = styled.button`
 `;
 
 const DetailPage = () => {
-  const { StockID } = useParams();
+  const { StockID1 } = useParams();
   const [active, setActive] = useState("Static");
   const [isMiddleBarSticky, setMiddleBarSticky] = useState(false);
 
@@ -70,7 +70,7 @@ const DetailPage = () => {
       </MiddleBar>
       {active === "Static" && <DetailStatic></DetailStatic>}
       {active === "Info" && <DetailInfo></DetailInfo>}
-      {active === "News" && <DetailNews stockID={StockID} />}
+      {active === "News" && <DetailNews stockID={StockID1} />}
       <BottomBar></BottomBar>
     </>
   );

@@ -18,16 +18,20 @@ const BtnBox = styled.div`
   align-items: center;
 `;
 
+<<<<<<< HEAD
 
 const DetailButton = () => {
+=======
+const DetailButton = (props) => {
+>>>>>>> 94bdde91521fd595b785ad1c63a572af0efc97ba
   const navigate = useNavigate();
 
   function moveToBuy() {
-    navigate(`/buy`);
+    navigate(`/buy/${props.StockID}`);
   }
 
   function moveToSell() {
-    navigate(`/sell`);
+    navigate(`/sell/${props.StockID}`);
   }
 
   return (

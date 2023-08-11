@@ -18,6 +18,7 @@ const BtnBox = styled.div`
   align-items: center;
 `;
 
+
 const DetailButton = () => {
   const navigate = useNavigate();
 

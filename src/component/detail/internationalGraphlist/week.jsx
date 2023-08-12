@@ -12,7 +12,6 @@ const Week = (props) => {
   useEffect(() => {
     // 2주일 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 14; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -20,19 +19,10 @@ const Week = (props) => {
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
 
-    currentDate.setDate(currentDate.getDate() - daysToSubtract);
-
-    year = currentDate.getFullYear();
-    month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    date = String(currentDate.getDate()).padStart(2, "0");
-
-    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
-
     axios
-      .get(`https://stalksound.store/sonification/day_data/`, {
+      .get(`https://stalksound.store/sonification/f_day_data/`, {
         params: {
           symbol: `${props.StockID}`,
-          begin: beginDate,
           end: endDate,
         },
       })
@@ -126,8 +116,7 @@ const Week = (props) => {
     },
     series: [
       {
-        //type: "areaspline",
-        type: "line",
+        type: "areaspline",
         name: stockData.length > 0 ? stockData[0].종목 : "",
         data: prices,
         color: {

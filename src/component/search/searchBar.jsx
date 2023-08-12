@@ -325,8 +325,6 @@ const SearchBar = () => {
       });
   }, []);
 
-  console.log(recentAxios[0].responseData);
-
   return (
     <>
       <SearchContainer>

@@ -18,7 +18,7 @@ const News = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  z-index: 100;
+  z-index: 0;
 `;
 
 const NewsPage = () => {

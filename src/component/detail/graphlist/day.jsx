@@ -9,64 +9,76 @@ const Day = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const [currentTime, setCurrentTime] = useState("");
+  const getFormattedTime = (time) => {
+    const hours = String(time.getHours()).padStart(2, "0");
+    const minutes = String(time.getMinutes()).padStart(2, "0");
+    const seconds = String(time.getSeconds()).padStart(2, "0");
+    return `${hours}${minutes}${seconds}`;
+  };
 
-  useEffect(() => {
-    // 2시간 전 구하기
-    const intervalId = setInterval(() => {
-      const today = new Date();
-      let hours = String(today.getHours());
-      let minutes = String(today.getMinutes()).padStart(2, "0");
-      let seconds = String(today.getSeconds()).padStart(2, "0");
+  const generateTimeIntervals = (currentTime, interval, count) => {
+    const intervals = [];
+    for (let i = 0; i < count; i++) {
+      intervals.push(currentTime - i * interval);
+    }
+    return intervals;
+  };
 
-      setCurrentTime(`${hours}${minutes}${seconds}`);
-    }, 60000);
-    // 컴포넌트가 언마운트될 때 interval 해제
-    return () => clearInterval(intervalId);
-  }, []);
+  const currentTime = new Date();
+  const currentTimeString = getFormattedTime(currentTime);
+  const timeIntervals = generateTimeIntervals(
+    currentTimeString,
+    30000, // 30분을 밀리초로 변환
+    8 // 총 8개의 간격 생성 (2시간 분량)
+  );
 
   useEffect(() => {
     setStockData([]);
     const fetchData = async (end) => {
       try {
-        const res = await axios.get(
-          `https://stalksound.store/sonification/minute_data/`,
-          {
-            params: {
-              symbol: `${props.StockID}`,
-              end: end,
-            },
-          }
-        );
+        const requests = timeIntervals.map(async (interval) => {
+          const res = await axios.get(
+            `https://stalksound.store/sonification/minute_data/`,
+            {
+              params: {
+                symbol: `${props.StockID}`,
+                end: interval,
+              },
+            }
+          );
+          return res.data.data;
+        });
 
-        const newData = res.data.data.map((item) => ({
-          종목: item.종목,
-          날짜: item.날짜,
-          시가: item.시가,
-          현재가: item.현재가,
-          고가: item.고가,
-          저가: item.저가,
-        }));
+        const responses = await Promise.all(requests);
 
-        // 이전 데이터와 새로운 데이터를 합쳐서 업데이트
-        setStockData((prevData) => prevData.concat(newData));
+        const newData = responses
+          .flatMap((data) =>
+            data.map((item) => ({
+              종목: item.종목,
+              날짜: item.날짜,
+              시가: item.시가,
+              현재가: item.현재가,
+              고가: item.고가,
+              저가: item.저가,
+            }))
+          )
+          .sort((a, b) => a.날짜 - b.날짜); // 날짜 순으로 정렬
+
+        setStockData(newData);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...newData.map((item) => parseInt(item.현재가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...newData.map((item) => parseInt(item.현재가, 10)))
         );
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchData("150000");
-    fetchData("143000");
-    fetchData("140000");
-    fetchData("133000"); // 30
-  }, [currentTime]);
+    fetchData(timeIntervals[0]);
+  }, []);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {

@@ -49,14 +49,14 @@ const MainRank = () => {
           isActive={active === "1"}
           onClick={() => setActive("1")}
         >
-          인기
+          국내 인기
         </RankOptionBtn1>
 
         <RankOptionBtn2
           isActive={active === "2"}
           onClick={() => setActive("2")}
         >
-          거래량
+          해외 인기
         </RankOptionBtn2>
 
         <RankOptionBtn3

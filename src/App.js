@@ -13,6 +13,7 @@ import NewsPage from "./page/newsPage";
 import NewsdetailPage from "./page/newsdetailPage";
 import NotFoundPage from "./page/notFoundPage";
 import CallbackPage from "./page/CallbackPage";
+import InterDetailPage from "./page/interDetailPage";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -47,6 +48,7 @@ function App() {
             <Route path="/news" element={<NewsPage />} />
             <Route path="/newsdetail/:ArticleID" element={<NewsdetailPage />} />
             <Route exact path="/kakao/callback" element={<CallbackPage/>} />
+            <Route path="/detail/inter/:StockID4" element={<InterDetailPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

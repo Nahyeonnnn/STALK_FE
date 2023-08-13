@@ -10,6 +10,7 @@ const Month = (props) => {
   let interval = [];
 
   useEffect(() => {
+    // 3달 전 구하기
     const currentDate = new Date();
 
     let year = currentDate.getFullYear();
@@ -52,21 +53,14 @@ const Month = (props) => {
     .reverse();
 
   let gap; // 그래프 간격 조정 변수
-  if (maxPrice >= 100000) {
-    // 10만 이상, 간격 : 1000원
-    gap = 1000;
-  } else if (maxPrice >= 50000) {
-    // 5만 이상, 간격 : 500원
-    gap = 500;
-  } else if (maxPrice >= 10000) {
-    // 1만 이상, 간격 : 100원
-    gap = 100;
-  } else if (maxPrice >= 5000) {
-    // 5천 이상, 간격 : 50원
-    gap = 50;
+  if (maxPrice >= 100) {
+    // 10만 이상, 간격 : 100원
+    gap = 0.1;
+  } else if (maxPrice >= 10) {
+    // 5만 이상, 간격 : 50원
+    gap = 0.01;
   } else {
-    // 5천 미만, 간격 : 10원
-    gap = 10;
+    gap = 0.001;
   }
 
   for (let i = minPrice - 500; i <= maxPrice; i += gap) {

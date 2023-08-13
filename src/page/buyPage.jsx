@@ -229,6 +229,7 @@ const BuyPage = () => {
   const [active, setActive] = useState(0);
   const [inputLength, setInputLength] = useState(0); // State to keep track of input length
   const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
+  const [stockPrice, setStockPrice] = useState(0);
 
   //axios 연결 시 받을 주식 리스트 예시
   const stockList = [
@@ -331,13 +332,13 @@ const BuyPage = () => {
     { prdt_name: "한국타이어앤테크놀로지", code: "161390" },
     { prdt_name: "맥쿼리인프라", code: "088980" },
     { prdt_name: "현대제철", code: "004020" },
-    { prdt_name: "한국항공우주", code: "047810" },
+    { prdt_name: "한국항공우주", code: "047810" },    
   ];
 
   const addDigit = (digit) => {
     setInputValue((prevValue) => {
       const newValue = prevValue + digit;
-      setTotalAmountStockPrice(newValue * StockPriceWithoutComma); // Update the total amount when input changes
+      setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
     setInputLength((prevLength) => prevLength + 1);
@@ -346,7 +347,7 @@ const BuyPage = () => {
   const removeDigit = () => {
     setInputValue((prevValue) => {
       const newValue = prevValue.slice(0, -1);
-      setTotalAmountStockPrice(newValue * StockPriceWithoutComma); // Update the total amount when input changes
+      setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
     setInputLength((prevLength) => prevLength - 1);
@@ -354,10 +355,10 @@ const BuyPage = () => {
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
-    setTotalAmountStockPrice(event.target.value * StockPriceWithoutComma); // Update the total amount when input changes
+    setTotalAmountStockPrice(event.target.value * stockPrice); // Update the total amount when input changes
   };
 
-  const StockPriceWithoutComma = 70500;
+  //const StockPriceWithoutComma = 70500;
   // const StockPrice = StockPriceWithoutComma.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
 
   // Convert the TotalAmountStockPrice back to a string with commas for displaying
@@ -397,6 +398,7 @@ const BuyPage = () => {
           }
         );
         setStockData(Number(response.data.chart_data.현재가));
+        setStockPrice(response.data.chart_data.현재가);
         console.log(response.data);
         console.log(response.data.chart_data.현재가);
       } catch (error) {
@@ -463,7 +465,7 @@ const BuyPage = () => {
       <Overlay active={confirmation}></Overlay>
       {confirmation && (
         <NumberBox>
-          <ReserveLine1> 삼성전자 {inputValue}주 구매 예약</ReserveLine1>
+          <ReserveLine1> {stock.prdt_name} {inputValue}주 구매 예약</ReserveLine1>
           <ReserveLine2>
             <div> 1주 희망 가격 </div> <div> {nowPrice}원</div>
           </ReserveLine2>

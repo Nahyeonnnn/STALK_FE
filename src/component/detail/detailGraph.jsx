@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Day from "./graphlist/day";
-import Week from "./graphlist/week";
-import Month from "./graphlist/month";
-import Year from "./graphlist/year";
+import Day from "./domesticGraphlist/day";
+import Week from "./domesticGraphlist/week";
+import Month from "./domesticGraphlist/month";
+import Year from "./domesticGraphlist/year";
 
 const SpaceBox = styled.div`
   display: flex;

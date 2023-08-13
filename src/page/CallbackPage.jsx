@@ -67,7 +67,7 @@ const CallbackPage = () => {
             })
     },[code]);
 
-    //사용자 정보 받는 연결
+    // 사용자 정보 받는 연결
     // function GetUserInfo(){
     //     axios
     //         .get(`https://stalksound.store/accounts/userinfo/`,{withCredentials: true})

@@ -7,6 +7,7 @@ import SearchPage from "./page/searchPage";
 import BuyPage from "./page/buyPage";
 import BuyConfirmPage from "./page/buyConfirmPage";
 import SellPage from "./page/sellPage";
+import SellConfirmPage from "./page/sellConfirmPage";
 import MyInfoPage from "./page/myInfoPage";
 import NewsPage from "./page/newsPage";
 import NewsdetailPage from "./page/newsdetailPage";
@@ -41,6 +42,7 @@ function App() {
             <Route path="/buy/:StockID2" element={<BuyPage />} />
             <Route path="/buy/confirm" element={<BuyConfirmPage />} />
             <Route path="/sell/:StockID3" element={<SellPage />} />
+            <Route path="/sell/confirm" element={<SellConfirmPage />} />
             <Route path="/myInfo" element={<MyInfoPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/newsdetail/:ArticleID" element={<NewsdetailPage />} />

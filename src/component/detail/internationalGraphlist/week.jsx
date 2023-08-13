@@ -3,16 +3,15 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 
-const Month = (props) => {
+const Week = (props) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
   useEffect(() => {
-    // 3달 전 구하기
+    // 2주일 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 90; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -20,19 +19,10 @@ const Month = (props) => {
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
 
-    currentDate.setDate(currentDate.getDate() - daysToSubtract);
-
-    year = currentDate.getFullYear();
-    month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    date = String(currentDate.getDate()).padStart(2, "0");
-
-    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
-
     axios
-      .get(`https://stalksound.store/sonification/day_data/`, {
+      .get(`https://stalksound.store/sonification/f_day_data/`, {
         params: {
           symbol: `${props.StockID}`,
-          begin: beginDate,
           end: endDate,
         },
       })
@@ -157,4 +147,4 @@ const Month = (props) => {
   );
 };
 
-export default Month;
+export default Week;

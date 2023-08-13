@@ -213,7 +213,6 @@ const stockList = [
   { "prdt_name": "트랜스오션", "code": "RIG" },
   { "prdt_name": "루멘 테크놀로지스", "code": "LUMN" },
   { "prdt_name": "Eton Pharmaceuticals", "code": "ETON" }
-
 ];
 
 

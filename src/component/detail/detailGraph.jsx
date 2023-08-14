@@ -20,7 +20,7 @@ const ChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 85vw;
-  height: 34vh;
+  height: 35vh;
   background-color: rgba(241, 208, 10, 0.92);
   border-radius: 1rem;
   margin: auto;
@@ -29,7 +29,7 @@ const ChartContainer = styled.div`
 const ChartBox = styled.div`
   display: flex;
   width: 85vw;
-  height: 29vh;
+  height: 35vh;
   background-color: white;
   align-items: center;
   justify-content: center;

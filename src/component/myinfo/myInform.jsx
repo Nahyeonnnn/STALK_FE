@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const TextBox = styled.div`
@@ -33,11 +34,32 @@ const EmailText = styled.p`
 `;
 
 const MyInform = () => {
+  const [userName, setUserName] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://stalksound.store/sonification/user_info/"
+        );
+        // setUserName(response.data);
+        console.log(response.data.유저정보);
+        // console.log(response.data.유저정보.username);
+        setUserName(response.data.유저정보.username);
+        console.log(userName);
+      } catch (error) {
+        console.error("userinfo 가져오기 실패 ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <TextBox>
-        <Text>props님 안녕하세요! </Text>
-        <EmailText>props의 이메일</EmailText>
+        <Text>{userName}님 안녕하세요! </Text>
+        <EmailText>{userName}의 이메일</EmailText>
       </TextBox>
     </>
   );

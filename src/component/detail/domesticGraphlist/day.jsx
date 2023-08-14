@@ -4,16 +4,6 @@ import Highcharts, { chart } from "highcharts";
 import axios from "axios";
 import styled from "styled-components";
 
-const HighchartsBox = styled.div`
-  /* display: flex; */
-  /* flex-direction: column;
-  align-items: center; */
-  background-color: white;
-  width: 80vw;
-  margin-top: 1rem;
-  /* height: auto; */
-`;
-
 const Day = (props) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
@@ -210,11 +200,9 @@ const Day = (props) => {
 
   return (
     <>
-      {/* <div onClick={playAudio}> */}
-      {/* <HighchartsBox> */}
-      <HighchartsReact highcharts={Highcharts} options={options} />
-      {/* </HighchartsBox> */}
-      {/* </div> */}
+      <div onClick={playAudio}>
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      </div>
     </>
   );
 };

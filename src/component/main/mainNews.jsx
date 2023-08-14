@@ -62,8 +62,6 @@ const MainNews = () => {
 
   function TextToSpeech(text){
     console.log(text);
-    // console.log(JSON.stringify(text));
-    // const t = JSON.stringify(text);
     const { "time_difference": time, "news_title": title, "news_provider": provider } = text;
     const t = `작성 시간: ${time}, 뉴스 제목: ${title}, ${provider}`;
     const value = new SpeechSynthesisUtterance(t);

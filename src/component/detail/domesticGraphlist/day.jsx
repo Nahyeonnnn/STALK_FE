@@ -13,13 +13,13 @@ const Day = (props) => {
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
 
   // useEffect(() => {
-    // 현재 시각 구하기
-    // const time = new Date();
-    // const hours = String(time.getHours()).padStart(2, "0");
-    // const minutes = String(time.getMinutes()).padStart(2, "0");
-    // const seconds = String(time.getSeconds()).padStart(2, "0");
+  //현재 시각 구하기
+  // const time = new Date();
+  // const hours = String(time.getHours()).padStart(2, "0");
+  // const minutes = String(time.getMinutes()).padStart(2, "0");
+  // const seconds = String(time.getSeconds()).padStart(2, "0");
 
-    // const endDate = `${hours}${minutes}${seconds}`; // 현재 날짜
+  // const endDate = `${hours}${minutes}${seconds}`; // 현재 날짜
 
   //   axios
   //     .get(`https://stalksound.store/sonification/minute_data/`, {
@@ -45,6 +45,13 @@ const Day = (props) => {
   //     });
   // }, [props.StockID]);
 
+  const getFormattedTime = (time) => {
+    const hours = String(time.getHours()).padStart(2, "0");
+    const minutes = String(time.getMinutes()).padStart(2, "0");
+    const seconds = String(time.getSeconds()).padStart(2, "0");
+    return `${hours}${minutes}${seconds}`;
+  };
+
   const generateTimeIntervals = (currentTime, interval, count) => {
     const intervals = [];
     for (let i = 0; i < count; i++) {
@@ -54,17 +61,11 @@ const Day = (props) => {
   };
 
   const currentTime = new Date();
-  const time = new Date();
-    const hours = String(time.getHours()).padStart(2, "0");
-    const minutes = String(time.getMinutes()).padStart(2, "0");
-    const seconds = String(time.getSeconds()).padStart(2, "0");
-
-    const endDate = `${hours}${minutes}${seconds}`; // 현재 날짜
   const currentTimeString = getFormattedTime(currentTime);
   const timeIntervals = generateTimeIntervals(
     currentTimeString,
     30000, // 30분을 밀리초로 변환
-    4 // 총 8개의 간격 생성 (2시간 분량)
+    8 // 총 8개의 간격 생성 (2시간 분량)
   );
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const Day = (props) => {
       try {
         const requests = timeIntervals.map(async (interval) => {
           const res = await axios.get(
-            `https://stalksound.store/sonification/minute_data/`,
+            `https://stalksound.store/sonification/hmm__minute_data/`,
             {
               params: {
                 symbol: `${props.StockID}`,
@@ -130,15 +131,15 @@ const Day = (props) => {
   let gap = 100; // 그래프 간격 조정 변수
   if (maxPrice >= 100000) {
     // 10만 이상, 간격 : 100원
-    gap = 100;
+    gap = 500;
   } else if (maxPrice >= 50000) {
     // 5만 이상, 간격 : 50원
-    gap = 50;
+    gap = 100;
   } else if (maxPrice >= 10000) {
     // 1만 이상, 간격 : 10원
-    gap = 10;
+    gap = 50;
   } else {
-    gap = 5;
+    gap = 10;
   }
 
   for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {

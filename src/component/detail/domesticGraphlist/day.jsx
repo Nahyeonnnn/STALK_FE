@@ -2,6 +2,17 @@ import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
+import styled from "styled-components";
+
+const HighchartsBox = styled.div`
+  /* display: flex; */
+  /* flex-direction: column;
+  align-items: center; */
+  background-color: white;
+  width: 80vw;
+  margin-top: 1rem;
+  /* height: auto; */
+`;
 
 const Day = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -150,11 +161,15 @@ const Day = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: 290,
-      height: 220,
+      width: "290",
+      height: "230",
+      backgroundColor: "rgba(0, 0, 0, 0)", // 배경을 투명하게 만듭니다.
     },
     title: {
       text: stockData.length > 0 ? stockData[0].종목 : "",
+      style: {
+        fontSize: "1rem",
+      },
     },
     xAxis: {
       categories: dates, // 날짜
@@ -243,9 +258,11 @@ const Day = (props) => {
 
   return (
     <>
-      <div onClick={playAudio}>
+      {/* <div onClick={playAudio}> */}
+      <HighchartsBox>
         <HighchartsReact highcharts={Highcharts} options={options} />
-      </div>
+      </HighchartsBox>
+      {/* </div> */}
     </>
   );
 };

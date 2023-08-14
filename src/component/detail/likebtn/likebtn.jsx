@@ -6,7 +6,7 @@ import StarFilled from "./star-fill.png";
 const LikeBtnBox = styled.div`
   position: absolute;
   display: flex;
-  top: 11vh;
+  top: 13vh;
   right: 15vw;
   cursor: pointer;
   z-index: 500;

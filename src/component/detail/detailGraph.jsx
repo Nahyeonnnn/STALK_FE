@@ -20,7 +20,7 @@ const ChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 85vw;
-  height: 35vh;
+  /* height: 35vh; */
   background-color: rgba(241, 208, 10, 0.92);
   border-radius: 1rem;
   margin: auto;
@@ -28,11 +28,11 @@ const ChartContainer = styled.div`
 
 const ChartBox = styled.div`
   display: flex;
+  background-color: white;
   width: 85vw;
   height: 35vh;
-  background-color: white;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   border-radius: 1rem 1rem 0rem 0rem;
 `;
 
@@ -54,10 +54,10 @@ const BtnBox = styled.div`
 
 const StockBox = styled.div`
   display: flex;
-  width: 18rem;
-  height: 13.5rem;
+  /* width: 18rem; */
+  /* height: 13.5rem; */
   margin: auto;
-  z-index: 1;
+  /* z-index: 1; */
 `;
 
 const DetailGraph = () => {
@@ -69,28 +69,28 @@ const DetailGraph = () => {
       <SpaceBox></SpaceBox>
       <ChartContainer>
         <Likebtn></Likebtn>
-        <ChartBox>
-          {active === "Day" && (
-            <StockBox>
-              <Day StockID={StockID1} />
-            </StockBox>
-          )}
-          {active === "Week" && (
-            <StockBox>
-              <Week StockID={StockID1} />
-            </StockBox>
-          )}
-          {active === "Month" && (
-            <StockBox>
-              <Month StockID={StockID1} />
-            </StockBox>
-          )}
-          {active === "Year" && (
-            <StockBox>
-              <Year StockID={StockID1} />
-            </StockBox>
-          )}
-        </ChartBox>
+        {/* <ChartBox> */}
+        {active === "Day" && (
+          <StockBox>
+            <Day StockID={StockID1} />
+          </StockBox>
+        )}
+        {active === "Week" && (
+          <StockBox>
+            <Week StockID={StockID1} />
+          </StockBox>
+        )}
+        {active === "Month" && (
+          <StockBox>
+            <Month StockID={StockID1} />
+          </StockBox>
+        )}
+        {active === "Year" && (
+          <StockBox>
+            <Year StockID={StockID1} />
+          </StockBox>
+        )}
+        {/* </ChartBox> */}
         <ChartBtnBox>
           <BtnBox isActive={active === "Day"} onClick={() => setActive("Day")}>
             1일

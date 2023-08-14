@@ -66,15 +66,15 @@ const Samsung = () => {
   }, []);
 
   // 날짜와 종가 데이터 추출
-  var dates = data.response.body.items.item
+  var dates = stockData
     .map(function (item) {
-      return item.basDt;
+      return item.일자;
     })
     .reverse();
 
-  var prices = data.response.body.items.item
+  var prices = stockData
     .map(function (item) {
-      return parseInt(item.clpr, 10);
+      return parseFloat(item.시가, 10);
     })
     .reverse();
 
@@ -89,7 +89,7 @@ const Samsung = () => {
       height: 220,
     },
     title: {
-      text: "삼성전자",
+      text: stockData.length > 0 ? stockData[0].종목 : "",
     },
     xAxis: {
       categories: dates,
@@ -117,7 +117,7 @@ const Samsung = () => {
     series: [
       {
         type: "areaspline",
-        name: "Samsung",
+        name: stockData.length > 0 ? stockData[0].종목 : "",
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },

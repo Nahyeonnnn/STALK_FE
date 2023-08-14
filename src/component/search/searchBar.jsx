@@ -236,7 +236,6 @@ const stockList = [
 ];
 
 
-
 const SearchContainer = styled.div`
   display: flex;
   justify-content: center;

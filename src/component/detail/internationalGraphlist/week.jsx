@@ -41,10 +41,10 @@ const Week = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.종가, 10)))
+          Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.종가, 10)))
+          Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
       })
       .catch((e) => {

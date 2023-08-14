@@ -58,7 +58,10 @@ const InterDetailPage = () => {
       <TopBar></TopBar>
       <InterGraph styled="margin-top : 3rem"></InterGraph>
       <MiddleBar isSticky={isMiddleBarSticky}>
-        <Button isActive={active === "Static"} onClick={() => setActive("Static")}>
+        <Button
+          isActive={active === "Static"}
+          onClick={() => setActive("Static")}
+        >
           통계
         </Button>
 

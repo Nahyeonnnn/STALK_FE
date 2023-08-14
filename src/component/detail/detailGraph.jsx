@@ -30,9 +30,6 @@ const ChartBox = styled.div`
   display: flex;
   background-color: white;
   width: 85vw;
-  height: 35vh;
-  /* align-items: center; */
-  /* justify-content: center; */
   border-radius: 1rem 1rem 0rem 0rem;
 `;
 
@@ -54,10 +51,9 @@ const BtnBox = styled.div`
 
 const StockBox = styled.div`
   display: flex;
-  /* width: 18rem; */
-  /* height: 13.5rem; */
   margin: auto;
-  /* z-index: 1; */
+  margin-bottom: -0.5rem;
+  border-radius: 1rem;
 `;
 
 const DetailGraph = () => {

@@ -44,10 +44,10 @@ const Year = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...res.data.data.map((item) => parseInt(item.시가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...res.data.data.map((item) => parseInt(item.시가, 10)))
         );
       })
       .catch((e) => {
@@ -62,7 +62,7 @@ const Year = (props) => {
 
   var prices = stockData
     .map(function (item) {
-      return parseInt(item.현재가, 10);
+      return parseInt(item.시가, 10);
     })
     .reverse();
 

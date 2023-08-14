@@ -9,15 +9,26 @@ const Week = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
+  const [lista, setLista] = useState(null); //lista 저장
+  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   useEffect(() => {
     // 2주일 전 구하기
     const currentDate = new Date();
+    const daysToSubtract = 14; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
+
+    currentDate.setDate(currentDate.getDate() - daysToSubtract);
+
+    year = currentDate.getFullYear();
+    month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    date = String(currentDate.getDate()).padStart(2, "0");
+
+    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
       .get(`https://stalksound.store/sonification/f_day_data/`, {
@@ -30,10 +41,10 @@ const Week = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...res.data.data.map((item) => parseInt(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...res.data.data.map((item) => parseInt(item.종가, 10)))
         );
       })
       .catch((e) => {
@@ -48,7 +59,7 @@ const Week = (props) => {
 
   var prices = stockData
     .map(function (item) {
-      return parseInt(item.현재가, 10);
+      return parseFloat(item.종가, 10);
     })
     .reverse();
 

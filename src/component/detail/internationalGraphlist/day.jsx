@@ -11,6 +11,7 @@ const Day = (props) => {
 
   const [lista, setLista] = useState(null); //lista 저장
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
+  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
   useEffect(() => {
     axios
@@ -156,12 +157,15 @@ const Day = (props) => {
 
   //그래프 음향 출력
   const playAudio = () => {
-    if (audioBuffer) {
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
+    if (!isPlaying && audioBuffer) {
+      setIsPlaying(true);
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
+      source.onended = () => {
+        setIsPlaying(false); //재생 끝날 경우 false로 reset
+      };
       source.start(0);
     }
   };

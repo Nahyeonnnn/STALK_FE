@@ -80,6 +80,11 @@ const TopBar = () => {
     navigate(`/myInfo`);
   }
 
+  function moveToMain() {
+    // Setting로 이동하도록 변경해야함
+    navigate(`/main`);
+  }
+
   return (
     <>
       <TopBarBox>
@@ -89,7 +94,7 @@ const TopBar = () => {
           )}
         </TopBarBackBtn>
 
-        <TopBarTitleBox>STALK</TopBarTitleBox>
+        <TopBarTitleBox onClick={moveToMain}>STALK</TopBarTitleBox>
 
         <TopBarSearchBtn onClick={moveToSearch}>
           {!isNewsPage && !istradePage && (

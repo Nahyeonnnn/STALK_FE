@@ -7,12 +7,14 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  z-index: 0;
 `;
 
 const StalkLogoImg = styled.img`
   width: 22rem;
   height: 22rem;
   opacity: 0.5;
+  z-index: 0;
 `;
 
 const StalkLogo = () => {

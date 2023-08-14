@@ -9,6 +9,8 @@ const Year = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
+  const [lista, setLista] = useState(null); //lista 저장
+  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   useEffect(() => {
     // 1년 전 구하기
     const currentDate = new Date();
@@ -30,10 +32,10 @@ const Year = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
       })
       .catch((e) => {
@@ -48,25 +50,32 @@ const Year = (props) => {
 
   var prices = stockData
     .map(function (item) {
-      return parseInt(item.현재가, 10);
+      return parseFloat(item.종가, 10);
     })
     .reverse();
 
-  let gap; // 그래프 간격 조정 변수
-  if (maxPrice >= 100) {
-    // 10만 이상, 간격 : 100원
-    gap = 0.1;
-  } else if (maxPrice >= 10) {
-    // 5만 이상, 간격 : 50원
-    gap = 0.01;
-  } else {
-    gap = 0.001;
-  }
-
-  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
-    // graph 간격 조정
-    interval.push(i);
-  }
+    let gap; // 그래프 간격 조정 변수
+    if (maxPrice >= 1000) {
+      // 1000 이상, 간격: 10
+      gap = 10;
+    } else if (maxPrice >= 100) {
+      // 100 이상, 간격: 1
+      gap = 1;
+    } else if (maxPrice >= 10) {
+      // 10 이상, 간격: 0.1
+      gap = 0.1;
+    } else if (maxPrice >= 1) {
+      // 1 이상, 간격: 0.01
+      gap = 0.01;
+    } else {
+      // 1 미만, 간격: 0.001
+      gap = 0.001;
+    }
+  
+    for (let i = minPrice - 5; i <= maxPrice; i += gap) {
+      // graph 간격 조정
+      interval.push(i);
+    }
 
   // 그래프 옵션 options
   const options = {

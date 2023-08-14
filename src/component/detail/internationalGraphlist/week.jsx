@@ -9,15 +9,27 @@ const Week = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
+  const [lista, setLista] = useState(null); //lista 저장
+  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
+
   useEffect(() => {
     // 2주일 전 구하기
     const currentDate = new Date();
+    const daysToSubtract = 14; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
+
+    currentDate.setDate(currentDate.getDate() - daysToSubtract);
+
+    year = currentDate.getFullYear();
+    month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    date = String(currentDate.getDate()).padStart(2, "0");
+
+    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
       .get(`https://stalksound.store/sonification/f_day_data/`, {
@@ -30,10 +42,10 @@ const Week = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
       })
       .catch((e) => {
@@ -48,22 +60,29 @@ const Week = (props) => {
 
   var prices = stockData
     .map(function (item) {
-      return parseInt(item.현재가, 10);
+      return parseFloat(item.종가, 10);
     })
     .reverse();
 
   let gap; // 그래프 간격 조정 변수
-  if (maxPrice >= 100) {
-    // 10만 이상, 간격 : 100원
-    gap = 0.1;
+  if (maxPrice >= 1000) {
+    // 1000 이상, 간격: 10
+    gap = 10;
+  } else if (maxPrice >= 100) {
+    // 100 이상, 간격: 1
+    gap = 1;
   } else if (maxPrice >= 10) {
-    // 5만 이상, 간격 : 50원
+    // 10 이상, 간격: 0.1
+    gap = 0.1;
+  } else if (maxPrice >= 1) {
+    // 1 이상, 간격: 0.01
     gap = 0.01;
   } else {
+    // 1 미만, 간격: 0.001
     gap = 0.001;
   }
 
-  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+  for (let i = minPrice - 5; i <= maxPrice; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

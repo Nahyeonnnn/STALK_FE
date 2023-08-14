@@ -9,6 +9,8 @@ const Month = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
+  const [lista, setLista] = useState(null); //lista 저장
+  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   useEffect(() => {
     // 3달 전 구하기
     const currentDate = new Date();
@@ -27,13 +29,14 @@ const Month = (props) => {
         },
       })
       .then((res) => {
+        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
       })
       .catch((e) => {
@@ -48,7 +51,7 @@ const Month = (props) => {
 
   var prices = stockData
     .map(function (item) {
-      return parseInt(item.현재가, 10);
+      return parseFloat(item.종가, 10);
     })
     .reverse();
 
@@ -63,7 +66,7 @@ const Month = (props) => {
     gap = 0.001;
   }
 
-  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

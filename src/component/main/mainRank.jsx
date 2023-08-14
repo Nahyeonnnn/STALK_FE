@@ -68,8 +68,7 @@ const MainRank = () => {
       
       </RankOptionBox>
 
-      <TradeRank>
-      </TradeRank>
+      <TradeRank/>
     </>
   );
 };

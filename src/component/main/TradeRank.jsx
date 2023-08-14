@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 90vw;
@@ -101,7 +102,10 @@ const TradeRank = () => {
           <RankItem key={item["거래량 순위"]} onDoubleClick={() => TextToSpeech(item)}>
             <div>
               <Num>{item["거래량 순위"]}</Num>
-              <Name>{item["종목명"]}</Name>
+              <Link to={`/detail/${item["종목코드"]}`}
+              style={{ textDecoration: "none" }}>
+                <Name>{item["종목명"]}</Name>
+              </Link>
             </div>
             <div>
               <Current>{item["현재가"]}</Current>

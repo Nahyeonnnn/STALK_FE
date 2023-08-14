@@ -8,6 +8,8 @@ import Week from "./domesticGraphlist/week";
 import Month from "./domesticGraphlist/month";
 import Year from "./domesticGraphlist/year";
 
+import Likebtn from "./likebtn/likebtn";
+
 const SpaceBox = styled.div`
   display: flex;
   width: 3rem;
@@ -18,7 +20,7 @@ const ChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 85vw;
-  height: 34vh;
+  height: 35vh;
   background-color: rgba(241, 208, 10, 0.92);
   border-radius: 1rem;
   margin: auto;
@@ -27,7 +29,7 @@ const ChartContainer = styled.div`
 const ChartBox = styled.div`
   display: flex;
   width: 85vw;
-  height: 29vh;
+  height: 35vh;
   background-color: white;
   align-items: center;
   justify-content: center;
@@ -55,7 +57,6 @@ const StockBox = styled.div`
   width: 18rem;
   height: 13.5rem;
   margin: auto;
-  background-color: coral;
   z-index: 1;
 `;
 
@@ -67,6 +68,7 @@ const DetailGraph = () => {
     <>
       <SpaceBox></SpaceBox>
       <ChartContainer>
+        <Likebtn></Likebtn>
         <ChartBox>
           {active === "Day" && (
             <StockBox>
@@ -89,7 +91,6 @@ const DetailGraph = () => {
             </StockBox>
           )}
         </ChartBox>
-
         <ChartBtnBox>
           <BtnBox isActive={active === "Day"} onClick={() => setActive("Day")}>
             1일

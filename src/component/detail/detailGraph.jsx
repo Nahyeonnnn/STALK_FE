@@ -8,6 +8,8 @@ import Week from "./domesticGraphlist/week";
 import Month from "./domesticGraphlist/month";
 import Year from "./domesticGraphlist/year";
 
+import Likebtn from "./likebtn/likebtn";
+
 const SpaceBox = styled.div`
   display: flex;
   width: 3rem;
@@ -67,6 +69,7 @@ const DetailGraph = () => {
     <>
       <SpaceBox></SpaceBox>
       <ChartContainer>
+        <Likebtn></Likebtn>
         <ChartBox>
           {active === "Day" && (
             <StockBox>
@@ -89,7 +92,6 @@ const DetailGraph = () => {
             </StockBox>
           )}
         </ChartBox>
-
         <ChartBtnBox>
           <BtnBox isActive={active === "Day"} onClick={() => setActive("Day")}>
             1일

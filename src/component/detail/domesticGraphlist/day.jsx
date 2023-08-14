@@ -8,9 +8,9 @@ const Day = (props) => {
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
-  
+
   const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null);//audio 파일 저장
+  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
 
   useEffect(() => {
     // 현재 시각 구하기
@@ -24,7 +24,7 @@ const Day = (props) => {
     axios
       .get(`https://stalksound.store/sonification/minute_data/`, {
         params: {
-          count : 4,
+          count: 4,
           symbol: `${props.StockID}`,
           end: endDate,
         },
@@ -135,7 +135,7 @@ const Day = (props) => {
     gap = 5;
   }
 
-  for (let i = minPrice - (2 * gap); i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
@@ -205,28 +205,35 @@ const Day = (props) => {
     },
   };
 
-  useEffect(() => {//lista 저장 후 데이터를 소리로 변환
+  useEffect(() => {
+    //lista 저장 후 데이터를 소리로 변환
     if (lista !== null) {
-        axios
-            .post(`https://stalksound.store/sonification/data_to_sound/`,{
-                "lista" : lista
-            }, { responseType: 'arraybuffer' }) //arraybuffer 형태로 받아서
-            .then(async (res) => {
-                console.log(res);//AudioContext 생성
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const decodedBuffer = await audioContext.decodeAudioData(res.data);//decode
-                setAudioBuffer(decodedBuffer);//디코딩된 정보 저장
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+      axios
+        .post(
+          `https://stalksound.store/sonification/data_to_sound/`,
+          {
+            lista: lista,
+          },
+          { responseType: "arraybuffer" }
+        ) //arraybuffer 형태로 받아서
+        .then(async (res) => {
+          console.log(res); //AudioContext 생성
+          const audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
+          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
+          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   }, [lista]);
 
   //그래프 음향 출력
   const playAudio = () => {
     if (audioBuffer) {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
@@ -235,9 +242,11 @@ const Day = (props) => {
   };
 
   return (
-    <div onClick={playAudio}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    <>
+      <div onClick={playAudio}>
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      </div>
+    </>
   );
 };
 

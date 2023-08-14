@@ -1,5 +1,6 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 import MainInfo from "../component/main/mainInfo";
 import MainGraph from "../component/main/mainGraph";
@@ -8,6 +9,8 @@ import MainNews from "../component/main/mainNews";
 import MainRank from "../component/main/mainRank";
 import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
+
+axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 const MiddleBar = styled.div`
   display: flex;
@@ -78,6 +81,22 @@ const MainPage = () => {
     };
   }, []);
 
+  function GetUserInfo() {
+    axios
+      .get(`https://stalksound.store/accounts/userinfo/`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("에러임");
+      });
+  }
+
+  GetUserInfo();
+
   return (
     <>
       <TopBar />
@@ -90,16 +109,10 @@ const MainPage = () => {
         >
           투자
         </InvestBtn>
-        <RankBtn
-          isActive={active === "Rank"}
-          onClick={() => setActive("Rank")}
-        >
+        <RankBtn isActive={active === "Rank"} onClick={() => setActive("Rank")}>
           오늘의 발견
         </RankBtn>
-        <NewsBtn
-          isActive={active === "News"}
-          onClick={() => setActive("News")}
-        >
+        <NewsBtn isActive={active === "News"} onClick={() => setActive("News")}>
           뉴스
         </NewsBtn>
       </MiddleBar>

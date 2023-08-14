@@ -297,6 +297,7 @@ const EachDataDiv = styled.div`
 
 const EachStockDataDiv = styled.div`
   position: relative;
+  z-index: 1000;
 `;
 
 const EachStockData = styled.p`

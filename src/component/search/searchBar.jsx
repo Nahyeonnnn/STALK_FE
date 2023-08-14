@@ -249,6 +249,9 @@ const SearchIcon = styled(FontAwesomeIcon)`
   top: 2.8rem;
   left: 0.6rem;
   pointer-events: none; /* This prevents the icon from blocking the input field */
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const SearchSmallContainer = styled.div`

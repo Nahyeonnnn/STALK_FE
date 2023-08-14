@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
+import Star from "./star-line.png";
+import StarFilled from "./star-fill.png";
 
 const LikeBtnBox = styled.div`
   position: absolute;
@@ -8,12 +10,6 @@ const LikeBtnBox = styled.div`
   right: 15vw;
   cursor: pointer;
   z-index: 500;
-`;
-
-const HeartIcon = styled.span`
-  /* font-size: 15px; */
-  color: ${(props) => (props.liked ? "red" : "black")};
-  transition: font-size 0.3s;
 `;
 
 const heartbeatAnimation = keyframes`
@@ -28,9 +24,13 @@ const heartbeatAnimation = keyframes`
   }
 `;
 
-const AnimatedHeartIcon = styled(HeartIcon)`
+const AnimatedStarIcon = styled.img`
   animation: ${(props) => (props.animate ? heartbeatAnimation : "none")} 0.5s
     ease-in-out;
+
+  /* 이미지 오른쪽으로 1px 이동 */
+  position: relative;
+  left: ${(props) => (props.liked ? "3.7px" : "0")};
 `;
 
 const Likebtn = () => {
@@ -50,9 +50,12 @@ const Likebtn = () => {
   return (
     <>
       <LikeBtnBox onClick={toggleLike}>
-        <AnimatedHeartIcon liked={liked} animate={animate}>
-          {liked ? "❤" : "♡"}
-        </AnimatedHeartIcon>
+        <AnimatedStarIcon
+          src={liked ? StarFilled : Star}
+          alt=""
+          animate={animate}
+          liked={liked}
+        />
       </LikeBtnBox>
     </>
   );

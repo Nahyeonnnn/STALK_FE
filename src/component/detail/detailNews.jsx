@@ -60,15 +60,26 @@ const DetailNews = (props) => {
       });
   }, [props.stockID]);
 
-  const handleNewsClick = () => {
-    navigate("/newsdetail");
-  };
+  // const handleNewsClick = () => {
+  //   navigate("/newsdetail");
+  // };
+
+  function TextToSpeech(text){
+    console.log(text);
+    const { "title": news_title, "time_difference": time } = text;
+    const t = `뉴스 제목: ${news_title}, 작성 시간: ${time}`;
+    const value = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(value);
+  }
 
   return (
     <>
       <NewsBox>
         {Object.values(newsData).map((news, index) => (
-          <NewsEach key={index} onClick={handleNewsClick}>
+          <NewsEach key={index} 
+          // onClick={handleNewsClick} //뉴스디테일 구현 전까지 잠깐 주석처리 해놓겠습니당
+          onDoubleClick={()=>TextToSpeech(news)}
+          >
             <NewsTitle dangerouslySetInnerHTML={{ __html: news.title }} />
             <NewsSource>{`${news.time_difference}`}</NewsSource>
           </NewsEach>

@@ -85,11 +85,21 @@ const TradeRank = () => {
     fetchTransactionRank();
   }, []);
 
+  function TextToSpeech(text){
+    console.log(text);
+    // console.log(JSON.stringify(text));
+    // const t = JSON.stringify(text);
+    const { "거래량 순위": rank, "종목명": name, "현재가": price, "전일 대비율": ratioYesterday } = text;
+    const t = `종목명: ${name}, 순위: ${rank}, 현재가: ${price}, 전일 대비율: ${ratioYesterday}`;
+    const value = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(value);
+  }
+
   return (
     <Box>
       <Container>
         {rankData.map((item) => (
-          <RankItem key={item["거래량 순위"]}>
+          <RankItem key={item["거래량 순위"]} onDoubleClick={() => TextToSpeech(item)}>
             <div>
               <Num>{item["거래량 순위"]}</Num>
               <Link to={`/detail/${item["종목코드"]}`}

@@ -19,7 +19,7 @@ const MyInfoPage = () => {
         );
         setUserName(response.data.유저정보.username);
         setUserProperty(response.data.유저정보.user_property);
-        // console.log(response.data);
+        console.log(response.data);
         console.log(userName, userProperty);
       } catch (error) {
         console.error("userinfo 가져오기 실패 ", error);

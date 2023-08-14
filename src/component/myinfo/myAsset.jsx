@@ -69,12 +69,14 @@ const BtnContainer = styled.div`
 `;
 
 const MyAsset = ({ userProperty }) => {
+  const formattedUserProperty = userProperty.toLocaleString(); // 숫자를 세 자리마다 콤마를 추가하여 서식화
+
   return (
     <>
       <Container>
         <Assetbox>
           <Text>총 자산</Text>
-          <AssetText>{userProperty}</AssetText>
+          <AssetText>{formattedUserProperty}원</AssetText>
           <BtnContainer>
             <Btn>예금</Btn>
             <Btn>출금</Btn>

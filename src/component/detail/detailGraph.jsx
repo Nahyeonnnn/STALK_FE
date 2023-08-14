@@ -69,28 +69,28 @@ const DetailGraph = () => {
       <SpaceBox></SpaceBox>
       <ChartContainer>
         <Likebtn></Likebtn>
-        {/* <ChartBox> */}
-        {active === "Day" && (
-          <StockBox>
-            <Day StockID={StockID1} />
-          </StockBox>
-        )}
-        {active === "Week" && (
-          <StockBox>
-            <Week StockID={StockID1} />
-          </StockBox>
-        )}
-        {active === "Month" && (
-          <StockBox>
-            <Month StockID={StockID1} />
-          </StockBox>
-        )}
-        {active === "Year" && (
-          <StockBox>
-            <Year StockID={StockID1} />
-          </StockBox>
-        )}
-        {/* </ChartBox> */}
+        <ChartBox>
+          {active === "Day" && (
+            <StockBox>
+              <Day StockID={StockID1} />
+            </StockBox>
+          )}
+          {active === "Week" && (
+            <StockBox>
+              <Week StockID={StockID1} />
+            </StockBox>
+          )}
+          {active === "Month" && (
+            <StockBox>
+              <Month StockID={StockID1} />
+            </StockBox>
+          )}
+          {active === "Year" && (
+            <StockBox>
+              <Year StockID={StockID1} />
+            </StockBox>
+          )}
+        </ChartBox>
         <ChartBtnBox>
           <BtnBox isActive={active === "Day"} onClick={() => setActive("Day")}>
             1일

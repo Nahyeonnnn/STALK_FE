@@ -68,13 +68,13 @@ const BtnContainer = styled.div`
   align-items: center; /* 세로 방향 중앙 정렬 */
 `;
 
-const MyAsset = () => {
+const MyAsset = ({ userProperty }) => {
   return (
     <>
       <Container>
         <Assetbox>
           <Text>총 자산</Text>
-          <AssetText>93,214,620원</AssetText>
+          <AssetText>{userProperty}</AssetText>
           <BtnContainer>
             <Btn>예금</Btn>
             <Btn>출금</Btn>

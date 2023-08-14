@@ -57,7 +57,6 @@ const StockBox = styled.div`
   width: 18rem;
   height: 13.5rem;
   margin: auto;
-  background-color: coral;
   z-index: 1;
 `;
 

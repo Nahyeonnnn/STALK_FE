@@ -54,28 +54,45 @@ const Year = (props) => {
     })
     .reverse();
 
-    let gap; // 그래프 간격 조정 변수
-    if (maxPrice >= 1000) {
-      // 1000 이상, 간격: 10
-      gap = 10;
-    } else if (maxPrice >= 100) {
-      // 100 이상, 간격: 1
-      gap = 1;
-    } else if (maxPrice >= 10) {
-      // 10 이상, 간격: 0.1
-      gap = 0.1;
-    } else if (maxPrice >= 1) {
-      // 1 이상, 간격: 0.01
-      gap = 0.01;
-    } else {
-      // 1 미만, 간격: 0.001
-      gap = 0.001;
-    }
-  
-    for (let i = minPrice - 5; i <= maxPrice; i += gap) {
-      // graph 간격 조정
-      interval.push(i);
-    }
+  let gap; // 그래프 간격 조정 변수
+  if (maxPrice >= 1000) {
+    // 1000 이상, 간격: 10
+    gap = 10;
+  } else if (maxPrice >= 100) {
+    // 100 이상, 간격: 1
+    gap = 1;
+  } else if (maxPrice >= 10) {
+    // 10 이상, 간격: 0.1
+    gap = 0.1;
+  } else if (maxPrice >= 1) {
+    // 1 이상, 간격: 0.01
+    gap = 0.01;
+  } else {
+    // 1 미만, 간격: 0.001
+    gap = 0.001;
+  }
+
+  for (let i = minPrice - 5; i <= maxPrice; i += gap) {
+    // graph 간격 조정
+    interval.push(i);
+  }
+
+  // viewport에 따른 그래프 width 값 설정
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
+
+  const handleWindowResize = () => {
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
+  };
+
+  useEffect(() => {
+    // 윈도우 리사이즈 이벤트 리스너 등록
+    window.addEventListener("resize", handleWindowResize);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   // 그래프 옵션 options
   const options = {
@@ -87,8 +104,10 @@ const Year = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: 290,
+      width: chartWidth,
       height: 220,
+      backgroundColor: "rgba(0, 0, 0, 0)", // 투명 배경
+      borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
       text: stockData.length > 0 ? stockData[0].종목 : "",
@@ -105,6 +124,7 @@ const Year = (props) => {
         },
       },
       enabled: false,
+      visible: false,
     },
     yAxis: {
       tickPositions: interval,

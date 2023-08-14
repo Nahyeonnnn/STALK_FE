@@ -186,7 +186,7 @@ const Day = (props) => {
       },
     },
     xAxis: {
-      categories: dates, // 날짜
+      categories: dates, // 날짜국내
       title: {
         // text: "Date",
       },

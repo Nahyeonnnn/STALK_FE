@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
-import Highcharts, { chart } from "highcharts";
+import Highcharts from "highcharts";
 import axios from "axios";
-import styled from "styled-components";
 
 const Day = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -13,38 +12,110 @@ const Day = (props) => {
   const [lista, setLista] = useState(null); //lista 저장
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
 
-  useEffect(() => {
-    // 현재 시각 구하기
-    const time = new Date();
+  // useEffect(() => {
+  //현재 시각 구하기
+  // const time = new Date();
+  // const hours = String(time.getHours()).padStart(2, "0");
+  // const minutes = String(time.getMinutes()).padStart(2, "0");
+  // const seconds = String(time.getSeconds()).padStart(2, "0");
+
+  // const endDate = `${hours}${minutes}${seconds}`; // 현재 날짜
+
+  //   axios
+  //     .get(`https://stalksound.store/sonification/minute_data/`, {
+  //       params: {
+  //         count: 4,
+  //         symbol: `${props.StockID}`,
+  //         end: endDate,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+  //       setStockData(res.data.data);
+
+  //       setMaxPrice(
+  //         Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+  //       );
+  //       setMinPrice(
+  //         Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+  //       );
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // }, [props.StockID]);
+
+  const getFormattedTime = (time) => {
     const hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");
     const seconds = String(time.getSeconds()).padStart(2, "0");
+    return `${hours}${minutes}${seconds}`;
+  };
 
-    const endDate = `${hours}${minutes}${seconds}`; // 현재 날짜
+  const generateTimeIntervals = (currentTime, interval, count) => {
+    const intervals = [];
+    for (let i = 0; i < count; i++) {
+      intervals.push(currentTime - i * interval);
+    }
+    return intervals;
+  };
 
-    axios
-      .get(`https://stalksound.store/sonification/minute_data/`, {
-        params: {
-          count: 4,
-          symbol: `${props.StockID}`,
-          end: endDate,
-        },
-      })
-      .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
-        setStockData(res.data.data);
+  const currentTime = new Date();
+  const currentTimeString = getFormattedTime(currentTime);
+  const timeIntervals = generateTimeIntervals(
+    currentTimeString,
+    30000, // 30분을 밀리초로 변환
+    8 // 총 8개의 간격 생성 (2시간 분량)
+  );
+
+  useEffect(() => {
+    setStockData([]);
+    const fetchData = async (end) => {
+      try {
+        const requests = timeIntervals.map(async (interval) => {
+          const res = await axios.get(
+            `https://stalksound.store/sonification/hmm__minute_data/`,
+            {
+              params: {
+                symbol: `${props.StockID}`,
+                end: interval,
+              },
+            }
+          );
+          setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+          return res.data.data;
+        });
+
+        const responses = await Promise.all(requests);
+
+        const newData = responses
+          .flatMap((data) =>
+            data.map((item) => ({
+              종목: item.종목,
+              날짜: item.날짜,
+              시가: item.시가,
+              현재가: item.현재가,
+              고가: item.고가,
+              저가: item.저가,
+            }))
+          )
+          .sort((a, b) => a.날짜 - b.날짜); // 날짜 순으로 정렬
+
+        setStockData(newData);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...newData.map((item) => parseInt(item.현재가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...newData.map((item) => parseInt(item.현재가, 10)))
         );
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [props.StockID]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData(timeIntervals[0]);
+  }, []);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {
@@ -60,38 +131,21 @@ const Day = (props) => {
   let gap = 100; // 그래프 간격 조정 변수
   if (maxPrice >= 100000) {
     // 10만 이상, 간격 : 100원
-    gap = 100;
+    gap = 500;
   } else if (maxPrice >= 50000) {
     // 5만 이상, 간격 : 50원
-    gap = 50;
+    gap = 100;
   } else if (maxPrice >= 10000) {
     // 1만 이상, 간격 : 10원
-    gap = 10;
+    gap = 50;
   } else {
-    gap = 5;
+    gap = 10;
   }
 
   for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
-
-  // viewport에 따른 그래프 width 값 설정
-  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.8);
-
-  const handleWindowResize = () => {
-    setChartWidth(window.innerWidth * 0.8); // 예시로 80%로 설정, 필요에 따라 조절 가능
-  };
-
-  useEffect(() => {
-    // 윈도우 리사이즈 이벤트 리스너 등록
-    window.addEventListener("resize", handleWindowResize);
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
 
   // 그래프 옵션 options
   const options = {
@@ -103,15 +157,11 @@ const Day = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: chartWidth,
-      height: "230",
-      backgroundColor: "rgba(0, 0, 0, 0)", // 배경을 투명하게 만듭니다.
+      width: 290,
+      height: 220,
     },
     title: {
       text: stockData.length > 0 ? stockData[0].종목 : "",
-      style: {
-        fontSize: "1rem",
-      },
     },
     xAxis: {
       categories: dates, // 날짜

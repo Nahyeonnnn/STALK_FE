@@ -61,15 +61,12 @@ const InterDetailPage = () => {
         <Button isActive={active === "Static"} onClick={() => setActive("Static")}>
           통계
         </Button>
-        <Button isActive={active === "Info"} onClick={() => setActive("Info")}>
-          종목정보
-        </Button>
+
         <Button isActive={active === "News"} onClick={() => setActive("News")}>
           뉴스
         </Button>
       </MiddleBar>
       {active === "Static" && <InterStatic></InterStatic>}
-      {active === "Info" && <InterInfo></InterInfo>}
       {active === "News" && <InterNews stockID={StockID4} />}
       <BottomBar></BottomBar>
     </>

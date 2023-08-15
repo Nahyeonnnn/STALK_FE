@@ -62,7 +62,7 @@ const MainGraph = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveButton((prevButton) => (prevButton % 6) + 1);
+      setActiveButton((prevButton) => (prevButton % 4) + 1);
     }, 5000);
 
     return () => {
@@ -71,11 +71,11 @@ const MainGraph = () => {
   }, []);
 
   const handleNextChart = () => {
-    setActiveButton((prevButton) => (prevButton % 6) + 1);
+    setActiveButton((prevButton) => (prevButton % 4) + 1);
   };
 
   const handlePreviousChart = () => {
-    setActiveButton((prevButton) => ((prevButton - 2 + 6) % 6) + 1);
+    setActiveButton((prevButton) => ((prevButton - 2 + 4) % 4) + 1);
   };
 
   const renderInfo = () => {
@@ -137,14 +137,6 @@ const MainGraph = () => {
           isActive={activeButton === 4}
           onClick={() => setActiveButton(4)}
         ></ChartButton>
-        {/* <ChartButton
-          isActive={activeButton === 5}
-          onClick={() => setActiveButton(5)}
-        ></ChartButton>
-        <ChartButton
-          isActive={activeButton === 6}
-          onClick={() => setActiveButton(6)}
-        ></ChartButton> */}
       </ChartButtonBox>
     </>
   );

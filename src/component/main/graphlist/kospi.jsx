@@ -7,7 +7,7 @@ import axios from "axios";
 
 const StockBox = styled.div`
   display: flex;
-  width: 18rem;
+  width: 73vw;
   height: 13.5rem;
   margin: auto;
   background-color: white;

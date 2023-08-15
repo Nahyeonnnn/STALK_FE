@@ -7,8 +7,8 @@ import Spx from "./graphlist/spx";
 
 const ChartBox = styled.div`
   display: flex;
-  width: 20rem;
-  height: 15rem;
+  width: 82vw;
+  height: 29vh;
   background-color: rgba(241, 208, 10, 0.92);
   border-radius: 1rem;
   margin: auto;

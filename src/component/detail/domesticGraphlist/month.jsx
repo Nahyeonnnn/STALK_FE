@@ -65,7 +65,6 @@ const Month = (props) => {
     .map(function (item) {
       return parseInt(item.시가, 10);
     })
-    .reverse();
 
   let gap; // 그래프 간격 조정 변수
   if (maxPrice >= 100000) {

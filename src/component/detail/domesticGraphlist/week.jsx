@@ -64,7 +64,6 @@ const Week = (props) => {
     .map(function (item) {
       return parseInt(item.시가, 10);
     })
-    .reverse();
 
   let gap; // 그래프 간격 조정 변수
   if (maxPrice >= 100000) {
@@ -84,7 +83,7 @@ const Week = (props) => {
     gap = 10;
   }
 
-  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+  for (let i = minPrice - 500; i <= maxPrice + 500; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

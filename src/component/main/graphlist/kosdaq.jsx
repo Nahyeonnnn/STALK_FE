@@ -5,7 +5,7 @@ import Highcharts from "highcharts";
 import { useState } from "react";
 import axios from "axios";
 
-const SamsungStockBox = styled.div`
+const StockBox = styled.div`
   display: flex;
   width: 18rem;
   height: 13.5rem;
@@ -14,7 +14,7 @@ const SamsungStockBox = styled.div`
   z-index: 1;
 `;
 
-const Samsung = () => {
+const Kosdaq = () => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
@@ -44,7 +44,7 @@ const Samsung = () => {
     axios
       .get(`https://stalksound.store/sonification/a_day_data/`, {
         params: {
-          symbol: "0001", // 코스피 0001 , 코스닥 1001
+          symbol: "1001", // 코스피 0001 , 코스닥 1001
           begin: beginDate,
           end: endDate,
         },
@@ -54,10 +54,10 @@ const Samsung = () => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.현재가, 10)))
+          Math.min(...res.data.data.map((item) => parseFloat(item.시가, 10)))
         );
       })
       .catch((e) => {
@@ -70,13 +70,18 @@ const Samsung = () => {
     .map(function (item) {
       return item.일자;
     })
-    .reverse();
 
   var prices = stockData
     .map(function (item) {
       return parseFloat(item.시가, 10);
     })
-    .reverse();
+
+    let gap = 10; // 그래프 간격 조정 변수
+
+  for (let i = minPrice - 10; i <= maxPrice + 10; i += gap) {
+    // graph 간격 조정
+    interval.push(i);
+  }
 
   // Highcharts options
   const options = {
@@ -89,7 +94,7 @@ const Samsung = () => {
       height: 220,
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      text: stockData.length > 0 ? stockData[0].업종 : "",
     },
     xAxis: {
       categories: dates,
@@ -105,7 +110,7 @@ const Samsung = () => {
       enabled: false,
     },
     yAxis: {
-      //   tickInterval: 10,
+      tickPositions: interval,
       title: {
         text: null,
       },
@@ -117,7 +122,7 @@ const Samsung = () => {
     series: [
       {
         type: "areaspline",
-        name: stockData.length > 0 ? stockData[0].종목 : "",
+        name: stockData.length > 0 ? stockData[0].업종 : "",
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -142,11 +147,11 @@ const Samsung = () => {
 
   return (
     <>
-      <SamsungStockBox>
+      <StockBox>
         <HighchartsReact highcharts={Highcharts} options={options} />
-      </SamsungStockBox>
+      </StockBox>
     </>
   );
 };
 
-export default Samsung;
+export default Kosdaq;

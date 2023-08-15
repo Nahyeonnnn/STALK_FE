@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Samsung from "./graphlist/samsung";
+import Kospi from "./graphlist/kospi";
+import Kosdaq from "./graphlist/kosdaq";
 
 const ChartBox = styled.div`
   display: flex;
@@ -56,7 +57,6 @@ const RightArrow = styled(ArrowButton)`
 
 const MainGraph = () => {
   const [activeButton, setActiveButton] = useState(1);
-  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -73,7 +73,7 @@ const MainGraph = () => {
   };
 
   const handlePreviousChart = () => {
-    setActiveButton((prevButton) => (prevButton - 2 + 6) % 6 + 1);
+    setActiveButton((prevButton) => ((prevButton - 2 + 6) % 6) + 1);
   };
 
   const renderInfo = () => {
@@ -81,11 +81,15 @@ const MainGraph = () => {
       case 1:
         return (
           <>
-            <Samsung />
+            <Kospi />
           </>
         );
       case 2:
-        return "코스닥 정보";
+        return (
+          <>
+            <Kosdaq />
+          </>
+        );
       case 3:
         return "환율 정보";
       case 4:

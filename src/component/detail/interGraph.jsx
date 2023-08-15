@@ -52,11 +52,9 @@ const BtnBox = styled.div`
 
 const StockBox = styled.div`
   display: flex;
-  width: 18rem;
-  height: 13.5rem;
   margin: auto;
-  background-color: coral;
   z-index: 1;
+  margin-bottom: -0.8rem;
 `;
 
 const InterGraph = () => {

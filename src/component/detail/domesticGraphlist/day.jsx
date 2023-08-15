@@ -148,6 +148,23 @@ const Day = (props) => {
     interval.push(i);
   }
 
+  // viewport에 따른 그래프 width 값 설정
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
+
+  const handleWindowResize = () => {
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
+  };
+
+  useEffect(() => {
+    // 윈도우 리사이즈 이벤트 리스너 등록
+    window.addEventListener("resize", handleWindowResize);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   // 그래프 옵션 options
   const options = {
     credits: {
@@ -158,14 +175,19 @@ const Day = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: 290,
+      width: chartWidth,
       height: 220,
+      backgroundColor: "rgba(0, 0, 0, 0)", // 투명 배경
+      borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
       text: stockData.length > 0 ? stockData[0].종목 : "",
+      style: {
+        fontSize: "1rem",
+      },
     },
     xAxis: {
-      categories: dates, // 날짜
+      categories: dates, // 날짜국내
       title: {
         // text: "Date",
       },
@@ -176,6 +198,7 @@ const Day = (props) => {
         },
       },
       enabled: false,
+      visible: false, // x축 숨기기
     },
     yAxis: {
       tickPositions: interval,

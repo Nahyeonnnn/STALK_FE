@@ -1,15 +1,22 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled, { keyframes, css } from "styled-components";
 import Star from "./star-line.png";
 import StarFilled from "./star-fill.png";
 
 const LikeBtnBox = styled.div`
   position: absolute;
   display: flex;
-  top: 13vh;
+  top: ${(props) => (props.lessThan400 ? "9vh" : "11vh")};
   right: 15vw;
   cursor: pointer;
   z-index: 500;
+
+  /* 미디어 쿼리 추가 */
+  ${(props) =>
+    props.lessThan400 &&
+    css`
+      top: 10vh; /* 원하는 위치로 조정 */
+    `}
 `;
 
 const heartbeatAnimation = keyframes`
@@ -36,20 +43,36 @@ const AnimatedStarIcon = styled.img`
 const Likebtn = () => {
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    // resize 이벤트 리스너 추가
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const toggleLike = () => {
     setLiked(!liked);
     setAnimate(true);
 
-    // 애니메이션 재생이 끝나면 다시 false로 설정하여 준비상태로 만듦
     setTimeout(() => {
       setAnimate(false);
     }, 500);
   };
 
+  const lessThan400 = viewportWidth < 400;
+
   return (
     <>
-      <LikeBtnBox onClick={toggleLike}>
+      <LikeBtnBox lessThan400={lessThan400} onClick={toggleLike}>
         <AnimatedStarIcon
           src={liked ? StarFilled : Star}
           alt=""

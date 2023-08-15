@@ -271,6 +271,7 @@ const Day = (props) => {
 
   const [lista, setLista] = useState(null); //lista 저장
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
+  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
   const getFormattedTime = (time) => {
     const hours = String(time.getHours()).padStart(2, "0");
@@ -374,6 +375,23 @@ const Day = (props) => {
     setInterval(updatedInterval);
   }, [maxPrice, minPrice]);
 
+  // viewport에 따른 그래프 width 값 설정
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
+
+  const handleWindowResize = () => {
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
+  };
+
+  useEffect(() => {
+    // 윈도우 리사이즈 이벤트 리스너 등록
+    window.addEventListener("resize", handleWindowResize);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   // 그래프 옵션 options
   const options = {
     credits: {
@@ -384,15 +402,22 @@ const Day = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: 290,
+      width: chartWidth,
       height: 220,
+      backgroundColor: "rgba(0, 0, 0, 0)", // 투명 배경
+      borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
       text: stockData.length > 0 ? stockData[0].종목 : "",
+      style: {
+        fontSize: "1rem",
+      },
     },
     xAxis: {
-      categories: dates, // 날짜
-      title: {},
+      categories: dates, // 날짜국내
+      title: {
+        // text: "Date",
+      },
       labels: {
         formatter: function () {
           const date = new Date(this.value);
@@ -400,6 +425,7 @@ const Day = (props) => {
         },
       },
       enabled: false,
+      visible: false, // x축 숨기기
     },
     yAxis: {
       tickPositions: interval,
@@ -463,12 +489,15 @@ const Day = (props) => {
 
   //그래프 음향 출력
   const playAudio = () => {
-    if (audioBuffer) {
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
+    if (!isPlaying && audioBuffer) {
+      setIsPlaying(true);
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
+      source.onended = () => {
+        setIsPlaying(false); //재생 끝날 경우 false로 reset
+      };
       source.start(0);
     }
   };

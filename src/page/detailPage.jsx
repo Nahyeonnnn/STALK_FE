@@ -58,7 +58,10 @@ const DetailPage = () => {
       <TopBar></TopBar>
       <DetailGraph styled="margin-top : 3rem"></DetailGraph>
       <MiddleBar isSticky={isMiddleBarSticky}>
-        <Button isActive={active === "Static"} onClick={() => setActive("Static")}>
+        <Button
+          isActive={active === "Static"}
+          onClick={() => setActive("Static")}
+        >
           통계
         </Button>
         <Button isActive={active === "Info"} onClick={() => setActive("Info")}>

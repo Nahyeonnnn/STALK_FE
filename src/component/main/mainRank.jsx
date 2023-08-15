@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TradeRank from './TradeRank';
+import StockInterest from "./StockInterest";
 
 const RankOptionBox = styled.div`
   display: flex;
@@ -68,7 +69,8 @@ const MainRank = () => {
       
       </RankOptionBox>
 
-      <TradeRank/>
+      {active === "1" && <TradeRank/>}
+      {active === "5" && <StockInterest/>}
     </>
   );
 };

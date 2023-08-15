@@ -14,7 +14,7 @@ const StockBox = styled.div`
   z-index: 1;
 `;
 
-const Kospi = () => {
+const Nasdaq = () => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
@@ -42,9 +42,9 @@ const Kospi = () => {
     const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
-      .get(`https://stalksound.store/sonification/a_day_data/`, {
+      .get(`https://stalksound.store/sonification/f_a_day_data/`, {
         params: {
-          symbol: "0001", // 코스피 0001 , 코스닥 1001
+          symbol: "NDX", // S&P 500 : SPX , 나스닥 100 : NDX
           begin: beginDate,
           end: endDate,
         },
@@ -76,9 +76,9 @@ const Kospi = () => {
       return parseFloat(item.시가, 10);
     })
 
-    let gap = 15; // 그래프 간격 조정 변수
+    let gap = 100; // 그래프 간격 조정 변수
 
-  for (let i = minPrice - 15; i <= maxPrice + 15; i += gap) {
+  for (let i = minPrice - 100; i <= maxPrice + 100; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
@@ -94,7 +94,7 @@ const Kospi = () => {
       height: 220,
     },
     title: {
-      text: "KOSPI",
+      text: stockData.length > 0 ? stockData[0].업종 : "",
     },
     xAxis: {
       categories: dates,
@@ -122,7 +122,7 @@ const Kospi = () => {
     series: [
       {
         type: "areaspline",
-        name: "KOSPI",
+        name: stockData.length > 0 ? stockData[0].업종 : "",
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -154,4 +154,4 @@ const Kospi = () => {
   );
 };
 
-export default Kospi;
+export default Nasdaq;

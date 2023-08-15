@@ -60,22 +60,22 @@ const Year = (props) => {
   let gap; // 그래프 간격 조정 변수
   if (maxPrice >= 1000) {
     // 1000 이상, 간격: 10
-    gap = 10;
+    gap = 50;
   } else if (maxPrice >= 100) {
     // 100 이상, 간격: 1
-    gap = 1;
+    gap = 10;
   } else if (maxPrice >= 10) {
     // 10 이상, 간격: 0.1
-    gap = 0.1;
+    gap = 1;
   } else if (maxPrice >= 1) {
     // 1 이상, 간격: 0.01
-    gap = 0.01;
+    gap = 0.1;
   } else {
     // 1 미만, 간격: 0.001
-    gap = 0.001;
+    gap = 0.01;
   }
 
-  for (let i = minPrice - 5; i <= maxPrice; i += gap) {
+  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

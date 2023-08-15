@@ -14,7 +14,7 @@ const StockBox = styled.div`
   z-index: 1;
 `;
 
-const Kospi = () => {
+const Spx = () => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
@@ -42,28 +42,28 @@ const Kospi = () => {
     const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
-      .get(`https://stalksound.store/sonification/a_day_data/`, {
-        params: {
-          symbol: "0001", // 코스피 0001 , 코스닥 1001
-          begin: beginDate,
-          end: endDate,
-        },
-      })
-      .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
-        setStockData(res.data.data);
+    .get(`https://stalksound.store/sonification/f_a_day_data/`, {
+      params: {
+        symbol: "SPX", // S&P 500 : SPX , 나스닥 100 : NDX
+        begin: beginDate,
+        end: endDate,
+      },
+    })
+    .then((res) => {
+      setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+      setStockData(res.data.data);
 
-        setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))
-        );
-        setMinPrice(
-          Math.min(...res.data.data.map((item) => parseFloat(item.시가, 10)))
-        );
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+      setMaxPrice(
+        Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))
+      );
+      setMinPrice(
+        Math.min(...res.data.data.map((item) => parseFloat(item.시가, 10)))
+      );
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+}, []);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData
@@ -76,9 +76,9 @@ const Kospi = () => {
       return parseFloat(item.시가, 10);
     })
 
-    let gap = 15; // 그래프 간격 조정 변수
+    let gap = 30; // 그래프 간격 조정 변수
 
-  for (let i = minPrice - 15; i <= maxPrice + 15; i += gap) {
+  for (let i = minPrice - 30; i <= maxPrice + 30; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
@@ -94,7 +94,7 @@ const Kospi = () => {
       height: 220,
     },
     title: {
-      text: "KOSPI",
+      text: stockData.length > 0 ? stockData[0].업종 : "",
     },
     xAxis: {
       categories: dates,
@@ -122,7 +122,7 @@ const Kospi = () => {
     series: [
       {
         type: "areaspline",
-        name: "KOSPI",
+        name: stockData.length > 0 ? stockData[0].업종 : "",
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -154,4 +154,4 @@ const Kospi = () => {
   );
 };
 
-export default Kospi;
+export default Spx;

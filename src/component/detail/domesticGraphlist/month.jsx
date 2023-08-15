@@ -84,7 +84,7 @@ const Month = (props) => {
     gap = 10;
   }
 
-  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+  for (let i = minPrice - 500; i <= maxPrice + 500; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

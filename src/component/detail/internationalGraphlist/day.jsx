@@ -11,6 +11,7 @@ const Day = (props) => {
 
   const [lista, setLista] = useState(null); //lista 저장
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
+  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
   useEffect(() => {
     axios
@@ -130,10 +131,49 @@ const Day = (props) => {
     },
   };
 
+  useEffect(() => {
+    //lista 저장 후 데이터를 소리로 변환
+    if (lista !== null) {
+      axios
+        .post(
+          `https://stalksound.store/sonification/data_to_sound/`,
+          {
+            lista: lista,
+          },
+          { responseType: "arraybuffer" }
+        ) //arraybuffer 형태로 받아서
+        .then(async (res) => {
+          console.log(res); //AudioContext 생성
+          const audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
+          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
+          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [lista]);
+
+  //그래프 음향 출력
+  const playAudio = () => {
+    if (!isPlaying && audioBuffer) {
+      setIsPlaying(true);
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.onended = () => {
+        setIsPlaying(false); //재생 끝날 경우 false로 reset
+      };
+      source.start(0);
+    }
+  };
+
   return (
-    <>
+    <div onClick={playAudio}>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </>
+    </div>
   );
 };
 

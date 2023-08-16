@@ -89,6 +89,10 @@ const MainMyInvest = () => {
     fetchUserData();
   }, []);
 
+  const formatNumberWithCommas = (number) => {
+    return number ? number.toLocaleString() : "";
+  };
+
   return (
     <>
       <AmountBox>
@@ -102,7 +106,7 @@ const MainMyInvest = () => {
           <InvestContainer key={investment.id}>
             <InvestName>{investment.stock}</InvestName>
             <InvestPrice>
-              {formatNumberWithCommas(investment.now_price)}원
+              {formatNumberWithCommas(investment.now_price)} 원
             </InvestPrice>
             <InvestRate value={investment.rate_profit_loss}>
               {investment.rate_profit_loss}

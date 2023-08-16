@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes, css } from "styled-components";
 import Star from "./star-line.png";
 import StarFilled from "./star-fill.png";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const LikeBtnBox = styled.div`
   position: absolute;
@@ -45,6 +47,8 @@ const Likebtn = () => {
   const [animate, setAnimate] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
+  const {StockID1} = useParams();
+
   useEffect(() => {
     // resize 이벤트 리스너 추가
     const handleResize = () => {
@@ -59,6 +63,28 @@ const Likebtn = () => {
     };
   }, []);
 
+  // useEffect(()=>{ //찜한 주식인지 확인 후 setLiked 호출
+  //   //checkislike
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`https://stalksound.store/sonification/checkislike/`,{
+  //         params : {"stock_name" : `${StockID1}`}
+  //       })
+  //       if (response.data == "liked"){
+  //         setLiked(true);
+  //       }
+  //       else {//찜하지 않은 주식일 경우
+  //         setLiked(false);
+  //       }
+  //     }
+  //     catch (error) {
+  //       console.log("liked 여부 가져오기 실패", error)
+  //     }
+  //   }
+
+  //   fetchData();
+  // },[]);
+
   const toggleLike = () => {
     setLiked(!liked);
     setAnimate(true);
@@ -70,9 +96,22 @@ const Likebtn = () => {
 
   const lessThan400 = viewportWidth < 400;
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(`https://stalksound.store/sonification/like_stock/`, {
+        "symbol" : `${StockID1}`
+      });
+      console.log(response.data);
+      alert(response.data.message);
+    }
+    catch (error) {
+      console.log("찜하기 실패", error);
+    }
+  };
+
   return (
     <>
-      <LikeBtnBox lessThan400={lessThan400} onClick={toggleLike}>
+      <LikeBtnBox lessThan400={lessThan400} onClick={() => {toggleLike(); fetchData();}}>
         <AnimatedStarIcon
           src={liked ? StarFilled : Star}
           alt=""

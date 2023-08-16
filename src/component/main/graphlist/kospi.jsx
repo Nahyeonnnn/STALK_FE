@@ -70,6 +70,11 @@ const Kospi = () => {
     return parseFloat(item.시가, 10);
   });
 
+  var latelyPrices = prices[prices.length - 1];
+
+  console.log("시가");
+  console.log(latelyPrices);
+
   let gap = 15; // 그래프 간격 조정 변수
 
   for (let i = minPrice - 15; i <= maxPrice + 15; i += gap) {
@@ -110,7 +115,8 @@ const Kospi = () => {
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].업종 : "",
+      // text: stockData.length > 0 ? stockData[0].업종 : "",
+      text: `코스피<br>${latelyPrices}`,
       style: {
         fontSize: "1rem",
       },

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import DetailButton from "./detailButton";
+import InterButton from "./interButton";
 
 const StaticBox = styled.div`
   display: flex;
@@ -92,7 +92,7 @@ const InterStatic = () => {
           <InfoText>{data && data["시가총액"]}</InfoText>
         </StaticInfoBox>
       </StaticBox>
-      <DetailButton StockID={StockID4}></DetailButton>
+      <InterButton StockID={StockID4}></InterButton>
     </>
   );
 };

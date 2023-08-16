@@ -224,7 +224,7 @@ const Overlay = styled.div`
     props.active ? "block" : "none"}; // active 상태에 따라 표시
 `;
 
-const SellPage = () => {
+const InterSellPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
   const [inputLength, setInputLength] = useState(0); // State to keep track of input length
@@ -519,4 +519,4 @@ const SellPage = () => {
   );
 };
 
-export default SellPage;
+export default InterSellPage;

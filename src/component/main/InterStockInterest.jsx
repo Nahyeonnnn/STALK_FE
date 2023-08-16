@@ -45,7 +45,7 @@ const Name = styled.div`
   letter-spacing: -0.084rem;
   margin-left: 2rem;
 `;
-const StockInterest = () => {
+const InterStockInterest = () => {
   const [interestList, setInterestList] = useState([]);
 
   useEffect(() => {
@@ -87,4 +87,4 @@ return (
 };
 
 
-export default StockInterest;
+export default InterStockInterest;

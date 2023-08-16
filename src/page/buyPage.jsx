@@ -230,6 +230,7 @@ const BuyPage = () => {
   const [inputLength, setInputLength] = useState(0); // State to keep track of input length
   const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
   const [stockPrice, setStockPrice] = useState(0);
+  
 
   //axios 연결 시 받을 주식 리스트 예시
   const stockList = [
@@ -374,10 +375,26 @@ const BuyPage = () => {
 
   const navigate = useNavigate();
 
-  const 예약구매버튼 = () => {
-    navigate("/buy/confirm");
-  };
+  const 예약구매버튼 = async () => {
+    try {
+      const response = await axios.post(
+        "https://stalksound.store/sonification/buy/",
+        {
+          stock_symbol: StockID2,
+          quantity: parseInt(inputValue)
+        }
+      );
 
+      if (response.status === 200) {
+        navigate("/buy/confirm");
+      } else {
+        // 에러 상황 처리
+      }
+    } catch (error) {
+      console.error("매수 중 오류 발생:", error);
+      // 에러 상황 처리
+    }
+  };
   const { StockID2 } = useParams();
   const stock = stockList.find((item) => item.code === StockID2);
 

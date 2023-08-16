@@ -117,7 +117,7 @@ const TradeRank = () => {
                 <WonSymbol>₩</WonSymbol>
                 <Price>{item["현재가"]}</Price>
               </Current>
-              <Ratio ratio={item["전일 대비율"]}>{item["전일 대비율"]}%</Ratio>
+              <Ratio ratio={item["전일 대비율"]}>{parseFloat(item["전일 대비율"]).toFixed(2)}%</Ratio>
             </div>
           </RankItem>
         ))}

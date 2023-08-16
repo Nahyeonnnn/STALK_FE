@@ -20,7 +20,7 @@ const Box = styled.div`
 const RankItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; 
   padding: 0.5rem 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
@@ -57,6 +57,14 @@ const Current = styled.div`
   letter-spacing: -0.084rem;
 `;
 
+const WonSymbol = styled.span`
+  font-size: 0.85714rem;
+`;
+
+const Price = styled.span`
+  margin-left: 0.25rem;
+`;
+
 const Ratio = styled.div`
   text-align: right;
   font-family: Inter;
@@ -85,7 +93,8 @@ const TradeRank = () => {
     fetchTransactionRank();
   }, []);
 
-  function TextToSpeech(text) {
+  function TextToSpeech(text){
+    console.log(text);
     const { "거래량 순위": rank, "종목명": name, "현재가": price, "전일 대비율": ratioYesterday } = text;
     const t = `종목명: ${name}, 순위: ${rank}, 현재가: ${price}, 전일 대비율: ${ratioYesterday}`;
     const value = new SpeechSynthesisUtterance(t);
@@ -95,16 +104,19 @@ const TradeRank = () => {
   return (
     <Box>
       <Container>
-        {rankData.map((item, index) => (
-          <RankItem key={item["종목코드"]} onDoubleClick={() => TextToSpeech(item)}>
+        {rankData.map((item) => (
+          <RankItem key={item["거래량 순위"]} onDoubleClick={() => TextToSpeech(item)}>
             <div>
-              <Num>{index + 1}</Num>
+              <Num>{item["거래량 순위"]}</Num>
               <Link to={`/detail/${item["종목코드"]}`} style={{ textDecoration: "none" }}>
                 <Name>{item["종목명"]}</Name>
               </Link>
             </div>
             <div>
-              <Current>{item["현재가"]}</Current>
+              <Current>
+                <WonSymbol>₩</WonSymbol>
+                <Price>{item["현재가"]}</Price>
+              </Current>
               <Ratio ratio={item["전일 대비율"]}>{item["전일 대비율"]}%</Ratio>
             </div>
           </RankItem>

@@ -7,8 +7,8 @@ import Spx from "./graphlist/spx";
 
 const ChartBox = styled.div`
   display: flex;
-  width: 82vw;
-  height: 29vh;
+  width: 85vw;
+  /* height: 33vh; */
   background-color: rgba(241, 208, 10, 0.92);
   border-radius: 1rem;
   margin: auto;
@@ -60,15 +60,15 @@ const RightArrow = styled(ArrowButton)`
 const MainGraph = () => {
   const [activeButton, setActiveButton] = useState(1);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveButton((prevButton) => (prevButton % 4) + 1);
-    }, 5000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setActiveButton((prevButton) => (prevButton % 4) + 1);
+  //   }, 5000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   const handleNextChart = () => {
     setActiveButton((prevButton) => (prevButton % 4) + 1);
@@ -118,7 +118,8 @@ const MainGraph = () => {
       <ChartBox>
         <LeftArrow onClick={handlePreviousChart}>&#8249;</LeftArrow>
         <RightArrow onClick={handleNextChart}>&#8250;</RightArrow>
-        <ChartType>{renderInfo()}</ChartType>
+        {/* <ChartType> 코스피</ChartType> */}
+        {renderInfo()}
       </ChartBox>
       <ChartButtonBox>
         <ChartButton

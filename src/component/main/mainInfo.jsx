@@ -15,34 +15,13 @@ const Text = styled.p`
   color: white;
 `;
 
-const MainInfo = () => {
-
-  const [userName, setUserName] = useState();
-
-  useEffect(()=>{
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `https://stalksound.store/sonification/user_info/`
-        );
-        setUserName(response.data.유저정보.user_nickname);
-        console.log(response.data);
-      } catch (error) {
-        console.error("userinfo 가져오기 실패", error);
-      }
-    };
-
-    fetchData();
-  },[]);
-
+const MainInfo = ({ nickname }) => {
   return (
-    <>
-      <TextBox>
-        <Text>
-          환영합니다!<br></br> {userName}님
-        </Text>
-      </TextBox>
-    </>
+    <TextBox>
+      <Text>
+        환영합니다!<br /> {nickname}님
+      </Text>
+    </TextBox>
   );
 };
 

@@ -67,7 +67,6 @@ const Day = (props) => {
               저가: item.저가,
             }))
           )
-          .sort((a, b) => a.날짜 - b.날짜); // 날짜 순으로 정렬
 
         setStockData(newData);
 
@@ -109,7 +108,7 @@ const Day = (props) => {
     }
 
     const updatedInterval = [];
-    for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+    for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
       updatedInterval.push(i);
     }
     setInterval(updatedInterval);

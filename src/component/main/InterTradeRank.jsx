@@ -99,12 +99,12 @@ const InterTradeRank = () => {
           <RankItem key={item["종목코드"]} onDoubleClick={() => TextToSpeech(item)}>
             <div>
               <Num>{index + 1}</Num>
-              <Link to={`/detail/${item["종목코드"]}`} style={{ textDecoration: "none" }}>
+              <Link to={`/detail/inter/${item["종목코드"]}`} style={{ textDecoration: "none" }}>
                 <Name>{item["종목명"]}</Name>
               </Link>
             </div>
             <div>
-              <Current>{item["현재가"]}</Current>
+              <Current>$ {item["현재가"]}</Current>
               <Ratio ratio={item["전일 대비율"]}>{item["전일 대비율"]}%</Ratio>
             </div>
           </RankItem>

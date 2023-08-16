@@ -104,10 +104,10 @@ const TradeRank = () => {
   return (
     <Box>
       <Container>
-        {rankData.map((item) => (
-          <RankItem key={item["거래량 순위"]} onDoubleClick={() => TextToSpeech(item)}>
+      {rankData.map((item, index) => (
+          <RankItem key={item["종목코드"]} onDoubleClick={() => TextToSpeech(item)}>
             <div>
-              <Num>{item["거래량 순위"]}</Num>
+              <Num>{index + 1}</Num>
               <Link to={`/detail/${item["종목코드"]}`} style={{ textDecoration: "none" }}>
                 <Name>{item["종목명"]}</Name>
               </Link>

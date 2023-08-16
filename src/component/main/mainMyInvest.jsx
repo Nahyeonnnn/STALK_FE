@@ -41,21 +41,26 @@ const InvestContainer = styled.div`
 `;
 
 const InvestName = styled.div`
-  width: 30vw;
+  width: 40vw;
 `;
 
 const InvestPrice = styled.div`
-  width: 25vw;
+  width: 30vw;
   display: flex;
   justify-content: flex-end;
+  margin-left: 2rem;
 `;
 
 const InvestRate = styled.div`
-  width: 25vw;
+  width: 10vw;
   display: flex;
   justify-content: flex-end;
   color: ${({ value }) => (String(value).startsWith("-") ? "skyblue" : "red")};
 `;
+
+const formatNumberWithCommas = (number) => {
+  return number.toLocaleString();
+};
 
 const MainMyInvest = () => {
   const [userInvestments, setUserInvestments] = useState([]);
@@ -89,15 +94,16 @@ const MainMyInvest = () => {
       <AmountBox>
         <AmountTextLeft>총 자산</AmountTextLeft>
         <AmountTextRight>
-          {userAmount.user_property} 원
-          
+          {formatNumberWithCommas(userAmount.user_property)} 원
         </AmountTextRight>
       </AmountBox>
       <InvestBox>
         {userInvestments.map((investment) => (
           <InvestContainer key={investment.id}>
             <InvestName>{investment.stock}</InvestName>
-            <InvestPrice>{investment.now_price} \</InvestPrice>
+            <InvestPrice>
+              {formatNumberWithCommas(investment.now_price)}원
+            </InvestPrice>
             <InvestRate value={investment.rate_profit_loss}>
               {investment.rate_profit_loss}
             </InvestRate>

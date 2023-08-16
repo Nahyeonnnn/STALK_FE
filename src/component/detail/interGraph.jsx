@@ -8,6 +8,8 @@ import Week from "./internationalGraphlist/week";
 import Month from "./internationalGraphlist/month";
 import Year from "./internationalGraphlist/year";
 
+import Likebtn from "./likebtn/likebtn";
+
 const SpaceBox = styled.div`
   display: flex;
   width: 3rem;
@@ -65,6 +67,7 @@ const InterGraph = () => {
     <>
       <SpaceBox></SpaceBox>
       <ChartContainer>
+        <Likebtn></Likebtn>
         <ChartBox>
           {active === "Day" && (
             <StockBox>

@@ -43,11 +43,37 @@ const AnimatedStarIcon = styled.img`
 `;
 
 const Likebtn = () => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState();
   const [animate, setAnimate] = useState(false);
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
   const {StockID1} = useParams();
+  const {StockID4} = useParams();
+
+  const StockID = (StockID1 === undefined) ? StockID4 : StockID1;
+
+  useEffect(()=>{ //찜한 주식인지 확인 후 setLiked 호출
+    //checkislike
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://stalksound.store/sonification/checkislike/`,{
+          params : {"stock_name" : `${StockID}`}
+        })
+        if (response.data.message){
+          setLiked(true);
+        }
+        else {//찜하지 않은 주식일 경우
+          setLiked(false);
+        }
+        console.log(response.data);
+      }
+      catch (error) {
+        console.log("liked 여부 가져오기 실패", error)
+      }
+    }
+
+    fetchData();
+  },[]);
 
   useEffect(() => {
     // resize 이벤트 리스너 추가
@@ -63,28 +89,6 @@ const Likebtn = () => {
     };
   }, []);
 
-  // useEffect(()=>{ //찜한 주식인지 확인 후 setLiked 호출
-  //   //checkislike
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`https://stalksound.store/sonification/checkislike/`,{
-  //         params : {"stock_name" : `${StockID1}`}
-  //       })
-  //       if (response.data == "liked"){
-  //         setLiked(true);
-  //       }
-  //       else {//찜하지 않은 주식일 경우
-  //         setLiked(false);
-  //       }
-  //     }
-  //     catch (error) {
-  //       console.log("liked 여부 가져오기 실패", error)
-  //     }
-  //   }
-
-  //   fetchData();
-  // },[]);
-
   const toggleLike = () => {
     setLiked(!liked);
     setAnimate(true);
@@ -99,7 +103,7 @@ const Likebtn = () => {
   const fetchData = async () => {
     try {
       const response = await axios.post(`https://stalksound.store/sonification/like_stock/`, {
-        "symbol" : `${StockID1}`
+        "symbol" : `${StockID}`
       });
       console.log(response.data);
       alert(response.data.message);

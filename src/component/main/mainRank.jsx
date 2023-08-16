@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TradeRank from './TradeRank';
+import InterTradeRank from './InterTradeRank';
 import StockInterest from "./StockInterest";
 
 const RankOptionBox = styled.div`
@@ -70,6 +71,7 @@ const MainRank = () => {
       </RankOptionBox>
 
       {active === "1" && <TradeRank/>}
+      {active === "2" && <InterTradeRank/>}
       {active === "5" && <StockInterest/>}
     </>
   );

@@ -67,13 +67,13 @@ const Ratio = styled.div`
   color: ${({ ratio }) => (parseFloat(ratio) >= 0 ? "red" : "blue")};
 `;
 
-const TradeRank = () => {
+const InterTradeRank = () => {
   const [rankData, setRankData] = useState([]);
 
   useEffect(() => {
     async function fetchTransactionRank() {
       try {
-        const response = await axios.get("https://stalksound.store/sonification/transaction_rank/");
+        const response = await axios.get("https://stalksound.store/sonification/f_transaction_rank/");
         if (response.status === 200) {
           setRankData(response.data["시가총액 순위"]);
         }
@@ -114,4 +114,4 @@ const TradeRank = () => {
   );
 };
 
-export default TradeRank;
+export default InterTradeRank;

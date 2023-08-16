@@ -5,7 +5,6 @@ import styled from "styled-components";
 import TopBar from "../component/global/topBar";
 import InterGraph from "../component/detail/interGraph";
 import InterStatic from "../component/detail/interStatic";
-import InterInfo from "../component/detail/interInfo";
 import InterNews from "../component/detail/interNews";
 import BottomBar from "../component/global/bottomBar";
 

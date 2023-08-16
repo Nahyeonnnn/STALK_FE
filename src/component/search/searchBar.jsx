@@ -499,13 +499,17 @@ const SearchBar = () => {
       filteredArray.includes(item.prdt_name)
     );
 
+    console.log('foundObjects', foundObjects);
+
     const axiosRequests = foundObjects.map((recentData) => {
       return axios.get(`https://stalksound.store/sonification/now_data/`, {
         params: {
-          symbol: "005930",
+          symbol: `${recentData.code}`,
         },
       });
     });
+
+    console.log(axiosRequests);
 
     Promise.all(axiosRequests)
       .then((responses) => {
@@ -518,6 +522,7 @@ const SearchBar = () => {
       .catch((e) => {
         console.log(e);
       });
+      
   }, []);
 
   return (
@@ -586,8 +591,8 @@ const SearchBar = () => {
                     <EachStockData>주식 설명</EachStockData>
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
-                    <StockPrice>7500</StockPrice>
-                    <PercentData>500 (+5%)</PercentData>
+                    <StockPrice>{7500}</StockPrice>
+                    <PercentData>500 (+0.5)</PercentData>
                   </EachPercentDataDiv>
                 </EachDataDiv>
               ))

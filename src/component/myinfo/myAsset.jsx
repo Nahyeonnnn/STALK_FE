@@ -71,9 +71,16 @@ const BtnContainer = styled.div`
 const MyAsset = ({ userProperty }) => {
   const formattedUserProperty = userProperty.toLocaleString(); // 숫자를 세 자리마다 콤마를 추가하여 서식화
 
+  function TextToSpeech(text){
+    console.log(text);
+    const t = `총 자산 ${text}원`;
+    const value = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(value);
+  }
+
   return (
     <>
-      <Container>
+      <Container onDoubleClick={()=>TextToSpeech(formattedUserProperty)}>
         <Assetbox>
           <Text>총 자산</Text>
           <AssetText>{formattedUserProperty}원</AssetText>

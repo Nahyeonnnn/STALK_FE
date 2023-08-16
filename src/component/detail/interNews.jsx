@@ -46,6 +46,8 @@ const NewsSource = styled.div`
 const InterNews = (props) => {
   const [newsData, setNewsData] = useState([]);
   const navigate = useNavigate();
+  
+  const [doubleClick, setDoubleClick] = useState(false);
 
   useEffect(() => {
     const apiUrl = `https://stalksound.store/news/stockcode/?stock_code=${props.stockID}`;
@@ -60,15 +62,26 @@ const InterNews = (props) => {
       });
   }, [props.stockID]);
 
-  const handleNewsClick = () => {
-    navigate("/newsdetail");
+  function TextToSpeech(text){
+    console.log(text);
+    const t = `뉴스 제목 : ${text.title},
+     작성 시간 : ${text.time_difference}`;
+    const value = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(value);
   };
+
+  // const handleNewsClick = () => {
+  //   navigate("/newsdetail");
+  // };
 
   return (
     <>
       <NewsBox>
         {Object.values(newsData).map((news, index) => (
-          <NewsEach key={index} onClick={handleNewsClick}>
+          <NewsEach key={index} 
+          // onClick={() => handleNewsClick()}
+          onDoubleClick={()=>TextToSpeech(news)}
+          >
             <NewsTitle dangerouslySetInnerHTML={{ __html: news.title }} />
             <NewsSource>{`${news.time_difference}`}</NewsSource>
           </NewsEach>

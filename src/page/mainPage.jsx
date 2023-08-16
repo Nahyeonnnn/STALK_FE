@@ -66,6 +66,7 @@ const NewsBtn = styled.button`
 const MainPage = () => {
   const [active, setActive] = useState("Invest");
   const [isMiddleBarSticky, setMiddleBarSticky] = useState(false);
+  const [userNickname, setUserNickname] = useState(""); // Add state to store user nickname
 
   useEffect(() => {
     // Function to check if MiddleBar is sticky and update isMiddleBarSticky state
@@ -81,26 +82,30 @@ const MainPage = () => {
     };
   }, []);
 
-  function GetUserInfo() {
-    axios
-      .get(`https://stalksound.store/accounts/userinfo/`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((e) => {
-        console.log(e);
+  useEffect(() => {
+    // Fetch user info and set the user nickname
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(
+          "https://stalksound.store/accounts/userinfo/",
+          {
+            withCredentials: true,
+          }
+        );
+        setUserNickname(response.data.user_nickname);
+      } catch (error) {
+        console.log(error);
         console.log("에러임");
-      });
-  }
+      }
+    };
 
-  GetUserInfo();
+    fetchUserInfo();
+  }, []);
 
   return (
     <>
       <TopBar />
-      <MainInfo />
+      <MainInfo nickname={userNickname} />
       <MainGraph />
       <MiddleBar isSticky={isMiddleBarSticky}>
         <InvestBtn

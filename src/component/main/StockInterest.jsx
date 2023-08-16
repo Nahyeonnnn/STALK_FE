@@ -57,13 +57,16 @@ const Current = styled.div`
   letter-spacing: -0.084rem;
 `;
 
-const WonSymbol = styled.span`
-  font-size: 0.85714rem;
-`;
-
 const Price = styled.span`
   margin-left: 0.25rem;
 `;
+
+const numberWithCommas = (number) => {
+    if (number === undefined) {
+      return ""; // Return an empty string if the number is undefined
+    }
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
 const Ratio = styled.div`
   text-align: right;
@@ -136,8 +139,7 @@ const StockInterest = () => {
               </div>
               <div>
                 <Current>
-                  <WonSymbol>₩</WonSymbol>
-                  <Price>{stockData[item.code]?.현재가}</Price>
+                <Price>\ {numberWithCommas(stockData[item.code]?.현재가)}</Price>
                 </Current>
                 <Ratio ratio={stockData[item.code]?.['전일 대비율']}>
                   {parseFloat(stockData[item.code]?.['전일 대비율']).toFixed(2)}%

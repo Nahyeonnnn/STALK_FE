@@ -4,31 +4,15 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import { useState } from "react";
 import axios from "axios";
-import ruler from "./좌표평면눈금.png";
 
 const StockBox = styled.div`
   margin: auto;
-  /* background-image: url(${ruler});
-  background-repeat: no-repeat; // 이미지 반복 방지
-  background-size: cover; // 이미지 크기를 박스에 맞게 조절 */
 `;
 
 const Container = styled.div`
   margin: auto;
   position: relative; // 컨테이너 위치를 상대적으로 설정
   width: ${(props) => props.chartWidth}px; // chartWidth 값을 사용하여 너비 설정
-`;
-
-const BackgroundImage = styled.div`
-  position: absolute; // 배경 이미지를 절대 위치로 설정
-  top: 1rem;
-  left: 1rem;
-  width: 100%;
-  height: 100%;
-  background-image: url(${ruler});
-  background-repeat: no-repeat;
-  /* background-size: cover; */
-  opacity: 1; // 배경 이미지의 투명도 설정
 `;
 
 const Kospi = () => {
@@ -160,7 +144,7 @@ const Kospi = () => {
     },
     yAxis: {
       tickPositions: interval,
-      gridLineWidth: 0, // y축의 눈금을 없애기 위한 설정
+      gridLineWidth: 0.15, // 눈금 굵기
       title: {
         text: null,
       },
@@ -168,6 +152,7 @@ const Kospi = () => {
         enabled: false,
         visible: false,
       },
+      gridLineColor: "#21325E", //눈금 색상 설정 가능!
     },
     series: [
       {
@@ -239,8 +224,6 @@ const Kospi = () => {
   return (
     <>
       <Container chartWidth={chartWidth}>
-        <BackgroundImage />
-
         <StockBox onClick={playAudio}>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </StockBox>

@@ -1,12 +1,34 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import { useState } from "react";
 import axios from "axios";
+import ruler from "./좌표평면눈금.png";
 
 const StockBox = styled.div`
   margin: auto;
+  /* background-image: url(${ruler});
+  background-repeat: no-repeat; // 이미지 반복 방지
+  background-size: cover; // 이미지 크기를 박스에 맞게 조절 */
+`;
+
+const Container = styled.div`
+  margin: auto;
+  position: relative; // 컨테이너 위치를 상대적으로 설정
+  width: ${(props) => props.chartWidth}px; // chartWidth 값을 사용하여 너비 설정
+`;
+
+const BackgroundImage = styled.div`
+  position: absolute; // 배경 이미지를 절대 위치로 설정
+  top: 1rem;
+  left: 1rem;
+  width: 100%;
+  height: 100%;
+  background-image: url(${ruler});
+  background-repeat: no-repeat;
+  /* background-size: cover; */
+  opacity: 1; // 배경 이미지의 투명도 설정
 `;
 
 const Kospi = () => {
@@ -72,9 +94,6 @@ const Kospi = () => {
 
   var latelyPrices = prices[prices.length - 1];
 
-  console.log("시가");
-  console.log(latelyPrices);
-
   let gap = 15; // 그래프 간격 조정 변수
 
   for (let i = minPrice - 15; i <= maxPrice + 15; i += gap) {
@@ -117,9 +136,13 @@ const Kospi = () => {
     title: {
       // text: stockData.length > 0 ? stockData[0].업종 : "",
       text: `코스피<br>${latelyPrices}`,
+      text: `<span style="font-size: 0.8rem; font-weight: bold;">코스피</span><br><span style="font-size: 1.2rem; font-weight: normal;">${latelyPrices}</span>`,
       style: {
         fontSize: "1rem",
+        color: "white",
       },
+      align: "left", // 제목을 좌측으로 정렬
+      y: 20, // 제목의 위쪽 여백을 조절
     },
     xAxis: {
       categories: dates,
@@ -215,9 +238,13 @@ const Kospi = () => {
 
   return (
     <>
-      <StockBox onClick={playAudio}>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </StockBox>
+      <Container chartWidth={chartWidth}>
+        <BackgroundImage />
+
+        <StockBox onClick={playAudio}>
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </StockBox>
+      </Container>
     </>
   );
 };

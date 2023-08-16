@@ -157,8 +157,9 @@ const Kospi = () => {
     ],
     plotOptions: {
       areaspline: {
-        lineWidth: 0.2,
-        lineColor: "blue", //blackborder
+        // lineWidth: 0.2,
+        lineWidth: 1.5,
+        lineColor: "#21325E",
         marker: {
           enabled: false,
         },

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TradeRank from './TradeRank';
 import InterTradeRank from './InterTradeRank';
 import StockInterest from "./StockInterest";
+import InterStockInterest from "./InterStockInterest";
 
 const RankOptionBox = styled.div`
   display: flex;
@@ -40,6 +41,14 @@ const RankOptionBtn3 = styled.button`
     isActive ? "rgba(241, 208, 10, 0.92)" : "white"};
 `;
 
+const RankOptionBtn4 = styled.button`
+  display: inline;
+  width: auto;
+  border-radius: 1rem;
+  background-color: ${({ isActive }) =>
+    isActive ? "rgba(241, 208, 10, 0.92)" : "white"};
+`;
+
 
 const MainRank = () => {
   const [active, setActive] = useState("1");
@@ -62,17 +71,25 @@ const MainRank = () => {
         </RankOptionBtn2>
 
         <RankOptionBtn3
-          isActive={active === "5"}
-          onClick={() => setActive("5")}
+          isActive={active === "3"}
+          onClick={() => setActive("3")}
         >
-          관심
+          국내 관심
         </RankOptionBtn3>
+
+        <RankOptionBtn4
+          isActive={active === "4"}
+          onClick={() => setActive("4")}
+        >
+          해외 관심
+        </RankOptionBtn4>
       
       </RankOptionBox>
 
       {active === "1" && <TradeRank/>}
       {active === "2" && <InterTradeRank/>}
-      {active === "5" && <StockInterest/>}
+      {active === "3" && <StockInterest/>}
+      {active === "4" && <InterStockInterest/>}
     </>
   );
 };

@@ -224,7 +224,7 @@ const Overlay = styled.div`
     props.active ? "block" : "none"}; // active 상태에 따라 표시
 `;
 
-const SellPage = () => {
+const InterSellPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
   const [inputLength, setInputLength] = useState(0); // State to keep track of input length
@@ -374,10 +374,26 @@ const SellPage = () => {
 
   const navigate = useNavigate();
 
-  const 예약판매버튼 = () => {
-    navigate("/sell/confirm");
-  };
+  const 예약판매버튼 = async () => {
+    try {
+      const response = await axios.post(
+        "https://stalksound.store/sonification/sell/",
+        {
+          stock_symbol: StockID6,
+          quantity: parseInt(inputValue)
+        }
+      );
 
+      if (response.status === 200) {
+        navigate("/sell/confirm");
+      } else {
+        // 에러 상황 처리
+      }
+    } catch (error) {
+      console.error("매도 중 오류 발생:", error);
+      // 에러 상황 처리
+    }
+  };
   const { StockID6 } = useParams();
   const stock = stockList.find((item) => item.code === StockID6);
 
@@ -503,4 +519,4 @@ const SellPage = () => {
   );
 };
 
-export default SellPage;
+export default InterSellPage;

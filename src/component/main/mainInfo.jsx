@@ -13,15 +13,13 @@ const Text = styled.p`
   color: white;
 `;
 
-const MainInfo = () => {
+const MainInfo = ({ nickname }) => {
   return (
-    <>
-      <TextBox>
-        <Text>
-          환영합니다!<br></br> props님
-        </Text>
-      </TextBox>
-    </>
+    <TextBox>
+      <Text>
+        환영합니다!<br /> {nickname}님
+      </Text>
+    </TextBox>
   );
 };
 

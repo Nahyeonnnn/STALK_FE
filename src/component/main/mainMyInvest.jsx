@@ -93,15 +93,31 @@ const MainMyInvest = () => {
     return number ? number.toLocaleString() : "";
   };
 
+  function TextToSpeech(text){
+    console.log(text);
+    const value = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(value);
+  }
+
+  function TextToSpeechInvest(text) {
+    console.log(text);
+    text.map((investment) => {
+      let t = `주식 : ${investment.stock}, 현재가 : ${investment.price}, 주식 등락률 : ${investment.rate_profit_loss}%`;
+      const value = new SpeechSynthesisUtterance(t);
+      window.speechSynthesis.speak(value);
+    });
+  }
+  
+
   return (
     <>
-      <AmountBox>
+      <AmountBox onDoubleClick={() => TextToSpeech(`총 자산 ${formatNumberWithCommas(userAmount.user_property)}원`)}>
         <AmountTextLeft>총 자산</AmountTextLeft>
         <AmountTextRight>
           {formatNumberWithCommas(userAmount.user_property)} 원
         </AmountTextRight>
       </AmountBox>
-      <InvestBox>
+      <InvestBox onDoubleClick={() => TextToSpeechInvest(userInvestments)}>
         {userInvestments.map((investment) => (
           <InvestContainer key={investment.id}>
             <InvestName>{investment.stock}</InvestName>

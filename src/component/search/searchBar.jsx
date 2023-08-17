@@ -550,8 +550,12 @@ const SearchBar = () => {
               (stock) => stock.prdt_name === item["종목명"]
             );
             if (stockIndex !== -1) {
-              stockList[stockIndex]["현재가"] = item["현재가"];
-              stockList[stockIndex]["전일 대비율"] = item["전일 대비율"];
+              stockList[stockIndex]["현재가"] = parseInt(
+                item["현재가"]
+              ).toLocaleString();
+              stockList[stockIndex]["전일 대비율"] = parseFloat(
+                item["전일 대비율"]
+              );
             }
           });
 
@@ -605,8 +609,8 @@ const SearchBar = () => {
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
-                  <StockPrice>{result.현재가}</StockPrice>
-                  <PercentData>{result["전일 대비율"]}</PercentData>
+                  <StockPrice>{result.현재가}원</StockPrice>
+                  <PercentData>{result["전일 대비율"]}%</PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}
@@ -636,7 +640,6 @@ const SearchBar = () => {
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon} />
                     <AutoSearchData>{recent}</AutoSearchData>
-                    {/* <EachStockData>주식 설명</EachStockData> */}
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
                     <StockPrice>{7500}</StockPrice>

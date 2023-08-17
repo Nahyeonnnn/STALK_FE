@@ -118,7 +118,7 @@ function isUSStock(code) {
 }
 
 //axios 연결 시 받을 주식 리스트 예시
-const stockList = [
+  export const stockList = [
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG에너지솔루션", code: "373220" },
   { prdt_name: "SK하이닉스", code: "000660" },

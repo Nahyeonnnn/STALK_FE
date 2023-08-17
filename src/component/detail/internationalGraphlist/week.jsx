@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
+import { stockList } from "../../search/searchBar";
 
 const Week = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -13,6 +14,7 @@ const Week = (props) => {
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
+  const stock = stockList.find((item) => item.code === `${props.StockID}`);
   useEffect(() => {
     // 2주일 전 구하기
     const currentDate = new Date();
@@ -35,10 +37,10 @@ const Week = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
+          Math.max(...res.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
+          Math.min(...res.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
         );
       })
       .catch((e) => {
@@ -47,12 +49,12 @@ const Week = (props) => {
   }, [props.StockID]);
 
  // 날짜와 종가 데이터 추출
- var dates = stockData.slice(-14).map(function (item) {
+ var dates = stockData.slice(-10).map(function (item) {
   return item.날짜;
 });
 
 var prices = stockData
-  .slice(-14)
+  .slice(-10)
   .map(function (item) {
     return parseFloat(item.종가, 10);
   })
@@ -114,7 +116,7 @@ var prices = stockData
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      text: stock.prdt_name,
     },
     xAxis: {
       categories: dates, // 날짜
@@ -143,7 +145,7 @@ var prices = stockData
     series: [
       {
         type: "areaspline",
-        name: stockData.length > 0 ? stockData[0].종목 : "",
+        name: stock.prdt_name,
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },

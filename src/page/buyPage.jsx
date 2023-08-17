@@ -289,10 +289,6 @@ const BuyPage = () => {
   };
   const { StockID2 } = useParams();
   const stock = stockList.find((item) => item.code === StockID2);
-
-  console.log(StockID2);
-  console.log(stock);
-
   const [stockData, setStockData] = useState([]);
 
   useEffect(() => {

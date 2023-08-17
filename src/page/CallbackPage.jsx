@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { React, useEffect} from 'react';
 import { useNavigate} from 'react-router-dom';
-import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { styled } from 'styled-components';
@@ -44,9 +43,9 @@ const CallbackPage = () => {
         document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
     };
 
-    const deleteCookie = (name) => {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    };
+    // const deleteCookie = (name) => {
+    //     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    // };
 
     useEffect(()=>{
         axios

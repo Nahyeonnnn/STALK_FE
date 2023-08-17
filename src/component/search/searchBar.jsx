@@ -394,13 +394,6 @@ const EachStockDataDiv = styled.div`
   z-index: 1000;
 `;
 
-const EachStockData = styled.p`
-  font-size: 12px;
-  color: gray;
-  margin: 0;
-  padding-left: 2.5rem;
-`;
-
 const EachStockIcon = styled.img`
   position: absolute;
   width: 1.875rem;
@@ -441,7 +434,7 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]);
-  const [recentAxios, setRecentAxios] = useState();
+  //const [recentAxios, setRecentAxios] = useState();
 
   const addToSearchHistory = (item) => {
     let newSearchArray = [...recentSearchData];
@@ -521,7 +514,7 @@ const SearchBar = () => {
         for (let i = 0; i < foundObjects.length; i++) {
           foundObjects[i].responseData = responseDataArray[i];
         }
-        setRecentAxios(foundObjects);
+        //setRecentAxios(foundObjects);
       })
       .catch((e) => {
         console.log(e);

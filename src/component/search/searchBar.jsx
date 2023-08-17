@@ -544,7 +544,8 @@ const SearchBar = () => {
         if (response.status === 200) {
           const transactionRank = response.data["시가총액 순위"];
           transactionRank.slice(0, 100).forEach((item) => {
-            console.log(item["현재가"]);
+            console.log("현재가:", item["현재가"]);
+            console.log("전일 대비율:", item["전일 대비율"]);
           });
         }
       } catch (error) {

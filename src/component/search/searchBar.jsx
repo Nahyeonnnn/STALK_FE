@@ -368,6 +368,7 @@ const AutoSearchData = styled.p`
   margin: 0%;
   padding-left: 2.5rem;
   width: inherit;
+  max-width: 60vw;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2px;

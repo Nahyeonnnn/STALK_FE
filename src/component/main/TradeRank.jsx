@@ -20,13 +20,13 @@ const Box = styled.div`
 const RankItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const Num = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   font-family: Inter;
   font-size: 1rem;
   font-style: normal;
@@ -36,7 +36,7 @@ const Num = styled.div`
 `;
 
 const Name = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   font-family: Inter;
   font-size: 1rem;
   font-style: normal;
@@ -47,7 +47,7 @@ const Name = styled.div`
 `;
 
 const Current = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   text-align: right;
   font-family: Inter;
   font-size: 1rem;
@@ -84,7 +84,9 @@ const TradeRank = () => {
   useEffect(() => {
     async function fetchTransactionRank() {
       try {
-        const response = await axios.get("https://stalksound.store/sonification/transaction_rank/");
+        const response = await axios.get(
+          "https://stalksound.store/sonification/transaction_rank/"
+        );
         if (response.status === 200) {
           setRankData(response.data["시가총액 순위"]);
         }
@@ -96,9 +98,14 @@ const TradeRank = () => {
     fetchTransactionRank();
   }, []);
 
-  function TextToSpeech(text){
+  function TextToSpeech(text) {
     console.log(text);
-    const { "거래량 순위": rank, "종목명": name, "현재가": price, "전일 대비율": ratioYesterday } = text;
+    const {
+      "거래량 순위": rank,
+      종목명: name,
+      현재가: price,
+      "전일 대비율": ratioYesterday,
+    } = text;
     const t = `종목명: ${name}, 순위: ${rank}, 현재가: ${price}, 전일 대비율: ${ratioYesterday}`;
     const value = new SpeechSynthesisUtterance(t);
     window.speechSynthesis.speak(value);
@@ -107,19 +114,27 @@ const TradeRank = () => {
   return (
     <Box>
       <Container>
-      {rankData.map((item, index) => (
-          <RankItem key={item["종목코드"]} onDoubleClick={() => TextToSpeech(item)}>
+        {rankData.map((item, index) => (
+          <RankItem
+            key={item["종목코드"]}
+            onDoubleClick={() => TextToSpeech(item)}
+          >
             <div>
               <Num>{index + 1}</Num>
-              <Link to={`/detail/${item["종목코드"]}`} style={{ textDecoration: "none" }}>
+              <Link
+                to={`/detail/${item["종목코드"]}`}
+                style={{ textDecoration: "none" }}
+              >
                 <Name>{item["종목명"]}</Name>
               </Link>
             </div>
             <div>
               <Current>
-              <Price>\ {numberWithCommas(item["현재가"])}</Price>
+                <Price>\ {numberWithCommas(item["현재가"])}</Price>
               </Current>
-              <Ratio ratio={item["전일 대비율"]}>{parseFloat(item["전일 대비율"]).toFixed(2)}%</Ratio>
+              <Ratio ratio={item["전일 대비율"]}>
+                {parseFloat(item["전일 대비율"]).toFixed(2)}%
+              </Ratio>
             </div>
           </RankItem>
         ))}

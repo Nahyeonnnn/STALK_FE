@@ -113,7 +113,6 @@ function isUSStock(code) {
     "LUMN",
     "ETON",
   ];
-
   return usStockCodes.includes(code);
 }
 
@@ -630,7 +629,7 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]);
-  //const [recentAxios, setRecentAxios] = useState();
+  const [recentAxios, setRecentAxios] = useState(null);
 
   const addToSearchHistory = (item) => {
     let newSearchArray = [...recentSearchData];
@@ -668,7 +667,18 @@ const SearchBar = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const recentSearchDataString = localStorage.getItem("recent");
+
+  //   if (!recentSearchDataString) {
+  //     setRecentSearch([]);
+  //   } else {
+  //     setRecentSearch(JSON.parse(recentSearchDataString));
+  //   }
+  // }, []);
+
   useEffect(() => {
+
     const recentSearchDataString = localStorage.getItem("recent");
 
     if (!recentSearchDataString) {
@@ -676,9 +686,7 @@ const SearchBar = () => {
     } else {
       setRecentSearch(JSON.parse(recentSearchDataString));
     }
-  }, []);
 
-  useEffect(() => {
     const recentArray = JSON.parse(localStorage.getItem("recent"));
     let filteredArray = [];
 
@@ -695,14 +703,17 @@ const SearchBar = () => {
     console.log("foundObjects", foundObjects);
 
     const axiosRequests = foundObjects.map((recentData) => {
-      return axios.get(`https://stalksound.store/sonification/now_data/`, {
+
+      const apiUrl = isUSStock(recentData.code) 
+        ? `https://stalksound.store/sonification/f_now_data/`
+        : `https://stalksound.store/sonification/now_data/`;
+
+      return axios.get(`${apiUrl}`, {
         params: {
           symbol: `${recentData.code}`,
         },
       });
     });
-
-    console.log(axiosRequests);
 
     Promise.all(axiosRequests)
       .then((responses) => {
@@ -710,12 +721,31 @@ const SearchBar = () => {
         for (let i = 0; i < foundObjects.length; i++) {
           foundObjects[i].responseData = responseDataArray[i];
         }
-        //setRecentAxios(foundObjects);
+        setRecentAxios(foundObjects);
+        console.log(foundObjects);
+        console.log(recentAxios);
       })
       .catch((e) => {
         console.log(e);
       });
+    // Promise.all(axiosRequests)
+    // .then((responses) => {
+    //   const responseDataArray = responses.map((res) => res.data.chart_data);
+    //   const updatedFoundObjects = foundObjects.map((foundObj, i) => {
+    //     return {
+    //       ...foundObj,
+    //       responseData: responseDataArray[i]
+    //     };
+    //   });
+    //   setRecentAxios(updatedFoundObjects);
+    //   console.log(updatedFoundObjects);
+    // })
+    // .catch((e) => {
+    //   console.log(e);
+    // });
+
   }, []);
+
 
   const sttFunction = (data) => {
     setQuery(data.text);
@@ -812,13 +842,14 @@ const SearchBar = () => {
         {query.length === 0 && (
           <AutoSearchContainer>
             <RecentSearch>최근 검색 기록</RecentSearch>
-            {recentSearchData !== null ? (
-              recentSearchData.map((recent) => (
+            {recentAxios !== null ? (
+              recentAxios.map((recent) => (
                 
                 <EachDataDiv
+                  key={recent.code}
                   onClick={() => {
                     const selectedItem = stockList.find(
-                      (item) => item.prdt_name === recent
+                      (item) => item.prdt_name === recent.prdt_name
                     );
                     if (selectedItem) {
                       const detailUrl = isUSStock(selectedItem.code)
@@ -832,11 +863,13 @@ const SearchBar = () => {
                 >
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon} />
-                    <AutoSearchData>{recent}</AutoSearchData>
+                    <AutoSearchData>{recent.prdt_name}</AutoSearchData>
                   </EachStockDataDiv>
-                  <EachPercentDataDiv>
-                    <StockPrice>{recent}</StockPrice>
-                    <PercentData>500 (+0.5)</PercentData>
+                  <EachPercentDataDiv 
+                  // onClick={()=>console.log(recent)}
+                  >
+                    <StockPrice>{recent["현재가"]}</StockPrice>
+                    <PercentData isPositive={parseFloat(recent["전일 대비율"]) >= 0}>{recent["전일 대비율"]}%</PercentData>
                   </EachPercentDataDiv>
                 </EachDataDiv>
               ))

@@ -212,7 +212,7 @@ const Nasdaq = () => {
           { responseType: "arraybuffer" }
         ) //arraybuffer 형태로 받아서
         .then(async (res) => {
-          console.log(res); //AudioContext 생성
+          //AudioContext 생성
           const audioContext = new (window.AudioContext ||
             window.webkitAudioContext)();
           const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode

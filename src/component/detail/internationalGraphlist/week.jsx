@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 import { stockList } from "../../search/searchBar";
 
-const Week = (props) => {
+const Week = ({StockID, propFunction}) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const stock = stockList.find((item) => item.code === `${props.StockID}`);
-  useEffect(() => {
-    // 2주일 전 구하기
+  const stock = stockList.find((item) => item.code === `${StockID}`);
+
+  const fetchData = useCallback(async () => {
     const currentDate = new Date();
 
     let year = currentDate.getFullYear();
@@ -21,28 +21,30 @@ const Week = (props) => {
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
 
-    axios
-      .get(`https://stalksound.store/sonification/f_day_data/`, {
+    try {
+      const response = await axios.get(`https://stalksound.store/sonification/f_day_data/`, {
         params: {
-          symbol: `${props.StockID}`,
+          symbol: `${StockID}`,
           end: endDate,
         },
-      })
-      .then((res) => {
-        props.propFunction(res.data.lista);
-        setStockData(res.data.data);
+      });
+      propFunction(response.data.lista);
+      setStockData(response.data.data);
 
-        setMaxPrice(
-          Math.max(...res.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
+      setMaxPrice(
+        Math.max(...response.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
+        Math.min(...response.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
         );
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [props.StockID]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [StockID, propFunction]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
  // 날짜와 종가 데이터 추출
  var dates = stockData.slice(-10).map(function (item) {

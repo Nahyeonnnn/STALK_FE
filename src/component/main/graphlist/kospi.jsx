@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import styled, { withTheme } from "styled-components";
+import styled from "styled-components";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 
 const StockBox = styled.div`
@@ -35,40 +35,40 @@ const AmountBox = styled.div`
   font-weight: bold;
 `;
 
-const Kospi = (props) => {
+const Kospi = ({ propFunction }) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     const currentDate = new Date();
-    const daysToSubtract = 60; // 빼고 싶은 날짜 수
+    const daysToSubtract = 30;
 
-    let year = String(currentDate.getFullYear()).padStart(2, "0");
+    let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
-    const endDate = `${year}${month}${date}`; // 현재 날짜
+    const endDate = `${year}${month}${date}`;
 
     currentDate.setDate(currentDate.getDate() - daysToSubtract);
 
-    year = String(currentDate.getFullYear()).padStart(2, "0");
+    year = currentDate.getFullYear();
     month = String(currentDate.getMonth() + 1).padStart(2, "0");
     date = String(currentDate.getDate()).padStart(2, "0");
 
-    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
+    const beginDate = `${year}${month}${date}`;
 
     axios
-      .get(`https://stalksound.store/sonification/a_day_data/`, {
+      .get(`https://stalksound.store/sonification/f_a_day_data/`, {
         params: {
-          symbol: "0001", // 코스피 0001 , 코스닥 1001
+          symbol: "NDX",
           begin: beginDate,
           end: endDate,
         },
       })
       .then((res) => {
-        props.propFunction(res.data.lista);
+        propFunction(res.data.lista);
         setStockData(res.data.data);
 
         setMaxPrice(
@@ -81,7 +81,11 @@ const Kospi = (props) => {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [propFunction]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {

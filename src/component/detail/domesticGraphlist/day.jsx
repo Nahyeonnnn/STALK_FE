@@ -30,7 +30,9 @@ const Day = (props) => {
   const currentTimeString = getFormattedTime(currentTime);
 
   let timeIntervals;
-  if (currentTimeString <= "153000") {
+  if ("000000" <= currentTimeString || currentTimeString <= "090000") {
+    timeIntervals = [153000, 150000, 143000, 140000];
+  } else if (currentTimeString <= "153000") {
     timeIntervals = generateTimeIntervals(
       currentTime,
       30, // 30분 간격
@@ -39,6 +41,50 @@ const Day = (props) => {
   } else {
     timeIntervals = [153000, 150000, 143000, 140000];
   }
+  // const fetchData = useCallback(async (end) => {
+  //   try {
+  //     const requests = timeIntervalsRef.current.map(async (interval) => {
+  //       const res = await axios.get(
+  //         `https://stalksound.store/sonification/hmm__minute_data/`,
+  //         {
+  //           params: {
+  //             symbol: `${props.StockID}`,
+  //             end: interval,
+  //           },
+  //         }
+  //       );
+  //       return res.data.data;
+  //     });
+
+  //     const responses = await Promise.all(requests);
+
+  //     const newData = responses.flatMap((data) =>
+  //       data.map((item) => ({
+  //         종목: item.종목,
+  //         날짜: item.날짜,
+  //         시가: item.시가,
+  //         현재가: item.현재가,
+  //         고가: item.고가,
+  //         저가: item.저가,
+  //       }))
+  //     );
+
+  //     setStockData(newData);
+  //     setMaxPrice(
+  //       Math.max(...newData.map((item) => parseInt(item.현재가, 10)))
+  //     );
+  //     setMinPrice(
+  //       Math.min(...newData.map((item) => parseInt(item.현재가, 10)))
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [props.StockID]);
+
+  // useEffect(() => {
+  //   setStockData([]);
+  //   fetchData(timeIntervalsRef.current[0]);
+  // }, [fetchData]);
 
   useEffect(() => {
     setStockData([]);

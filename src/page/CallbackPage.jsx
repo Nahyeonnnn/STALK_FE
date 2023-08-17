@@ -48,19 +48,19 @@ const CallbackPage = () => {
     //     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     // };
 
-    const getCookie = (name) => {
-        const cookieString = decodeURIComponent(document.cookie);
-        const cookies = cookieString.split(';');
+    // const getCookie = (name) => {
+    //     const cookieString = decodeURIComponent(document.cookie);
+    //     const cookies = cookieString.split(';');
     
-        for (const cookie of cookies) {
-            const [cookieName, cookieValue] = cookie.split('=');
+    //     for (const cookie of cookies) {
+    //         const [cookieName, cookieValue] = cookie.split('=');
     
-            if (cookieName.trim() === name) {
-                return cookieValue;
-            }
-        }
-        return null; // 해당하는 쿠키가 없는 경우
-    }
+    //         if (cookieName.trim() === name) {
+    //             return cookieValue;
+    //         }
+    //     }
+    //     return null; // 해당하는 쿠키가 없는 경우
+    // }
 
     useEffect(()=>{
         axios
@@ -76,7 +76,7 @@ const CallbackPage = () => {
                 setCookie('accessToken', res.data.token.access, 1);
                 setCookie('refreshToken', res.data.token.refresh, 1);
                 setTimeout(function(){
-                    navigate(`/main`);
+                navigate(`/main`);
                 },5000);
             })
             .catch((e)=>{
@@ -84,7 +84,7 @@ const CallbackPage = () => {
                 alert('로그인 오류! 다시 시도해 주십시오');
                 navigate(`/login`);
             })
-    },[code]);
+    },[code, navigate]);
 
     // function GetUserInfo(){
     //     axios

@@ -1,38 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 import { stockList } from "../../search/searchBar";
 
-const Day = (props) => {
+const Day = ({StockID, propFunction}) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const stock = stockList.find((item) => item.code === `${props.StockID}`);
-  useEffect(() => {
-    axios
-      .get(`https://stalksound.store/sonification/f_minute_data/`, {
-        params: {
-          symbol: `${props.StockID}`,
-        },
-      })
-      .then((res) => {
-        props.propFunction(res.data.lista);
-        setStockData(res.data.data);
+  const stock = stockList.find((item) => item.code === `${StockID}`);
 
-        setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
-        );
-        setMinPrice(
-          Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
-        );
-      })
-      .catch((e) => {
-        console.log(e);
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get(`https://stalksound.store/sonification/f_minute_data/`, {
+        params: {
+          symbol: `${StockID}`,
+        },
       });
-  }, [props.StockID]);
+      propFunction(response.data.lista);
+      setStockData(response.data.data);
+
+      setMaxPrice(
+        Math.max(...response.data.data.map((item) => parseFloat(item.종가, 10)))
+      );
+      setMinPrice(
+        Math.min(...response.data.data.map((item) => parseFloat(item.종가, 10)))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }, [StockID, propFunction]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {

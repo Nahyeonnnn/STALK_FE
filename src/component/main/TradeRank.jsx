@@ -91,7 +91,7 @@ const TradeRank = () => {
         const response = await axios.get(
           "https://stalksound.store/sonification/transaction_rank/"
         );
-        if (response.status === 200) {
+        if (parseInt((response.status)/100) === 2) {
           setRankData(response.data["시가총액 순위"]);
         }
         console.log(response);

@@ -11,8 +11,28 @@ const StockBox = styled.div`
 
 const Container = styled.div`
   margin: auto;
+  margin-top: 0.5rem;
+  margin-bottom: -0.9rem;
   position: relative; // 컨테이너 위치를 상대적으로 설정
   width: ${(props) => props.chartWidth}px; // chartWidth 값을 사용하여 너비 설정
+`;
+
+const TextBox = styled.div`
+  color: white;
+  color: #21325e;
+  position: absolute;
+  margin-top: 0.5rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+  /* font-weight: bold; */
+  font-size: 1rem;
+  font-weight: bold;
+  /* display: flex; */
+`;
+
+const AmountBox = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
 
 const Kospi = () => {
@@ -27,9 +47,9 @@ const Kospi = () => {
 
   useEffect(() => {
     const currentDate = new Date();
-    const daysToSubtract = 30; // 빼고 싶은 날짜 수
+    const daysToSubtract = 60; // 빼고 싶은 날짜 수
 
-    let year = currentDate.getFullYear();
+    let year = String(currentDate.getFullYear()).padStart(2, "0");
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
@@ -37,7 +57,7 @@ const Kospi = () => {
 
     currentDate.setDate(currentDate.getDate() - daysToSubtract);
 
-    year = currentDate.getFullYear();
+    year = String(currentDate.getFullYear()).padStart(2, "0");
     month = String(currentDate.getMonth() + 1).padStart(2, "0");
     date = String(currentDate.getDate()).padStart(2, "0");
 
@@ -54,6 +74,9 @@ const Kospi = () => {
       .then((res) => {
         setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
         setStockData(res.data.data);
+        console.log(res)
+        console.log(beginDate);
+        console.log(endDate);
 
         setMaxPrice(
           Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))
@@ -86,10 +109,10 @@ const Kospi = () => {
   }
 
   // viewport에 따른 그래프 width 값 설정
-  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.8);
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
 
   const handleWindowResize = () => {
-    setChartWidth(window.innerWidth * 0.8); // 예시로 80%로 설정, 필요에 따라 조절 가능
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
   };
 
   useEffect(() => {
@@ -118,9 +141,8 @@ const Kospi = () => {
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      // text: stockData.length > 0 ? stockData[0].업종 : "",
-      text: `코스피<br>${latelyPrices}`,
-      text: `<span style="font-size: 0.8rem; font-weight: bold;">코스피</span><br><span style="font-size: 1.2rem; font-weight: normal;">${latelyPrices}</span>`,
+      // text: `<span style="font-size: 0.8rem; font-weight: bold;">코스피</span><br><span style="font-size: 1.2rem; font-weight: normal;">${latelyPrices}</span>`,
+      text: "",
       style: {
         fontSize: "1rem",
         color: "white",
@@ -224,6 +246,10 @@ const Kospi = () => {
   return (
     <>
       <Container chartWidth={chartWidth}>
+        <TextBox>
+          <div>KOSPI</div>
+          <AmountBox>{latelyPrices}</AmountBox>
+        </TextBox>
         <StockBox onClick={playAudio}>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </StockBox>

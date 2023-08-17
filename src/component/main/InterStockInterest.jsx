@@ -45,8 +45,42 @@ const Name = styled.div`
   letter-spacing: -0.084rem;
   margin-left: 2rem;
 `;
+
+const Current = styled.div`
+  color: var(--black-80-base, #2E3032);
+  text-align: right;
+  font-family: Inter;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.42857rem;
+  letter-spacing: -0.084rem;
+`;
+
+const Price = styled.span`
+  margin-left: 0.25rem;
+`;
+
+const Ratio = styled.div`
+  text-align: right;
+  font-family: Inter;
+  font-size: 0.85714rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.14286rem;
+  color: ${({ ratio }) => (parseFloat(ratio) >= 0 ? "red" : "blue")};
+`;
+
+const numberWithCommas = (number) => {
+  if (number === undefined) {
+    return ""; // 숫자가 정의되지 않은 경우 빈 문자열 반환
+  }
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const InterStockInterest = () => {
   const [interestList, setInterestList] = useState([]);
+  const [stockData, setStockData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +88,7 @@ const InterStockInterest = () => {
         const response = await axios.get('https://stalksound.store/sonification/user_info/', {
           headers: {
             accept: 'application/json',
-            'X-CSRFToken': 'S9JIR40hR0jzCwMFq2fXdgVyCRhGvmiNVKQULMCV9n3bA29lLutZURCjf3K3py3W', // Replace with your actual CSRF token
+            'X-CSRFToken': 'S9JIR40hR0jzCwMFq2fXdgVyCRhGvmiNVKQULMCV9n3bA29lLutZURCjf3K3py3W', // 실제 CSRF 토큰으로 대체
           },
         });
         setInterestList(response.data.찜한목록);
@@ -66,25 +100,60 @@ const InterStockInterest = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchStockData = async () => {
+      try {
+        for (const item of interestList) {
+          const response = await axios.get(
+            "https://stalksound.store/sonification/f_now_data/",
+            {
+              params: {
+                symbol: item.code,
+              },
+            }
+          );
 
-return (
+          const chartData = response.data.chart_data; // chart_data 객체 가져오기
+          setStockData((prevData) => ({
+            ...prevData,
+            [item.code]: chartData, // chart_data 직접 설정
+          }));
+        }
+      } catch (error) {
+        console.error('종목 데이터 가져오기 실패:', error);
+      }
+    };
+
+    fetchStockData();
+  }, [interestList]);
+
+  // is_domestic_stock가 true인 항목만 필터링
+  const filteredInterestList = interestList.filter(item =>! item.is_domestic_stock);
+
+  return (
     <Box>
       <Container>
-      {interestList.map((item, index) => (
-          <RankItem key={item["code"]}>
+        {filteredInterestList.map((item, index) => (
+          <RankItem key={item.code}>
             <div>
               <Num>{index + 1}</Num>
-              <Link to={`/detail/inter/${item["code"]}`} style={{ textDecoration: "none" }}>
-                <Name>{item["prdt_name"]}</Name>
+              <Link to={`/detail/inter/${item.code}`} style={{ textDecoration: 'none' }}>
+                <Name>{item.prdt_name}</Name>
               </Link>
             </div>
-    
+            <div>
+              <Current>
+                <Price>\ {numberWithCommas(stockData[item.code]?.현재가)}</Price>
+              </Current>
+              <Ratio ratio={stockData[item.code]?.['등락율']}>
+                {parseFloat(stockData[item.code]?.['등락율']).toFixed(2)}%
+              </Ratio>
+            </div>
           </RankItem>
         ))}
       </Container>
     </Box>
   );
 };
-
 
 export default InterStockInterest;

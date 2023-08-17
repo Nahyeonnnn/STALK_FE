@@ -60,15 +60,15 @@ const RightArrow = styled(ArrowButton)`
 const MainGraph = () => {
   const [activeButton, setActiveButton] = useState(1);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setActiveButton((prevButton) => (prevButton % 4) + 1);
-  //   }, 5000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveButton((prevButton) => (prevButton % 4) + 1);
+    }, 5000);
 
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleNextChart = () => {
     setActiveButton((prevButton) => (prevButton % 4) + 1);

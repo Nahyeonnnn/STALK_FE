@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const AmountBox = styled.div`
   display: flex;
@@ -45,17 +46,17 @@ const InvestName = styled.div`
 `;
 
 const InvestPrice = styled.div`
-  width: 30vw;
+  width: 40vw;
   display: flex;
   justify-content: flex-end;
-  margin-left: 2rem;
 `;
 
 const InvestRate = styled.div`
-  width: 10vw;
+  width: 5vw;
   display: flex;
   justify-content: flex-end;
   color: ${({ value }) => (String(value).startsWith("-") ? "skyblue" : "red")};
+  margin-left: 4rem;
 `;
 
 const formatNumberWithCommas = (number) => {
@@ -116,16 +117,32 @@ const MainMyInvest = () => {
         <AmountTextRight>
           {formatNumberWithCommas(userAmount.user_property)} 원
         </AmountTextRight>
-      </AmountBox>
+        </AmountBox>
       <InvestBox onDoubleClick={() => TextToSpeechInvest(userInvestments)}>
         {userInvestments.map((investment) => (
           <InvestContainer key={investment.id}>
-            <InvestName>{investment.stock}</InvestName>
+            <InvestName>
+              {investment.is_domestic_stock ? (
+                <Link
+                  to={`/detail/${investment.stock_code}`}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  {investment.stock}
+                </Link>
+              ) : (
+                <Link
+                  to={`/detail/inter/${investment.stock_code}`}
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  {investment.stock}
+                </Link>
+              )}
+            </InvestName>
             <InvestPrice>
               {formatNumberWithCommas(investment.now_price)} 원
             </InvestPrice>
             <InvestRate value={investment.rate_profit_loss}>
-              {investment.rate_profit_loss}
+              {investment.rate_profit_loss.toFixed(2)}%
             </InvestRate>
           </InvestContainer>
         ))}

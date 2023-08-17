@@ -81,7 +81,7 @@ const InterTradeRank = () => {
     async function fetchTransactionRank() {
       try {
         const response = await axios.get("https://stalksound.store/sonification/f_transaction_rank/");
-        if (response.status === 200) {
+        if (parseInt((response.status)/100) === 2) {
           setRankData(response.data["시가총액 순위"]);
         }
       } catch (error) {

@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 import Day from "./domesticGraphlist/day";
 import Week from "./domesticGraphlist/week";
@@ -60,30 +62,79 @@ const DetailGraph = () => {
   const { StockID1 } = useParams();
   const [active, setActive] = useState("Day");
 
+  const [lista, setLista] = useState(null);
+  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
+  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
+
+  useEffect(() => {
+    //lista 저장 후 데이터를 소리로 변환
+    if (lista !== null) {
+      axios
+        .post(
+          `https://stalksound.store/sonification/data_to_sound/`,
+          {
+            lista: lista,
+          },
+          { responseType: "arraybuffer" }
+        ) //arraybuffer 형태로 받아서
+        .then(async (res) => {
+          //AudioContext 생성
+          const audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
+          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
+          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [lista]);
+
+  //그래프 음향 출력
+  const playAudio = () => {
+    if (!isPlaying && audioBuffer) {
+      setIsPlaying(true);
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.onended = () => {
+        setIsPlaying(false); //재생 끝날 경우 false로 reset
+      };
+      source.start(0);
+    }
+  };
+
+  
+  const highFunction = (text) => {
+    setLista(text);
+  };
+
   return (
     <>
       <SpaceBox></SpaceBox>
       <ChartContainer>
         <Likebtn></Likebtn>
-        <ChartBox>
+        <ChartBox onClick={playAudio}>
           {active === "Day" && (
             <StockBox>
-              <Day StockID={StockID1} />
+              <Day StockID={StockID1} propFunction={highFunction} />
             </StockBox>
           )}
           {active === "Week" && (
             <StockBox>
-              <Week StockID={StockID1} />
+              <Week StockID={StockID1} propFunction={highFunction} />
             </StockBox>
           )}
           {active === "Month" && (
             <StockBox>
-              <Month StockID={StockID1} />
+              <Month StockID={StockID1} propFunction={highFunction} />
             </StockBox>
           )}
           {active === "Year" && (
             <StockBox>
-              <Year StockID={StockID1} />
+              <Year StockID={StockID1} propFunction={highFunction} />
             </StockBox>
           )}
         </ChartBox>

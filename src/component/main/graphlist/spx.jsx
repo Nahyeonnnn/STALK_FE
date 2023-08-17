@@ -35,15 +35,11 @@ const AmountBox = styled.div`
   font-weight: bold;
 `;
 
-const Spx = () => {
+const Spx = (props) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
-
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
   useEffect(() => {
     const currentDate = new Date();
@@ -72,7 +68,7 @@ const Spx = () => {
         },
       })
       .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+        props.propFunction(res.data.lista);
         setStockData(res.data.data);
 
         setMaxPrice(
@@ -200,46 +196,6 @@ const Spx = () => {
     },
   };
 
-  useEffect(() => {
-    //lista 저장 후 데이터를 소리로 변환
-    if (lista !== null) {
-      axios
-        .post(
-          `https://stalksound.store/sonification/data_to_sound/`,
-          {
-            lista: lista,
-          },
-          { responseType: "arraybuffer" }
-        ) //arraybuffer 형태로 받아서
-        .then(async (res) => {
-          //AudioContext 생성
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
-          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
-          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [lista]);
-
-  //그래프 음향 출력
-  const playAudio = () => {
-    if (!isPlaying && audioBuffer) {
-      setIsPlaying(true);
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.onended = () => {
-        setIsPlaying(false); //재생 끝날 경우 false로 reset
-      };
-      source.start(0);
-    }
-  };
-
   return (
     <>
       <Container chartWidth={chartWidth}>
@@ -247,7 +203,7 @@ const Spx = () => {
           <div>S&P 500</div>
           <AmountBox>{latelyPrices}</AmountBox>
         </TextBox>
-        <StockBox onClick={playAudio}>
+        <StockBox>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </StockBox>
       </Container>

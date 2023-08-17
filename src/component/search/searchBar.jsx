@@ -730,7 +730,7 @@ const SearchBar = () => {
         const response = await axios.get(url);
         if (response.status === 200) {
           const transactionRank = response.data["시가총액 순위"];
-
+          console.log(response.data)
           // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
           transactionRank.slice(startIndex, endIndex).forEach((item) => {
             const stockIndex = stockList.findIndex(
@@ -812,12 +812,12 @@ const SearchBar = () => {
             <RecentSearch>최근 검색 기록</RecentSearch>
             {recentSearchData !== null ? (
               recentSearchData.map((recent) => (
+                
                 <EachDataDiv
                   onClick={() => {
                     const selectedItem = stockList.find(
                       (item) => item.prdt_name === recent
                     );
-
                     if (selectedItem) {
                       const detailUrl = isUSStock(selectedItem.code)
                         ? `/detail/inter/${selectedItem.code}`

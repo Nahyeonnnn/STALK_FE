@@ -435,7 +435,7 @@ const InterBuyPage = () => {
       <StockName>{stock.prdt_name}</StockName>
       <PriceBox>
         <PriceBoxLeft>구매할 가격</PriceBoxLeft>
-        <PriceBoxRight>{nowPrice} $</PriceBoxRight>
+        <PriceBoxRight>{nowPrice} \</PriceBoxRight>
       </PriceBox>
       <PurchastText>몇 주를 구매할까요?</PurchastText>
       <FormContainer>
@@ -446,7 +446,7 @@ const InterBuyPage = () => {
         ></PurchaseBox>
         <PurchaseConfirm onClick={handleConfirmClick}>확인</PurchaseConfirm>
       </FormContainer>
-      <TotalAmountBox>Total {TotalAmountStockPriceDisplay} $</TotalAmountBox>
+      <TotalAmountBox>Total {TotalAmountStockPriceDisplay} \</TotalAmountBox>
       {active === 1 && (
         <NumberBox>
           <ThreeNumberBox>
@@ -484,14 +484,14 @@ const InterBuyPage = () => {
         <NumberBox>
           <ReserveLine1> {stock.prdt_name} {inputValue}주 구매 예약</ReserveLine1>
           <ReserveLine2>
-            <div> 1주 희망 가격 </div> <div> {nowPrice} $</div>
+            <div> 1주 희망 가격 </div> <div> {nowPrice} \</div>
           </ReserveLine2>
           <ReserveLine3>
-            <div> 예상 수수료 </div> <div> {}0 $</div>
+            <div> 예상 수수료 </div> <div> {}0 \</div>
           </ReserveLine3>
           <ReserveLine4>
             <div> 총 주문 금액 </div>{" "}
-            <div> {TotalAmountStockPriceDisplay} $</div>
+            <div> {TotalAmountStockPriceDisplay} \</div>
           </ReserveLine4>
           <ReserveLine5>
             <div>

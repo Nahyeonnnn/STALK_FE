@@ -67,6 +67,13 @@ const Ratio = styled.div`
   color: ${({ ratio }) => (parseFloat(ratio) >= 0 ? "red" : "blue")};
 `;
 
+const numberWithCommas = (number) => {
+  if (number === undefined) {
+    return ""; // Return an empty string if the number is undefined
+  }
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const InterTradeRank = () => {
   const [rankData, setRankData] = useState([]);
 
@@ -104,7 +111,7 @@ const InterTradeRank = () => {
               </Link>
             </div>
             <div>
-              <Current>\ {item["현재가"]}</Current>
+              <Current>\ {numberWithCommas(item["현재가"])}</Current>
               <Ratio ratio={item["전일 대비율"]}>{item["전일 대비율"]}%</Ratio>
             </div>
           </RankItem>

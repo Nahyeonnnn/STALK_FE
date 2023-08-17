@@ -73,7 +73,7 @@ const Ratio = styled.div`
 
 const numberWithCommas = (number) => {
   if (number === undefined) {
-    return ""; // 숫자가 정의되지 않은 경우 빈 문자열 반환
+    return ""; // Return an empty string if the number is undefined
   }
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
@@ -88,7 +88,7 @@ const InterStockInterest = () => {
         const response = await axios.get('https://stalksound.store/sonification/user_info/', {
           headers: {
             accept: 'application/json',
-            'X-CSRFToken': 'S9JIR40hR0jzCwMFq2fXdgVyCRhGvmiNVKQULMCV9n3bA29lLutZURCjf3K3py3W', // 실제 CSRF 토큰으로 대체
+            'X-CSRFToken': 'S9JIR40hR0jzCwMFq2fXdgVyCRhGvmiNVKQULMCV9n3bA29lLutZURCjf3K3py3W', // Replace with your actual CSRF token
           },
         });
         setInterestList(response.data.찜한목록);
@@ -108,15 +108,13 @@ const InterStockInterest = () => {
             "https://stalksound.store/sonification/f_now_data/",
             {
               params: {
-                symbol: item.code,
-              },
+                symbol: item.code
+              }
             }
           );
-
-          const chartData = response.data.chart_data; // chart_data 객체 가져오기
-          setStockData((prevData) => ({
+          setStockData(prevData => ({
             ...prevData,
-            [item.code]: chartData, // chart_data 직접 설정
+            [item.code]: response.data.chart_data
           }));
         }
       } catch (error) {
@@ -127,8 +125,8 @@ const InterStockInterest = () => {
     fetchStockData();
   }, [interestList]);
 
-  // is_domestic_stock가 true인 항목만 필터링
-  const filteredInterestList = interestList.filter(item =>! item.is_domestic_stock);
+  // Filter only items where is_domestic_stock is true
+  const filteredInterestList = interestList.filter(item => !item.is_domestic_stock);
 
   return (
     <Box>

@@ -6,12 +6,33 @@ import { useState } from "react";
 import axios from "axios";
 
 const StockBox = styled.div`
-  display: flex;
-  width: 73vw;
-  height: 13.5rem;
   margin: auto;
-  background-color: white;
-  z-index: 1;
+`;
+
+const Container = styled.div`
+  margin: auto;
+  margin-top: 0.5rem;
+  margin-bottom: -0.9rem;
+  position: relative; // 컨테이너 위치를 상대적으로 설정
+  width: ${(props) => props.chartWidth}px; // chartWidth 값을 사용하여 너비 설정
+`;
+
+const TextBox = styled.div`
+  color: white;
+  color: #21325e;
+  position: absolute;
+  margin-top: 0.5rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+  /* font-weight: bold; */
+  font-size: 1rem;
+  font-weight: bold;
+  /* display: flex; */
+`;
+
+const AmountBox = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
 `;
 
 const Kosdaq = () => {
@@ -75,6 +96,8 @@ const Kosdaq = () => {
     return parseFloat(item.시가, 10);
   });
 
+  var latelyPrices = prices[prices.length - 1];
+
   let gap = 10; // 그래프 간격 조정 변수
 
   for (let i = minPrice - 10; i <= maxPrice + 10; i += gap) {
@@ -115,10 +138,14 @@ const Kosdaq = () => {
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].업종 : "",
+      // text: `<span style="font-size: 0.8rem; font-weight: bold;">코스피</span><br><span style="font-size: 1.2rem; font-weight: normal;">${latelyPrices}</span>`,
+      text: "",
       style: {
         fontSize: "1rem",
+        color: "white",
       },
+      align: "left", // 제목을 좌측으로 정렬
+      y: 20, // 제목의 위쪽 여백을 조절
     },
     xAxis: {
       categories: dates,
@@ -136,6 +163,7 @@ const Kosdaq = () => {
     },
     yAxis: {
       tickPositions: interval,
+      gridLineWidth: 0.15, // 눈금 굵기
       title: {
         text: null,
       },
@@ -143,6 +171,7 @@ const Kosdaq = () => {
         enabled: false,
         visible: false,
       },
+      gridLineColor: "#21325E", //눈금 색상 설정 가능!
     },
     series: [
       {
@@ -161,8 +190,9 @@ const Kosdaq = () => {
     ],
     plotOptions: {
       areaspline: {
-        lineWidth: 0.2,
-        lineColor: "blue", //blackborder
+        // lineWidth: 0.2,
+        lineWidth: 1.5,
+        lineColor: "#21325E",
         marker: {
           enabled: false,
         },
@@ -212,9 +242,15 @@ const Kosdaq = () => {
 
   return (
     <>
-      <StockBox onClick={playAudio}>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </StockBox>
+      <Container chartWidth={chartWidth}>
+        <TextBox>
+          <div>KOSDAQ</div>
+          <AmountBox>{latelyPrices}</AmountBox>
+        </TextBox>
+        <StockBox onClick={playAudio}>
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </StockBox>
+      </Container>
     </>
   );
 };

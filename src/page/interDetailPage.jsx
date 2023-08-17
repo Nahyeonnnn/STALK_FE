@@ -63,7 +63,6 @@ const InterDetailPage = () => {
         >
           통계
         </Button>
-
         <Button isActive={active === "News"} onClick={() => setActive("News")}>
           뉴스
         </Button>

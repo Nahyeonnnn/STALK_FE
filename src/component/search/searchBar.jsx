@@ -442,8 +442,6 @@ const SearchBar = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]);
   const [recentAxios, setRecentAxios] = useState();
-  const [stockData, setStockData] = useState({});
-  const [stockRatio, setStockRatio] = useState({});
 
   const addToSearchHistory = (item) => {
     let newSearchArray = [...recentSearchData];
@@ -538,31 +536,25 @@ const SearchBar = () => {
   };
 
   useEffect(() => {
-    const fetchStockData = async () => {
+    async function fetchTransactionRank() {
       try {
-        // for (const item of interestList) {
         const response = await axios.get(
-          "https://stalksound.store/sonification/now_data/",
-          {
-            params: {
-              symbol: "005930",
-            },
-          }
+          "https://stalksound.store/sonification/transaction_rank/"
         );
-        setStockData(response.data.chart_data.시가);
-        setStockRatio(response.data.chart_data["전일 대비율"]);
+        if (response.status === 200) {
+          // setRankData(response.data["시가총액 순위"]);
+          console.log(response.data["시가총액 순위"]);
+        }
       } catch (error) {
-        console.error("종목 데이터 가져오기 실패:", error);
+        console.error("Error fetching data:", error);
       }
-    };
+    }
 
-    fetchStockData();
+    fetchTransactionRank();
   }, []);
 
-  console.log("시가");
-  console.log(stockData);
-  console.log("전일 대비율");
-  console.log(stockRatio);
+  console.log("ㅎㅎ");
+  // console.log(rankData);
 
   return (
     <>
@@ -597,8 +589,8 @@ const SearchBar = () => {
                   {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
-                  <StockPrice>{stockData}</StockPrice>
-                  <PercentData>{stockRatio}%</PercentData>
+                  <StockPrice>0</StockPrice>
+                  <PercentData>0%</PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}

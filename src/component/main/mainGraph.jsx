@@ -16,13 +16,6 @@ const ChartBox = styled.div`
   position: relative;
 `;
 
-const ChartType = styled.p`
-  color: white;
-  font-size: small;
-  margin-left: 1rem;
-  font-weight: bold;
-`;
-
 const ChartButtonBox = styled.div`
   display: flex;
   justify-content: center;

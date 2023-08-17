@@ -73,7 +73,7 @@ const Likebtn = () => {
     }
 
     fetchData();
-  },[]);
+  },[StockID]);
 
   useEffect(() => {
     // resize 이벤트 리스너 추가

@@ -44,9 +44,9 @@ const CallbackPage = () => {
         document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
     };
 
-    const deleteCookie = (name) => {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    };
+    // const deleteCookie = (name) => {
+    //     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    // };
 
     const getCookie = (name) => {
         const cookieString = decodeURIComponent(document.cookie);

@@ -13,6 +13,9 @@ const MicrophoneIcon = styled(FontAwesomeIcon)`
     bottom: 1rem;
     color: gray;
     right: 1rem;
+    &:hover {
+    cursor: pointer;
+  }
 `;
 
 const AudioRecord = (props) => {

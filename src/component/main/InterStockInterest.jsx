@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from 'axios';
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
@@ -20,23 +20,24 @@ const Box = styled.div`
 const RankItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const Num = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   font-family: Inter;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
+  position: absolute;
 `;
 
 const Name = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   font-family: Inter;
   font-size: 1rem;
   font-style: normal;
@@ -47,7 +48,7 @@ const Name = styled.div`
 `;
 
 const Current = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   text-align: right;
   font-family: Inter;
   font-size: 1rem;
@@ -78,14 +79,18 @@ const InterStockInterest = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://stalksound.store/sonification/user_info/');
-        const interestList = response.data['찜한목록'];
+        const response = await axios.get(
+          "https://stalksound.store/sonification/user_info/"
+        );
+        const interestList = response.data["찜한목록"];
         setFilteredInterestList(interestList);
 
         // Fetch stock data for each favorite item
         const stockDataPromises = interestList.map(async (item) => {
           try {
-            const stockResponse = await axios.get(`https://stalksound.store/sonification/f_now_data/?symbol=${item.code}`);
+            const stockResponse = await axios.get(
+              `https://stalksound.store/sonification/f_now_data/?symbol=${item.code}`
+            );
             return { code: item.code, data: stockResponse.data.chart_data };
           } catch (error) {
             console.error(`Error fetching data for ${item.code}:`, error);
@@ -104,7 +109,7 @@ const InterStockInterest = () => {
 
         setStockData(stockDataMap);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -121,26 +126,31 @@ const InterStockInterest = () => {
   return (
     <Box>
       <Container>
-      {filteredInterestList
-        .filter(item => !item.is_domestic_stock) // Filter only domestic stocks
-        .map((item, index) => (
-          <RankItem key={item.code}>
-            <div>
-              <Num>{index + 1}</Num>
-              <Link to={`/detail/${item.code}`} style={{ textDecoration: 'none' }}>
-                <Name>{item.prdt_name}</Name>
-              </Link>
-            </div>
-            <div>
-              <Current>
-                <Price>₩ {numberWithCommas(stockData[item.code]?.현재가)}</Price>
-              </Current>
-              <Ratio ratio={stockData[item.code]?.['등락율']}>
-                {parseFloat(stockData[item.code]?.['등락율']).toFixed(2)}%
-              </Ratio>
-            </div>
-          </RankItem>
-        ))}
+        {filteredInterestList
+          .filter((item) => !item.is_domestic_stock) // Filter only domestic stocks
+          .map((item, index) => (
+            <RankItem key={item.code}>
+              <div>
+                <Num>{index + 1}</Num>
+                <Link
+                  to={`/detail/${item.code}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Name>{item.prdt_name}</Name>
+                </Link>
+              </div>
+              <div>
+                <Current>
+                  <Price>
+                    ₩ {numberWithCommas(stockData[item.code]?.현재가)}
+                  </Price>
+                </Current>
+                <Ratio ratio={stockData[item.code]?.["등락율"]}>
+                  {parseFloat(stockData[item.code]?.["등락율"]).toFixed(2)}%
+                </Ratio>
+              </div>
+            </RankItem>
+          ))}
       </Container>
     </Box>
   );

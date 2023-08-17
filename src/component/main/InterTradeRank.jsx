@@ -26,17 +26,18 @@ const RankItem = styled.div`
 `;
 
 const Num = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   font-family: Inter;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
+  position: absolute;
 `;
 
 const Name = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   font-family: Inter;
   font-size: 1rem;
   font-style: normal;
@@ -47,7 +48,7 @@ const Name = styled.div`
 `;
 
 const Current = styled.div`
-  color: var(--black-80-base, #2E3032);
+  color: var(--black-80-base, #2e3032);
   text-align: right;
   font-family: Inter;
   font-size: 1rem;
@@ -80,8 +81,10 @@ const InterTradeRank = () => {
   useEffect(() => {
     async function fetchTransactionRank() {
       try {
-        const response = await axios.get("https://stalksound.store/sonification/f_transaction_rank/");
-        if (parseInt((response.status)/100) === 2) {
+        const response = await axios.get(
+          "https://stalksound.store/sonification/f_transaction_rank/"
+        );
+        if (parseInt(response.status / 100) === 2) {
           setRankData(response.data["시가총액 순위"]);
         }
       } catch (error) {
@@ -93,7 +96,12 @@ const InterTradeRank = () => {
   }, []);
 
   function TextToSpeech(text) {
-    const { "거래량 순위": rank, "종목명": name, "현재가": price, "전일 대비율": ratioYesterday } = text;
+    const {
+      "거래량 순위": rank,
+      종목명: name,
+      현재가: price,
+      "전일 대비율": ratioYesterday,
+    } = text;
     const t = `종목명: ${name}, 순위: ${rank}, 현재가: ${price}, 전일 대비율: ${ratioYesterday}`;
     const value = new SpeechSynthesisUtterance(t);
     window.speechSynthesis.speak(value);
@@ -103,10 +111,16 @@ const InterTradeRank = () => {
     <Box>
       <Container>
         {rankData.map((item, index) => (
-          <RankItem key={item["종목코드"]} onDoubleClick={() => TextToSpeech(item)}>
+          <RankItem
+            key={item["종목코드"]}
+            onDoubleClick={() => TextToSpeech(item)}
+          >
             <div>
               <Num>{index + 1}</Num>
-              <Link to={`/detail/inter/${item["종목코드"]}`} style={{ textDecoration: "none" }}>
+              <Link
+                to={`/detail/inter/${item["종목코드"]}`}
+                style={{ textDecoration: "none" }}
+              >
                 <Name>{item["종목명"]}</Name>
               </Link>
             </div>

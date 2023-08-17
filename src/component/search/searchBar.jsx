@@ -118,7 +118,7 @@ function isUSStock(code) {
 }
 
 //axios 연결 시 받을 주식 리스트 예시
-  export const stockList = [
+export const stockList = [
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG에너지솔루션", code: "373220" },
   { prdt_name: "SK하이닉스", code: "000660" },
@@ -442,6 +442,8 @@ const SearchBar = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]);
   const [recentAxios, setRecentAxios] = useState();
+  const [stockData, setStockData] = useState({});
+  const [stockRatio, setStockRatio] = useState({});
 
   const addToSearchHistory = (item) => {
     let newSearchArray = [...recentSearchData];
@@ -535,6 +537,33 @@ const SearchBar = () => {
     setShowSuggestions(true);
   };
 
+  useEffect(() => {
+    const fetchStockData = async () => {
+      try {
+        // for (const item of interestList) {
+        const response = await axios.get(
+          "https://stalksound.store/sonification/now_data/",
+          {
+            params: {
+              symbol: "005930",
+            },
+          }
+        );
+        setStockData(response.data.chart_data.시가);
+        setStockRatio(response.data.chart_data["전일 대비율"]);
+      } catch (error) {
+        console.error("종목 데이터 가져오기 실패:", error);
+      }
+    };
+
+    fetchStockData();
+  }, []);
+
+  console.log("시가");
+  console.log(stockData);
+  console.log("전일 대비율");
+  console.log(stockRatio);
+
   return (
     <>
       <SearchContainer>
@@ -568,8 +597,8 @@ const SearchBar = () => {
                   {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
-                  <StockPrice>7500</StockPrice>
-                  <PercentData>+500 (+5%)</PercentData>
+                  <StockPrice>{stockData}</StockPrice>
+                  <PercentData>{stockRatio}%</PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}

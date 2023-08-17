@@ -130,7 +130,7 @@ const TradeRank = () => {
             </div>
             <div>
               <Current>
-                <Price>\ {numberWithCommas(item["현재가"])}</Price>
+                <Price>₩ {numberWithCommas(item["현재가"])}</Price>
               </Current>
               <Ratio ratio={item["전일 대비율"]}>
                 {parseFloat(item["전일 대비율"]).toFixed(2)}%

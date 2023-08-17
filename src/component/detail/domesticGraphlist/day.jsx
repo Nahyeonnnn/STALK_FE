@@ -13,6 +13,32 @@ const Day = (props) => {
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
+  // const getFormattedTime = (time) => {
+  //   const hours = String(time.getHours()).padStart(2, "0");
+  //   const minutes = String(time.getMinutes()).padStart(2, "0");
+  //   const seconds = String(time.getSeconds()).padStart(2, "0");
+  //   return `${hours}${minutes}${seconds}`;
+  // };
+
+  // const generateTimeIntervals = (currentTime, interval, count) => {
+  //   const intervals = [];
+  //   for (let i = 0; i < count; i++) {
+  //     const intervalTime = new Date(currentTime);
+  //     intervalTime.setMinutes(intervalTime.getMinutes() - i * interval);
+  //     intervals.push(Number(getFormattedTime(intervalTime)));
+  //   }
+  //   return intervals;
+  // };
+
+  // const currentTime = new Date();
+  // const timeIntervals = generateTimeIntervals(
+  //   currentTime,
+  //   30, // 30분 간격
+  //   4 // 총 4개의 간격 생성
+  // );
+
+  //console.log(timeIntervals);
+
   const getFormattedTime = (time) => {
     const hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");
@@ -23,19 +49,27 @@ const Day = (props) => {
   const generateTimeIntervals = (currentTime, interval, count) => {
     const intervals = [];
     for (let i = 0; i < count; i++) {
-      intervals.push(currentTime - i * interval);
+      const intervalTime = new Date(currentTime);
+      intervalTime.setMinutes(intervalTime.getMinutes() - i * interval);
+      intervals.push(Number(getFormattedTime(intervalTime)));
     }
     return intervals;
   };
 
   const currentTime = new Date();
   const currentTimeString = getFormattedTime(currentTime);
-  const timeIntervals = generateTimeIntervals(
-    currentTimeString,
-    3000, // 30분을 밀리초로 변환
-    4 // 총 8개의 간격 생성 (2시간 분량)
-  );
-  console.log(timeIntervals);
+
+  let timeIntervals;
+  if (currentTimeString <= "153000") {
+    timeIntervals = generateTimeIntervals(
+      currentTime,
+      30, // 30분 간격
+      4 // 총 4개의 간격 생성
+    );
+  } else {
+    timeIntervals = [153000, 150000, 143000, 140000];
+  }
+
   useEffect(() => {
     setStockData([]);
     const fetchData = async (end) => {
@@ -82,7 +116,7 @@ const Day = (props) => {
     };
 
     fetchData(timeIntervals[0]);
-  }, [props.StockID, timeIntervals]);
+  }, [props.StockID]);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {

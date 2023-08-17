@@ -534,9 +534,9 @@ const SearchBar = () => {
         const response = await axios.get(
           "https://stalksound.store/sonification/transaction_rank/"
         );
-        if (response.status === 200) {
+        if (parseInt((response.status)/100) === 2) {
           const transactionRank = response.data["시가총액 순위"];
-
+          console.log(response.data)
           // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
           transactionRank.slice(0, 100).forEach((item) => {
             const stockIndex = stockList.findIndex(
@@ -553,11 +553,12 @@ const SearchBar = () => {
           });
 
           // Print or process updated stockList
-          stockList.forEach((stock) => {
-            console.log("종목명:", stock.prdt_name);
-            console.log("현재가:", stock["현재가"]);
-            console.log("전일 대비율:", stock["전일 대비율"]);
-          });
+          // stockList.forEach((stock) => {
+          //   console.log("종목명:", stock.prdt_name);
+          //   console.log("현재가:", stock["현재가"]);
+          //   console.log("전일 대비율:", stock["전일 대비율"]);
+          // });
+          console.log(stockList);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -566,9 +567,6 @@ const SearchBar = () => {
 
     fetchTransactionRank();
   }, []);
-
-  console.log("ㅎㅎ");
-  // console.log(rankData);
 
   return (
     <>
@@ -614,12 +612,12 @@ const SearchBar = () => {
             <RecentSearch>최근 검색 기록</RecentSearch>
             {recentSearchData !== null ? (
               recentSearchData.map((recent) => (
+                
                 <EachDataDiv
                   onClick={() => {
                     const selectedItem = stockList.find(
                       (item) => item.prdt_name === recent
                     );
-
                     if (selectedItem) {
                       const detailUrl = isUSStock(selectedItem.code)
                         ? `/detail/inter/${selectedItem.code}`
@@ -635,7 +633,7 @@ const SearchBar = () => {
                     <AutoSearchData>{recent}</AutoSearchData>
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
-                    <StockPrice>{7500}</StockPrice>
+                    <StockPrice>{recent.현재가}</StockPrice>
                     <PercentData>500 (+0.5)</PercentData>
                   </EachPercentDataDiv>
                 </EachDataDiv>

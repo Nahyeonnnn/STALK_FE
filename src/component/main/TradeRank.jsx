@@ -57,7 +57,6 @@ const Current = styled.div`
   letter-spacing: -0.084rem;
 `;
 
-
 const Price = styled.span`
   margin-left: 0.25rem;
 `;

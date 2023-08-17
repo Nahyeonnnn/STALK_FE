@@ -5,7 +5,6 @@ import styled from "styled-components";
 import TopBar from "../component/global/topBar";
 import InterGraph from "../component/detail/interGraph";
 import InterStatic from "../component/detail/interStatic";
-import InterInfo from "../component/detail/interInfo";
 import InterNews from "../component/detail/interNews";
 import BottomBar from "../component/global/bottomBar";
 
@@ -58,7 +57,10 @@ const InterDetailPage = () => {
       <TopBar></TopBar>
       <InterGraph styled="margin-top : 3rem"></InterGraph>
       <MiddleBar isSticky={isMiddleBarSticky}>
-        <Button isActive={active === "Static"} onClick={() => setActive("Static")}>
+        <Button
+          isActive={active === "Static"}
+          onClick={() => setActive("Static")}
+        >
           통계
         </Button>
         <Button isActive={active === "News"} onClick={() => setActive("News")}>

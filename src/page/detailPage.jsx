@@ -5,7 +5,6 @@ import styled from "styled-components";
 import TopBar from "../component/global/topBar";
 import DetailGraph from "../component/detail/detailGraph";
 import DetailStatic from "../component/detail/detailStatic";
-import DetailInfo from "../component/detail/detailInfo";
 import DetailNews from "../component/detail/detailNews";
 import BottomBar from "../component/global/bottomBar";
 
@@ -58,18 +57,17 @@ const DetailPage = () => {
       <TopBar></TopBar>
       <DetailGraph styled="margin-top : 3rem"></DetailGraph>
       <MiddleBar isSticky={isMiddleBarSticky}>
-        <Button isActive={active === "Static"} onClick={() => setActive("Static")}>
+        <Button
+          isActive={active === "Static"}
+          onClick={() => setActive("Static")}
+        >
           통계
-        </Button>
-        <Button isActive={active === "Info"} onClick={() => setActive("Info")}>
-          종목정보
         </Button>
         <Button isActive={active === "News"} onClick={() => setActive("News")}>
           뉴스
         </Button>
       </MiddleBar>
       {active === "Static" && <DetailStatic></DetailStatic>}
-      {active === "Info" && <DetailInfo></DetailInfo>}
       {active === "News" && <DetailNews stockID={StockID1} />}
       <BottomBar></BottomBar>
     </>

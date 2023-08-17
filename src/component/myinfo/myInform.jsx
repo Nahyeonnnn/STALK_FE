@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const TextBox = styled.div`
@@ -32,10 +32,17 @@ const EmailText = styled.p`
   margin-top: -1rem;
 `;
 
+function TextToSpeech(text){
+  console.log(text);
+  const t = `${text}님 안녕하세요! ${text}님의 이메일 emall@gmail.com`;
+  const value = new SpeechSynthesisUtterance(t);
+  window.speechSynthesis.speak(value);
+}
+
 const MyInform = ({ userName }) => {
   return (
     <>
-      <TextBox>
+      <TextBox onDoubleClick={()=>TextToSpeech(userName)}>
         <Text>{userName}님 안녕하세요! </Text>
         <EmailText>{userName}의 이메일</EmailText>
       </TextBox>

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { useParams } from "react-router-dom";
-import DetailButton from "./detailButton";
+import axios from "axios";
+import InterButton from "./interButton";
 
 const StaticBox = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const StaticInfoBox = styled.div`
   width: 33%;
   height: 40%;
 `;
+
 const InfoTitle = styled.div`
   color: ${({ textColor }) => textColor || "#8198A5"};
   margin-bottom: 5px;
@@ -37,41 +39,72 @@ const InfoText = styled.div`
 
 const InterStatic = () => {
   const { StockID4 } = useParams();
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const symbolUpperCase = StockID4.toUpperCase(); // Convert symbol to uppercase
+    axios
+      .get("https://stalksound.store/sonification/f_now_data/", {
+        params: {
+          symbol: symbolUpperCase, // Use the uppercase symbol for API call
+        },
+      })
+      .then(response => {
+        setData(response.data.chart_data);
+      })
+      .catch(error => {
+        console.error("에러에러에러", error);
+      });
+  }, [StockID4]);
+
+  const textColor = parseFloat(data && data["등락율"]) > 0 ? "#FF0000" : "#0000FF";
+
+  function TextToSpeech(text){
+    console.log(text);
+    const t = `시가 : ${text["시가"]}$,
+     고가 : ${text["고가"]}$,
+     저가 : ${text["저가"]}$,
+     전일 대비율 : ${data["등락율"]}%, 
+     누적 거래량 : ${data["거래량"]}, 
+     시가총액 : ${text["시가총액"]}`;
+    const value = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(value);
+  }
 
   return (
     <>
-      <StaticBox>
+      <StaticBox onDoubleClick={() => TextToSpeech(data)}>
         <StaticInfoBox>
-          <InfoTitle>시작</InfoTitle>
-          <InfoText textColor="#FFB229">224.54</InfoText>
+          <InfoTitle>시가</InfoTitle>
+          <InfoText textColor="#FFB229">{data && data["시가"]}</InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
-          <InfoTitle>최고</InfoTitle>
-          <InfoText textColor="#E685FF">227.29</InfoText>
+          <InfoTitle>고가</InfoTitle>
+          <InfoText textColor="#E685FF">{data && data["고가"]}</InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
-          <InfoTitle>최저</InfoTitle>
-          <InfoText textColor="#6BBDFF">224.10</InfoText>
+          <InfoTitle>저가</InfoTitle>
+          <InfoText textColor="#6BBDFF">{data && data["저가"]}</InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
-          <InfoTitle>거래량</InfoTitle>
-          <InfoText>834,146</InfoText>
+          <InfoTitle>전일 대비율</InfoTitle>
+          <InfoText textColor={textColor}>{data && data["등락율"]}%</InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
-          <InfoTitle>평균 거래량</InfoTitle>
-          <InfoText>1,461,009</InfoText>
+          <InfoTitle>누적 거래량</InfoTitle>
+          <InfoText>{data && data["거래량"]}</InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
           <InfoTitle>시가 총액</InfoTitle>
-          <InfoText>43.419B</InfoText>
+          <InfoText>{data && data["시가총액"]}</InfoText>
         </StaticInfoBox>
       </StaticBox>
-      <DetailButton StockID={StockID4}></DetailButton>
+      <InterButton StockID={StockID4}></InterButton>
     </>
   );
 };

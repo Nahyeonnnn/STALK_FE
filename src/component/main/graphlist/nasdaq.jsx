@@ -1,19 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import styled from "styled-components";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
+import { useState } from "react";
 import axios from "axios";
 
-const Year = (props) => {
+const StockBox = styled.div`
+  margin: auto;
+`;
+
+const Container = styled.div`
+  margin: auto;
+  margin-top: 0.5rem;
+  margin-bottom: -0.9rem;
+  position: relative; // 컨테이너 위치를 상대적으로 설정
+  width: ${(props) => props.chartWidth}px; // chartWidth 값을 사용하여 너비 설정
+`;
+
+const TextBox = styled.div`
+  color: white;
+  color: #21325e;
+  position: absolute;
+  margin-top: 0.5rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+  /* font-weight: bold; */
+  font-size: 1rem;
+  font-weight: bold;
+  /* display: flex; */
+`;
+
+const AmountBox = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const Nasdaq = (props) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-
   useEffect(() => {
-    // 1년 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 365; // 빼고 싶은 날짜 수
+    const daysToSubtract = 30; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -30,9 +60,9 @@ const Year = (props) => {
     const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
-      .get(`https://stalksound.store/sonification/week_data/`, {
+      .get(`https://stalksound.store/sonification/f_a_day_data/`, {
         params: {
-          symbol: `${props.StockID}`,
+          symbol: "SPX", // S&P 500 : SPX , 나스닥 100 : NDX
           begin: beginDate,
           end: endDate,
         },
@@ -42,46 +72,31 @@ const Year = (props) => {
         setStockData(res.data.data);
 
         setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.시가, 10)))
+          Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.시가, 10)))
+          Math.min(...res.data.data.map((item) => parseFloat(item.시가, 10)))
         );
       })
       .catch((e) => {
         console.log(e);
       });
-  }, [props.StockID]);
+  }, []);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {
-    return item.날짜;
+    return item.일자;
   });
 
-  var prices = stockData
-    .map(function (item) {
-      return parseInt(item.시가, 10);
-    })
+  var prices = stockData.map(function (item) {
+    return parseFloat(item.시가, 10);
+  });
 
-  let gap; // 그래프 간격 조정 변수
-  if (maxPrice >= 100000) {
-    // 10만 이상, 간격 : 1000원
-    gap = 2000;
-  } else if (maxPrice >= 50000) {
-    // 5만 이상, 간격 : 500원
-    gap = 1000;
-  } else if (maxPrice >= 10000) {
-    // 1만 이상, 간격 : 100원
-    gap = 200;
-  } else if (maxPrice >= 5000) {
-    // 5천 이상, 간격 : 50원
-    gap = 100;
-  } else {
-    // 5천 미만, 간격 : 10원
-    gap = 20;
-  }
+  var latelyPrices = prices[prices.length - 1];
 
-  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
+  let gap = 100; // 그래프 간격 조정 변수
+
+  for (let i = minPrice - 100; i <= maxPrice + 100; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
@@ -103,7 +118,7 @@ const Year = (props) => {
     };
   }, []);
 
-  // 그래프 옵션 options
+  // Highcharts options
   const options = {
     credits: {
       enabled: false,
@@ -119,13 +134,17 @@ const Year = (props) => {
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      // text: `<span style="font-size: 0.8rem; font-weight: bold;">코스피</span><br><span style="font-size: 1.2rem; font-weight: normal;">${latelyPrices}</span>`,
+      text: "",
       style: {
         fontSize: "1rem",
+        color: "white",
       },
+      align: "left", // 제목을 좌측으로 정렬
+      y: 20, // 제목의 위쪽 여백을 조절
     },
     xAxis: {
-      categories: dates, // 날짜
+      categories: dates,
       title: {
         // text: "Date",
       },
@@ -140,6 +159,7 @@ const Year = (props) => {
     },
     yAxis: {
       tickPositions: interval,
+      gridLineWidth: 0.15, // 눈금 굵기
       title: {
         text: null,
       },
@@ -147,11 +167,12 @@ const Year = (props) => {
         enabled: false,
         visible: false,
       },
+      gridLineColor: "#21325E", //눈금 색상 설정 가능!
     },
     series: [
       {
         type: "areaspline",
-        name: stockData.length > 0 ? stockData[0].종목 : "",
+        name: stockData.length > 0 ? stockData[0].업종 : "",
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -165,8 +186,9 @@ const Year = (props) => {
     ],
     plotOptions: {
       areaspline: {
-        lineWidth: 0.2,
-        lineColor: "blue", //blackborder
+        // lineWidth: 0.2,
+        lineWidth: 1.5,
+        lineColor: "#21325E",
         marker: {
           enabled: false,
         },
@@ -175,10 +197,18 @@ const Year = (props) => {
   };
 
   return (
-    <div>
-      <HighchartsReact highcharts={Highcharts} options={options} />
-    </div>
+    <>
+      <Container chartWidth={chartWidth}>
+        <TextBox>
+          <div>NASDAQ 100</div>
+          <AmountBox>{latelyPrices}</AmountBox>
+        </TextBox>
+        <StockBox>
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </StockBox>
+      </Container>
+    </>
   );
 };
 
-export default Year;
+export default Nasdaq;

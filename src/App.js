@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     height : 100%;
     margin: 0;
     padding : 0;
+    ${"" /* ${"" /* font-family: 'Inter'; */}
   }
 `;
 
@@ -49,8 +50,11 @@ function App() {
             <Route path="/myInfo" element={<MyInfoPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/newsdetail/:ArticleID" element={<NewsdetailPage />} />
-            <Route exact path="/kakao/callback" element={<CallbackPage/>} />
-            <Route path="/detail/inter/:StockID4" element={<InterDetailPage />} />
+            <Route exact path="/kakao/callback" element={<CallbackPage />} />
+            <Route
+              path="/detail/inter/:StockID4"
+              element={<InterDetailPage />}
+            />
             <Route path="/buy/inter/:StockID5" element={<InterBuyPage />} />
             <Route path="/sell/inter/:StockID6" element={<InterSellPage />} />
             <Route path="*" element={<NotFoundPage />} />

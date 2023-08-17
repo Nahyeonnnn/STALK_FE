@@ -5,6 +5,7 @@ import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { stockList } from "../component/search/searchBar";
 
 const StockName = styled.div`
   display: flex;
@@ -227,113 +228,8 @@ const Overlay = styled.div`
 const InterBuyPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
-  const [inputLength, setInputLength] = useState(0); // State to keep track of input length
   const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
   const [stockPrice, setStockPrice] = useState(0);
-  //axios 연결 시 받을 주식 리스트 예시
-  const stockList = [
-    // 미국 주식 추가
-    { prdt_name: "아미리스", code: "AMRS" },
-    { prdt_name: "WeWork", code: "WE" },
-    { prdt_name: "Marketing Worldwide", code: "MWWC" },
-    { prdt_name: "Humbl", code: "HMBL" },
-    { prdt_name: "Proterra", code: "PTRA" },
-    { prdt_name: "Zerify", code: "ZRFY" },
-    { prdt_name: "테슬라", code: "TSLA" },
-    { prdt_name: "Airspan Networks Holdings", code: "MIMO" },
-    { prdt_name: "Cano Health", code: "CANO" },
-    { prdt_name: "Drone Guarder", code: "DRNG" },
-    { prdt_name: "Ebet Inc", code: "EBET" },
-    { prdt_name: "Innerscope Advertising", code: "INND" },
-    { prdt_name: "Healthier Choices Management", code: "HCMC" },
-    { prdt_name: "PHI Group", code: "PHIL" },
-    { prdt_name: "Rigetti Computing", code: "RGTI" },
-    { prdt_name: "SFLMaven", code: "SFLM" },
-    { prdt_name: "T2 Biosystms Inc", code: "TTOO" },
-    { prdt_name: "포드", code: "F" },
-    { prdt_name: "Genius", code: "GNS" },
-    { prdt_name: "Brewbilt Manufacturing Inc", code: "BBRW" },
-    { prdt_name: "팔란티어 테크", code: "PLTR" },
-    { prdt_name: "AMD", code: "AMD" },
-    { prdt_name: "니오 ADR A", code: "NIO" },
-    { prdt_name: "니콜라", code: "NKLA" },
-    { prdt_name: "엔비디아", code: "NVDA" },
-    { prdt_name: "애플", code: "AAPL" },
-    { prdt_name: "IONQ", code: "IONQ" },
-    { prdt_name: "브라데스코", code: "BBD" },
-    { prdt_name: "BioAdaptives", code: "BDPT" },
-    { prdt_name: "Cbd Denver", code: "CBDD" },
-    { prdt_name: "멀른 오토모티브", code: "MULN" },
-    { prdt_name: "Galaxy Next", code: "GAXY" },
-    { prdt_name: "아이디어노믹스", code: "IDEX" },
-    { prdt_name: "Kenvue", code: "KVUE" },
-    { prdt_name: "존슨앤존슨", code: "JNJ" },
-    { prdt_name: "Santo Mining Corp", code: "SANP" },
-    { prdt_name: "아마존닷컴", code: "AMZN" },
-    { prdt_name: "Archer Aviation", code: "ACHR" },
-    { prdt_name: "Golden Develop", code: "DVLP" },
-    { prdt_name: "뱅크오브아메리카", code: "BAC" },
-    { prdt_name: "China Crescent", code: "CCTR" },
-    { prdt_name: "MMEX Resources", code: "MMEX" },
-    { prdt_name: "AT&T", code: "T" },
-    { prdt_name: "리비안", code: "RIVN" },
-    { prdt_name: "Artificial Intelligence Tech", code: "AITX" },
-    { prdt_name: "Medical Prop Tr", code: "MPW" },
-    { prdt_name: "Nouveau Life Pharma", code: "NOUV" },
-    { prdt_name: "인텔", code: "INTC" },
-    { prdt_name: "Pagaya", code: "PGY" },
-    { prdt_name: "플러그파워", code: "PLUG" },
-    { prdt_name: "Therapeutic Solutions", code: "TSOI" },
-    { prdt_name: "발레 SA ADR", code: "VALE" },
-    { prdt_name: "SoFi Technologies", code: "SOFI" },
-    { prdt_name: "루시드", code: "LCID" },
-    { prdt_name: "Faraday Future Intelligent Electric", code: "FFIE" },
-    { prdt_name: "카니발", code: "CCL" },
-    { prdt_name: "Tivic Health Systems", code: "TIVC" },
-    { prdt_name: "Indoor Harvest", code: "INQD" },
-    { prdt_name: "Auto Dataflow", code: "EPAZ" },
-    { prdt_name: "알리바바 ADR", code: "BABA" },
-    { prdt_name: "AMC 엔터", code: "AMC" },
-    { prdt_name: "bowmo", code: "BOMO" },
-    { prdt_name: "카누", code: "GOEV" },
-    { prdt_name: "Ijj Corporation", code: "IJJP" },
-    { prdt_name: "Telesat", code: "TSAT" },
-    { prdt_name: "마이크로소프트", code: "MSFT" },
-    { prdt_name: "마라톤 디지털", code: "MARA" },
-    { prdt_name: "월트 디즈니", code: "DIS" },
-    { prdt_name: "Tilray", code: "TLRY" },
-    { prdt_name: "드래프트킹스", code: "DKNG" },
-    { prdt_name: "Marijuana America", code: "MCOA" },
-    { prdt_name: "Canopy Growth", code: "CGC" },
-    { prdt_name: "제너럴 모터스", code: "GM" },
-    { prdt_name: "LYFT", code: "LYFT" },
-    { prdt_name: "Ginkgo Bioworks", code: "DNA" },
-    { prdt_name: "알파벳 A", code: "GOOGL" },
-    { prdt_name: "CarbonMeta Tech", code: "COWI" },
-    { prdt_name: "Metatron", code: "MRNJ" },
-    { prdt_name: "펜 엔터테인먼트", code: "PENN" },
-    { prdt_name: "페트로브라스", code: "PBR" },
-    { prdt_name: "PG E", code: "PCG" },
-    { prdt_name: "사우스웨스턴 에너지", code: "SWN" },
-    { prdt_name: "Origin Materials", code: "ORGN" },
-    { prdt_name: "Virgin Galactic Holdings", code: "SPCE" },
-    { prdt_name: "Riot Platforms", code: "RIOT" },
-    { prdt_name: "그랩", code: "GRAB" },
-    { prdt_name: "Crown Electrokinetics", code: "CRKN" },
-    { prdt_name: "옥시덴탈", code: "OXY" },
-    { prdt_name: "화이자", code: "PFE" },
-    { prdt_name: "GZ6G Tech", code: "GZIC" },
-    { prdt_name: "우버 테크놀로지스", code: "UBER" },
-    { prdt_name: "Net Savings Link", code: "NSAV" },
-    { prdt_name: "Two Hands", code: "TWOH" },
-    { prdt_name: "Integrated Cannabis Solutions", code: "IGPK" },
-    { prdt_name: "아메리칸항공그룹", code: "AAL" },
-    { prdt_name: "아펠리스", code: "APLS" },
-    { prdt_name: "CleanSpark", code: "CLSK" },
-    { prdt_name: "트랜스오션", code: "RIG" },
-    { prdt_name: "루멘 테크놀로지스", code: "LUMN" },
-    { prdt_name: "Eton Pharmaceuticals", code: "ETON" },
-  ];
 
   const addDigit = (digit) => {
     setInputValue((prevValue) => {
@@ -341,7 +237,6 @@ const InterBuyPage = () => {
       setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
-    setInputLength((prevLength) => prevLength + 1);
   };
 
   const removeDigit = () => {
@@ -350,7 +245,6 @@ const InterBuyPage = () => {
       setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
-    setInputLength((prevLength) => prevLength - 1);
   };
 
   const handleInputChange = (event) => {
@@ -358,10 +252,6 @@ const InterBuyPage = () => {
     setTotalAmountStockPrice(event.target.value * stockPrice); // Update the total amount when input changes
   };
 
-  //const StockPriceWithoutComma = 70500;
-  // const StockPrice = StockPriceWithoutComma.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
-
-  // Convert the TotalAmountStockPrice back to a string with commas for displaying
   const TotalAmountStockPriceDisplay =
     TotalAmountStockPrice.toLocaleString("ko-KR");
 
@@ -374,16 +264,29 @@ const InterBuyPage = () => {
 
   const navigate = useNavigate();
 
-  const 예약구매버튼 = () => {
-    navigate("/buy/confirm");
+  const 예약구매버튼 = async () => {
+    try {
+      const response = await axios.post(
+        "https://stalksound.store/sonification/buy/",
+        {
+          stock_symbol: StockID5,
+          quantity: parseInt(inputValue)
+        }
+      );
+
+      if (parseInt((response.status)/100) === 2) {
+        navigate("/buy/confirm");
+      } else {
+        // 에러 상황 처리
+      }
+    } catch (error) {
+      alert("매수 중 오류 발생!\n사유: " + error.response.data.error);
+      // 에러 상황 처리
+    }
   };
 
   const { StockID5 } = useParams();
   const stock = stockList.find((item) => item.code === StockID5);
-
-  console.log(StockID5);
-  console.log(stock);
-
   const [stockData, setStockData] = useState([]);
 
   useEffect(() => {
@@ -399,26 +302,22 @@ const InterBuyPage = () => {
         );
         setStockData(Number(response.data.chart_data.현재가));
         setStockPrice(response.data.chart_data.현재가);
-        console.log(response.data);
-        console.log(response.data.chart_data.현재가);
       } catch (error) {
         console.error("종목명 가져오기 실패 ", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [StockID5]);
 
   const nowPrice = stockData.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
-  console.log("nowPrice" + nowPrice);
-  console.log("stockData" + stockData);
   return (
     <>
       <TopBar></TopBar>
       <StockName>{stock.prdt_name}</StockName>
       <PriceBox>
         <PriceBoxLeft>구매할 가격</PriceBoxLeft>
-        <PriceBoxRight>{nowPrice} $</PriceBoxRight>
+        <PriceBoxRight>{nowPrice} \</PriceBoxRight>
       </PriceBox>
       <PurchastText>몇 주를 구매할까요?</PurchastText>
       <FormContainer>
@@ -429,7 +328,7 @@ const InterBuyPage = () => {
         ></PurchaseBox>
         <PurchaseConfirm onClick={handleConfirmClick}>확인</PurchaseConfirm>
       </FormContainer>
-      <TotalAmountBox>Total {TotalAmountStockPriceDisplay} $</TotalAmountBox>
+      <TotalAmountBox>총 {TotalAmountStockPriceDisplay} 원</TotalAmountBox>
       {active === 1 && (
         <NumberBox>
           <ThreeNumberBox>
@@ -467,14 +366,14 @@ const InterBuyPage = () => {
         <NumberBox>
           <ReserveLine1> {stock.prdt_name} {inputValue}주 구매 예약</ReserveLine1>
           <ReserveLine2>
-            <div> 1주 희망 가격 </div> <div> {nowPrice} $</div>
+            <div> 1주 희망 가격 </div> <div> {nowPrice} 원</div>
           </ReserveLine2>
           <ReserveLine3>
-            <div> 예상 수수료 </div> <div> {}0 $</div>
+            <div> 예상 수수료 </div> <div> {}0 원</div>
           </ReserveLine3>
           <ReserveLine4>
             <div> 총 주문 금액 </div>{" "}
-            <div> {TotalAmountStockPriceDisplay} $</div>
+            <div> {TotalAmountStockPriceDisplay} 원</div>
           </ReserveLine4>
           <ReserveLine5>
             <div>

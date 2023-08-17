@@ -55,13 +55,25 @@ const DetailStatic = () => {
       .catch(error => {
         console.error("에러에러에러", error);
       });
-  }, []);
+  }, [StockID1]);
 
   const textColor = parseFloat(data["전일 대비율"]) > 0 ? "#FF0000" : "#0000FF";
 
+  function TextToSpeech(text){
+    console.log(text);
+    const t = `시가 : ${text["시가"]},
+     고가 : ${text["고가"]},
+     저가 : ${text["저가"]},
+     전일 대비율 : ${data["전일 대비율"]}, 
+     누적 거래량 : ${data["누적 거래량"]}, 
+     HTS 시가총액 : ${text["HTS 시가총액"]}`;
+    const value = new SpeechSynthesisUtterance(t);
+    window.speechSynthesis.speak(value);
+  }
+
   return (
     <>
-      <StaticBox>
+      <StaticBox onDoubleClick={()=>TextToSpeech(data)}>
         <StaticInfoBox>
           <InfoTitle>시가</InfoTitle>
           <InfoText textColor="#FFB229">{data["시가"]}</InfoText>

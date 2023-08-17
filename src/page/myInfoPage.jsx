@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
 import MyInform from "../component/myinfo/myInform";
@@ -17,7 +16,7 @@ const MyInfoPage = () => {
         const response = await axios.get(
           "https://stalksound.store/sonification/user_info/"
         );
-        setUserName(response.data.유저정보.username);
+        setUserName(response.data.유저정보.user_nickname);
         setUserProperty(response.data.유저정보.user_property);
         console.log(response.data);
         console.log(userName, userProperty);
@@ -27,7 +26,7 @@ const MyInfoPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [userName, userProperty]);
 
   return (
     <>

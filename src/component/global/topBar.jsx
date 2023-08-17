@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Stalklogo from "./StalkLogo";
 
 import {
   faArrowLeft,
@@ -35,12 +34,6 @@ const TopBarBackBtn = styled.div`
 `;
 
 const TopBarSearchBtn = styled.div`
-  font-size: 1.5rem;
-  position: absolute; /* 아이콘 위치를 고정 */
-  right: 3.5rem;
-`;
-
-const TopBarSetBtn = styled.div`
   font-size: 1.5rem;
   position: absolute; /* 아이콘 위치를 고정 */
   right: 1rem;
@@ -75,14 +68,12 @@ const TopBar = () => {
     navigate(`/search`);
   }
 
-  function moveToSetting() {
-    // Setting로 이동하도록 변경해야함
-    navigate(`/myInfo`);
-  }
-
   function moveToMain() {
-    // Setting로 이동하도록 변경해야함
-    navigate(`/main`);
+    const data = {
+      someKey: "someValue",
+      anotherKey: "anotherValue"
+    };
+    navigate(`/main`, {state : data});
   }
 
   return (
@@ -104,12 +95,6 @@ const TopBar = () => {
             />
           )}
         </TopBarSearchBtn>
-
-        <TopBarSetBtn onClick={moveToSetting}>
-          {!isNewsPage && !istradePage && (
-            <FontAwesomeIcon icon={faGear} style={{ color: "F1D00A" }} />
-          )}
-        </TopBarSetBtn>
       </TopBarBox>
     </>
   );

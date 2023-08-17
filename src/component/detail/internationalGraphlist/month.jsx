@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
+import { stockList } from "../../search/searchBar";
 
 const Month = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -9,8 +10,7 @@ const Month = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
+  const stock = stockList.find((item) => item.code === `${props.StockID}`);
   useEffect(() => {
     // 3달 전 구하기
     const currentDate = new Date();
@@ -29,7 +29,7 @@ const Month = (props) => {
         },
       })
       .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+        props.propFunction(res.data.lista);
         setStockData(res.data.data);
 
         setMaxPrice(
@@ -44,32 +44,56 @@ const Month = (props) => {
       });
   }, [props.StockID]);
 
-  // 날짜와 종가 데이터 추출
-  var dates = stockData.map(function (item) {
+  var dates = stockData.slice(-65).map(function (item) {
     return item.날짜;
   });
-
+  
   var prices = stockData
+    .slice(-65)
     .map(function (item) {
       return parseFloat(item.종가, 10);
     })
     .reverse();
 
-  let gap; // 그래프 간격 조정 변수
-  if (maxPrice >= 100) {
-    // 10만 이상, 간격 : 100원
-    gap = 0.1;
-  } else if (maxPrice >= 10) {
-    // 5만 이상, 간격 : 50원
-    gap = 0.01;
-  } else {
-    gap = 0.001;
-  }
+    let gap; // 그래프 간격 조정 변수
+    if (maxPrice >= 1000) {
+      // 1000 이상, 간격: 10
+      gap = 50;
+    } else if (maxPrice >= 100) {
+      // 100 이상, 간격: 1
+      gap = 10;
+    } else if (maxPrice >= 10) {
+      // 10 이상, 간격: 0.1
+      gap = 1;
+    } else if (maxPrice >= 1) {
+      // 1 이상, 간격: 0.01
+      gap = 0.1;
+    } else {
+      // 1 미만, 간격: 0.001
+      gap = 0.01;
+    }
 
-  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
+
+  // viewport에 따른 그래프 width 값 설정
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
+
+  const handleWindowResize = () => {
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
+  };
+
+  useEffect(() => {
+    // 윈도우 리사이즈 이벤트 리스너 등록
+    window.addEventListener("resize", handleWindowResize);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   // 그래프 옵션 options
   const options = {
@@ -81,11 +105,13 @@ const Month = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: 290,
+      width: chartWidth,
       height: 220,
+      backgroundColor: "rgba(0, 0, 0, 0)", // 투명 배경
+      borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      text: stock.prdt_name,
     },
     xAxis: {
       categories: dates, // 날짜
@@ -99,6 +125,7 @@ const Month = (props) => {
         },
       },
       enabled: false,
+      visible: false,
     },
     yAxis: {
       tickPositions: interval,
@@ -113,7 +140,7 @@ const Month = (props) => {
     series: [
       {
         type: "areaspline",
-        name: stockData.length > 0 ? stockData[0].종목 : "",
+        name: stock.prdt_name,
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -137,9 +164,9 @@ const Month = (props) => {
   };
 
   return (
-    <>
+    <div>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </>
+    </div>
   );
 };
 

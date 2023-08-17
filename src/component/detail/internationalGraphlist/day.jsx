@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
+import { stockList } from "../../search/searchBar";
 
 const Day = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -9,9 +10,7 @@ const Day = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-
+  const stock = stockList.find((item) => item.code === `${props.StockID}`);
   useEffect(() => {
     axios
       .get(`https://stalksound.store/sonification/f_minute_data/`, {
@@ -20,9 +19,8 @@ const Day = (props) => {
         },
       })
       .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+        props.propFunction(res.data.lista);
         setStockData(res.data.data);
-        console.log(res)
 
         setMaxPrice(
           Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
@@ -30,8 +28,6 @@ const Day = (props) => {
         setMinPrice(
           Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
-
-        console.log(res.data.data);
       })
       .catch((e) => {
         console.log(e);
@@ -60,10 +56,27 @@ const Day = (props) => {
     gap = 0.001;
   }
 
-  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
+
+  // viewport에 따른 그래프 width 값 설정
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
+
+  const handleWindowResize = () => {
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
+  };
+
+  useEffect(() => {
+    // 윈도우 리사이즈 이벤트 리스너 등록
+    window.addEventListener("resize", handleWindowResize);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   // 그래프 옵션 options
   const options = {
@@ -75,14 +88,19 @@ const Day = (props) => {
     },
     chart: {
       type: "areaspline",
-      width: 290,
+      width: chartWidth,
       height: 220,
+      backgroundColor: "rgba(0, 0, 0, 0)", // 투명 배경
+      borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      text: stock.prdt_name,
+      style: {
+        // fontSize: "1rem",
+      },
     },
     xAxis: {
-      categories: dates, // 날짜
+      categories: dates, // 날짜해외
       title: {
         // text: "Date",
       },
@@ -93,6 +111,7 @@ const Day = (props) => {
         },
       },
       enabled: false,
+      visible: false, // x축 숨기기
     },
     yAxis: {
       tickPositions: interval,
@@ -107,7 +126,7 @@ const Day = (props) => {
     series: [
       {
         type: "areaspline",
-        name: "테슬라",
+        name: stock.prdt_name,
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -131,11 +150,10 @@ const Day = (props) => {
   };
 
   return (
-    <>
+    <div>
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </>
+    </div>
   );
 };
 
 export default Day;
-

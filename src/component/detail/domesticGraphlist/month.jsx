@@ -9,8 +9,6 @@ const Month = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
 
   useEffect(() => {
     // 3달 전 구하기
@@ -40,7 +38,7 @@ const Month = (props) => {
         },
       })
       .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+        props.propFunction(res.data.lista);
         setStockData(res.data.data);
 
         setMaxPrice(
@@ -64,7 +62,6 @@ const Month = (props) => {
     .map(function (item) {
       return parseInt(item.시가, 10);
     })
-    .reverse();
 
   let gap; // 그래프 간격 조정 변수
   if (maxPrice >= 100000) {
@@ -84,16 +81,16 @@ const Month = (props) => {
     gap = 10;
   }
 
-  for (let i = minPrice - 500; i <= maxPrice; i += gap) {
+  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
 
   // viewport에 따른 그래프 width 값 설정
-  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.8);
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.85);
 
   const handleWindowResize = () => {
-    setChartWidth(window.innerWidth * 0.8); // 예시로 80%로 설정, 필요에 따라 조절 가능
+    setChartWidth(window.innerWidth * 0.85); // 예시로 80%로 설정, 필요에 따라 조절 가능
   };
 
   useEffect(() => {
@@ -118,9 +115,14 @@ const Month = (props) => {
       type: "areaspline",
       width: chartWidth,
       height: 220,
+      backgroundColor: "rgba(0, 0, 0, 0)", // 투명 배경
+      borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
       text: stockData.length > 0 ? stockData[0].종목 : "",
+      style: {
+        fontSize: "1rem",
+      },
     },
     xAxis: {
       categories: dates, // 날짜
@@ -134,6 +136,7 @@ const Month = (props) => {
         },
       },
       enabled: false,
+      visible: false,
     },
     yAxis: {
       tickPositions: interval,
@@ -171,44 +174,8 @@ const Month = (props) => {
     },
   };
 
-  useEffect(() => {
-    //lista 저장 후 데이터를 소리로 변환
-    if (lista !== null) {
-      axios
-        .post(
-          `https://stalksound.store/sonification/data_to_sound/`,
-          {
-            lista: lista,
-          },
-          { responseType: "arraybuffer" }
-        ) //arraybuffer 형태로 받아서
-        .then(async (res) => {
-          console.log(res); //AudioContext 생성
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
-          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
-          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [lista]);
-
-  //그래프 음향 출력
-  const playAudio = () => {
-    if (audioBuffer) {
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.start(0);
-    }
-  };
-
   return (
-    <div onClick={playAudio}>
+    <div>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

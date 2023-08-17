@@ -100,7 +100,7 @@ const Day = (props) => {
     title: {
       text: stock.prdt_name,
       style: {
-        fontSize: "1rem",
+        // fontSize: "1rem",
       },
     },
     xAxis: {

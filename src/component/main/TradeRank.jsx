@@ -33,6 +33,7 @@ const Num = styled.div`
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
+  position: absolute;
 `;
 
 const Name = styled.div`
@@ -87,7 +88,7 @@ const TradeRank = () => {
         const response = await axios.get(
           "https://stalksound.store/sonification/transaction_rank/"
         );
-        if (parseInt((response.status)/100) === 2) {
+        if (parseInt(response.status / 100) === 2) {
           setRankData(response.data["시가총액 순위"]);
         }
       } catch (error) {

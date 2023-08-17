@@ -563,12 +563,12 @@ const SearchBar = () => {
     fetchData(
       "https://stalksound.store/sonification/transaction_rank/",
       0,
-      100
+      500
     );
     fetchData(
       "https://stalksound.store/sonification/f_transaction_rank/",
       0,
-      200
+      500
     );
   }, []);
 
@@ -637,7 +637,7 @@ const SearchBar = () => {
                     <AutoSearchData>{recent}</AutoSearchData>
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
-                    <StockPrice>{7500}</StockPrice>
+                    <StockPrice>{recent}</StockPrice>
                     <PercentData>500 (+0.5)</PercentData>
                   </EachPercentDataDiv>
                 </EachDataDiv>

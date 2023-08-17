@@ -16,21 +16,12 @@ const Week = (props) => {
   useEffect(() => {
     // 2주일 전 구하기
     const currentDate = new Date();
-    const daysToSubtract = 14; // 빼고 싶은 날짜 수
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
-
-    currentDate.setDate(currentDate.getDate() - daysToSubtract);
-
-    year = currentDate.getFullYear();
-    month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    date = String(currentDate.getDate()).padStart(2, "0");
-
-    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
 
     axios
       .get(`https://stalksound.store/sonification/f_day_data/`, {
@@ -55,16 +46,17 @@ const Week = (props) => {
       });
   }, [props.StockID]);
 
-  // 날짜와 종가 데이터 추출
-  var dates = stockData.map(function (item) {
-    return item.날짜;
-  });
+ // 날짜와 종가 데이터 추출
+ var dates = stockData.slice(-14).map(function (item) {
+  return item.날짜;
+});
 
-  var prices = stockData
-    .map(function (item) {
-      return parseFloat(item.종가, 10);
-    })
-    .reverse();
+var prices = stockData
+  .slice(-14)
+  .map(function (item) {
+    return parseFloat(item.종가, 10);
+  })
+  .reverse();
 
   let gap; // 그래프 간격 조정 변수
   if (maxPrice >= 1000) {
@@ -84,7 +76,7 @@ const Week = (props) => {
     gap = 0.01;
   }
 
-  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

@@ -646,7 +646,7 @@ const SearchBar = () => {
     }
   };
 
-  function handleInputSearch(e) {
+  function handleInputSearch (e) {
     const { value } = e.target;
     setQuery(value);
     const SearchSuggestions = getSuggestions(value);
@@ -747,9 +747,9 @@ const SearchBar = () => {
           });
         }
         stockList.forEach((stock) => {
-          console.log("종목명:", stock.prdt_name);
-          console.log("현재가:", stock["현재가"]);
-          console.log("전일 대비율:", stock["전일 대비율"]);
+          // console.log("종목명:", stock.prdt_name);
+          // console.log("현재가:", stock["현재가"]);
+          // console.log("전일 대비율:", stock["전일 대비율"]);
         });
       } catch (error) {
         console.error("Error fetching data:", error);

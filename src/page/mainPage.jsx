@@ -87,12 +87,13 @@ const MainPage = () => {
     const fetchUserInfo = async () => {
       try {
         const response = await axios.get(
-          "https://stalksound.store/accounts/userinfo/",
+          `https://stalksound.store/sonification/user_info/`,
           {
             withCredentials: true,
           }
         );
-        setUserNickname(response.data.user_nickname);
+        console.log(response);
+        setUserNickname(response.data["유저정보"].user_nickname);
       } catch (error) {
         console.log(error);
         console.log("에러임");

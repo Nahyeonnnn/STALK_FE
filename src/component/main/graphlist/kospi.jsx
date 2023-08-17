@@ -47,9 +47,9 @@ const Kospi = () => {
 
   useEffect(() => {
     const currentDate = new Date();
-    const daysToSubtract = 30; // 빼고 싶은 날짜 수
+    const daysToSubtract = 60; // 빼고 싶은 날짜 수
 
-    let year = currentDate.getFullYear();
+    let year = String(currentDate.getFullYear()).padStart(2, "0");
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
@@ -57,7 +57,7 @@ const Kospi = () => {
 
     currentDate.setDate(currentDate.getDate() - daysToSubtract);
 
-    year = currentDate.getFullYear();
+    year = String(currentDate.getFullYear()).padStart(2, "0");
     month = String(currentDate.getMonth() + 1).padStart(2, "0");
     date = String(currentDate.getDate()).padStart(2, "0");
 
@@ -74,6 +74,9 @@ const Kospi = () => {
       .then((res) => {
         setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
         setStockData(res.data.data);
+        console.log(res)
+        console.log(beginDate);
+        console.log(endDate);
 
         setMaxPrice(
           Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))

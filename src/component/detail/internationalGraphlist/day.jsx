@@ -61,7 +61,7 @@ const Day = (props) => {
     gap = 0.001;
   }
 
-  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }

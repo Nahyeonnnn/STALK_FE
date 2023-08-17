@@ -74,9 +74,6 @@ const Kospi = () => {
       .then((res) => {
         setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
         setStockData(res.data.data);
-        console.log(res)
-        console.log(beginDate);
-        console.log(endDate);
 
         setMaxPrice(
           Math.max(...res.data.data.map((item) => parseFloat(item.시가, 10)))
@@ -215,7 +212,7 @@ const Kospi = () => {
           { responseType: "arraybuffer" }
         ) //arraybuffer 형태로 받아서
         .then(async (res) => {
-          console.log(res); //AudioContext 생성
+          //AudioContext 생성
           const audioContext = new (window.AudioContext ||
             window.webkitAudioContext)();
           const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode

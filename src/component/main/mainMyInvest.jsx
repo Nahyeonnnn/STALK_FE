@@ -122,21 +122,13 @@ const MainMyInvest = () => {
         {userInvestments.map((investment) => (
           <InvestContainer key={investment.id}>
             <InvestName>
-              {investment.is_domestic_stock ? (
-                <Link
-                  to={`/detail/${investment.stock_code}`}
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  {investment.stock}
-                </Link>
-              ) : (
-                <Link
-                  to={`/detail/inter/${investment.stock_code}`}
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  {investment.stock}
-                </Link>
-              )}
+            <Link
+  to={`/detail/${investment.is_domestic_stock.toString().toLowerCase() === "true" ? "" : "inter/"}${investment.stock_code}`}
+  style={{ textDecoration: "none", color: "white" }}
+>
+  {investment.stock}
+</Link>
+
             </InvestName>
             <InvestPrice>
               {formatNumberWithCommas(investment.now_price)} 원

@@ -418,7 +418,7 @@ const PercentData = styled.p`
   margin: 0;
   font-size: 12px;
   margin-left: auto;
-  color: red; //조건 줘서 올라갈 경우 red, 내려갈 경우 blue로 보이게 설정하기
+  color: ${props => (props.isPositive ? 'red' : 'skyblue')}; 
 `;
 
 const RecentSearch = styled.p`
@@ -603,7 +603,9 @@ const SearchBar = () => {
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
                   <StockPrice>{result.현재가}원</StockPrice>
-                  <PercentData>{result["전일 대비율"]}%</PercentData>
+                  <PercentData isPositive={parseFloat(result["전일 대비율"]) >= 0}>
+                    {result["전일 대비율"]}%
+                  </PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}

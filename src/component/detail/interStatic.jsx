@@ -49,17 +49,18 @@ const InterStatic = () => {
           symbol: symbolUpperCase, // Use the uppercase symbol for API call
         },
       })
-      .then(response => {
+      .then((response) => {
         setData(response.data.chart_data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("에러에러에러", error);
       });
   }, [StockID4]);
 
-  const textColor = parseFloat(data && data["등락율"]) > 0 ? "#FF0000" : "#0000FF";
+  const textColor =
+    parseFloat(data && data["등락율"]) > 0 ? "#FF0000" : "#0000FF";
 
-  function TextToSpeech(text){
+  function TextToSpeech(text) {
     console.log(text);
     const t = `시가 : ${text["시가"]}$,
      고가 : ${text["고가"]}$,
@@ -96,12 +97,16 @@ const InterStatic = () => {
 
         <StaticInfoBox>
           <InfoTitle>누적 거래량</InfoTitle>
-          <InfoText>{data && data["거래량"]}</InfoText>
+          <InfoText>
+            {data && parseInt(data["거래량"]).toLocaleString()}
+          </InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
           <InfoTitle>시가 총액</InfoTitle>
-          <InfoText>{data && data["시가총액"]}</InfoText>
+          <InfoText>
+            {data && parseInt(data["시가총액"]).toLocaleString()}원
+          </InfoText>
         </StaticInfoBox>
       </StaticBox>
       <InterButton StockID={StockID4}></InterButton>

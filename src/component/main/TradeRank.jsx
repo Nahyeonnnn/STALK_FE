@@ -33,6 +33,7 @@ const Num = styled.div`
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
+  position: absolute;
 `;
 
 const Name = styled.div`
@@ -61,6 +62,10 @@ const Price = styled.span`
   margin-left: 0.25rem;
 `;
 
+const LogoImg = styled.img`
+  
+`;
+
 const numberWithCommas = (number) => {
   if (number === undefined) {
     return ""; // Return an empty string if the number is undefined
@@ -87,9 +92,10 @@ const TradeRank = () => {
         const response = await axios.get(
           "https://stalksound.store/sonification/transaction_rank/"
         );
-        if (parseInt((response.status)/100) === 2) {
+        if (parseInt(response.status / 100) === 2) {
           setRankData(response.data["시가총액 순위"]);
         }
+        console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -121,6 +127,7 @@ const TradeRank = () => {
           >
             <div>
               <Num>{index + 1}</Num>
+              <LogoImg src={item["이미지URL"]}></LogoImg>
               <Link
                 to={`/detail/${item["종목코드"]}`}
                 style={{ textDecoration: "none" }}

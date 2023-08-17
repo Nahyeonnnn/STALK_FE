@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
+import { stockList } from "../../search/searchBar";
 
 const Year = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -13,6 +14,7 @@ const Year = (props) => {
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
+  const stock = stockList.find((item) => item.code === `${props.StockID}`);
   useEffect(() => {
     // 1년 전 구하기
     const currentDate = new Date();
@@ -75,7 +77,7 @@ const Year = (props) => {
     gap = 0.01;
   }
 
-  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
@@ -113,7 +115,7 @@ const Year = (props) => {
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      text: stock.prdt_name,
     },
     xAxis: {
       categories: dates, // 날짜
@@ -142,7 +144,7 @@ const Year = (props) => {
     series: [
       {
         type: "areaspline",
-        name: stockData.length > 0 ? stockData[0].종목 : "",
+        name: stock.prdt_name,
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },

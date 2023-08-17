@@ -118,7 +118,7 @@ function isUSStock(code) {
 }
 
 //axios 연결 시 받을 주식 리스트 예시
-const stockList = [
+  export const stockList = [
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG에너지솔루션", code: "373220" },
   { prdt_name: "SK하이닉스", code: "000660" },
@@ -387,6 +387,8 @@ const EachDataDiv = styled.div`
 `;
 
 const EachStockDataDiv = styled.div`
+  display: flex;
+  align-items: center;
   position: relative;
   z-index: 1000;
 `;
@@ -500,7 +502,7 @@ const SearchBar = () => {
       filteredArray.includes(item.prdt_name)
     );
 
-    console.log('foundObjects', foundObjects);
+    console.log("foundObjects", foundObjects);
 
     const axiosRequests = foundObjects.map((recentData) => {
       return axios.get(`https://stalksound.store/sonification/now_data/`, {
@@ -523,7 +525,6 @@ const SearchBar = () => {
       .catch((e) => {
         console.log(e);
       });
-      
   }, []);
 
   const sttFunction = (data) => {
@@ -563,7 +564,7 @@ const SearchBar = () => {
                 <EachStockDataDiv>
                   <EachStockIcon src={NaverIcon} />
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
-                  <EachStockData>주식 설명</EachStockData>
+                  {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
                   <StockPrice>7500</StockPrice>
@@ -597,7 +598,7 @@ const SearchBar = () => {
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon} />
                     <AutoSearchData>{recent}</AutoSearchData>
-                    <EachStockData>주식 설명</EachStockData>
+                    {/* <EachStockData>주식 설명</EachStockData> */}
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
                     <StockPrice>{7500}</StockPrice>

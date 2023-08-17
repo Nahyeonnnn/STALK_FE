@@ -9,10 +9,6 @@ const Day = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   const [interval, setInterval] = useState([]);
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
-
   const getFormattedTime = (time) => {
     const hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");

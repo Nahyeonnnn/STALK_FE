@@ -61,6 +61,10 @@ const Price = styled.span`
   margin-left: 0.25rem;
 `;
 
+const LogoImg = styled.img`
+  
+`;
+
 const numberWithCommas = (number) => {
   if (number === undefined) {
     return ""; // Return an empty string if the number is undefined
@@ -90,6 +94,7 @@ const TradeRank = () => {
         if (response.status === 200) {
           setRankData(response.data["시가총액 순위"]);
         }
+        console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -121,6 +126,7 @@ const TradeRank = () => {
           >
             <div>
               <Num>{index + 1}</Num>
+              <LogoImg src={item["이미지URL"]}></LogoImg>
               <Link
                 to={`/detail/${item["종목코드"]}`}
                 style={{ textDecoration: "none" }}

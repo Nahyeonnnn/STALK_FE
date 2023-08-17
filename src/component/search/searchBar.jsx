@@ -529,16 +529,14 @@ const SearchBar = () => {
   };
 
   useEffect(() => {
-    async function fetchTransactionRank() {
+    async function fetchData(url, startIndex, endIndex) {
       try {
-        const response = await axios.get(
-          "https://stalksound.store/sonification/transaction_rank/"
-        );
+        const response = await axios.get(url);
         if (response.status === 200) {
           const transactionRank = response.data["시가총액 순위"];
 
           // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
-          transactionRank.slice(0, 100).forEach((item) => {
+          transactionRank.slice(startIndex, endIndex).forEach((item) => {
             const stockIndex = stockList.findIndex(
               (stock) => stock.prdt_name === item["종목명"]
             );
@@ -551,24 +549,28 @@ const SearchBar = () => {
               );
             }
           });
-
-          // Print or process updated stockList
-          stockList.forEach((stock) => {
-            console.log("종목명:", stock.prdt_name);
-            console.log("현재가:", stock["현재가"]);
-            console.log("전일 대비율:", stock["전일 대비율"]);
-          });
         }
+        stockList.forEach((stock) => {
+          console.log("종목명:", stock.prdt_name);
+          console.log("현재가:", stock["현재가"]);
+          console.log("전일 대비율:", stock["전일 대비율"]);
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
 
-    fetchTransactionRank();
+    fetchData(
+      "https://stalksound.store/sonification/transaction_rank/",
+      0,
+      100
+    );
+    fetchData(
+      "https://stalksound.store/sonification/f_transaction_rank/",
+      101,
+      200
+    );
   }, []);
-
-  console.log("ㅎㅎ");
-  // console.log(rankData);
 
   return (
     <>

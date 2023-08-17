@@ -32,10 +32,10 @@ const Day = (props) => {
   const currentTimeString = getFormattedTime(currentTime);
   const timeIntervals = generateTimeIntervals(
     currentTimeString,
-    30000, // 30분을 밀리초로 변환
-    8 // 총 8개의 간격 생성 (2시간 분량)
+    3000, // 30분을 밀리초로 변환
+    4 // 총 8개의 간격 생성 (2시간 분량)
   );
-
+  console.log(timeIntervals);
   useEffect(() => {
     setStockData([]);
     const fetchData = async (end) => {
@@ -56,19 +56,19 @@ const Day = (props) => {
 
         const responses = await Promise.all(requests);
 
-        const newData = responses
-          .flatMap((data) =>
-            data.map((item) => ({
-              종목: item.종목,
-              날짜: item.날짜,
-              시가: item.시가,
-              현재가: item.현재가,
-              고가: item.고가,
-              저가: item.저가,
-            }))
-          )
+        const newData = responses.flatMap((data) =>
+          data.map((item) => ({
+            종목: item.종목,
+            날짜: item.날짜,
+            시가: item.시가,
+            현재가: item.현재가,
+            고가: item.고가,
+            저가: item.저가,
+          }))
+        );
 
         setStockData(newData);
+        console.log(newData);
 
         setMaxPrice(
           Math.max(...newData.map((item) => parseInt(item.현재가, 10)))
@@ -89,10 +89,11 @@ const Day = (props) => {
     return item.날짜;
   });
 
-  var prices = stockData
-    .map(function (item) {
-      return parseInt(item.현재가, 10);
-    });
+  var prices = stockData.map(function (item) {
+    return parseInt(item.현재가, 10);
+  });
+
+  stockData.sort((a, b) => new Date(a.날짜) - new Date(b.날짜));
 
   useEffect(() => {
     // Calculate graph intervals
@@ -178,7 +179,7 @@ const Day = (props) => {
     },
     series: [
       {
-        type: "line",
+        type: "areaspline",
         name: stockData.length > 0 ? stockData[0].종목 : "",
         data: prices,
         color: {
@@ -214,7 +215,7 @@ const Day = (props) => {
           { responseType: "arraybuffer" }
         ) //arraybuffer 형태로 받아서
         .then(async (res) => {
-          console.log(res); //AudioContext 생성
+          //AudioContext 생성
           const audioContext = new (window.AudioContext ||
             window.webkitAudioContext)();
           const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
@@ -230,7 +231,8 @@ const Day = (props) => {
   const playAudio = () => {
     if (!isPlaying && audioBuffer) {
       setIsPlaying(true);
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);

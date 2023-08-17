@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
+import { stockList } from "../../search/searchBar";
 
 const Day = (props) => {
   const [stockData, setStockData] = useState([]);
@@ -13,6 +14,7 @@ const Day = (props) => {
   const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
   const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
 
+  const stock = stockList.find((item) => item.code === `${props.StockID}`);
   useEffect(() => {
     axios
       .get(`https://stalksound.store/sonification/f_minute_data/`, {
@@ -23,7 +25,6 @@ const Day = (props) => {
       .then((res) => {
         setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
         setStockData(res.data.data);
-        console.log(res);
 
         setMaxPrice(
           Math.max(...res.data.data.map((item) => parseFloat(item.종가, 10)))
@@ -31,8 +32,6 @@ const Day = (props) => {
         setMinPrice(
           Math.min(...res.data.data.map((item) => parseFloat(item.종가, 10)))
         );
-
-        console.log(res.data.data);
       })
       .catch((e) => {
         console.log(e);
@@ -61,7 +60,7 @@ const Day = (props) => {
     gap = 0.001;
   }
 
-  for (let i = minPrice - 2 * gap; i <= maxPrice + gap; i += gap) {
+  for (let i = minPrice - gap; i <= maxPrice + gap; i += gap) {
     // graph 간격 조정
     interval.push(i);
   }
@@ -99,7 +98,7 @@ const Day = (props) => {
       borderRadius: 16, // 테두리 둥글게 설정
     },
     title: {
-      text: stockData.length > 0 ? stockData[0].종목 : "",
+      text: stock.prdt_name,
       style: {
         fontSize: "1rem",
       },
@@ -131,7 +130,7 @@ const Day = (props) => {
     series: [
       {
         type: "areaspline",
-        name: "테슬라",
+        name: stock.prdt_name,
         data: prices,
         color: {
           linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
@@ -166,7 +165,7 @@ const Day = (props) => {
           { responseType: "arraybuffer" }
         ) //arraybuffer 형태로 받아서
         .then(async (res) => {
-          console.log(res); //AudioContext 생성
+          //AudioContext 생성
           const audioContext = new (window.AudioContext ||
             window.webkitAudioContext)();
           const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
@@ -182,7 +181,8 @@ const Day = (props) => {
   const playAudio = () => {
     if (!isPlaying && audioBuffer) {
       setIsPlaying(true);
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);

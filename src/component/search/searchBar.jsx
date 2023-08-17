@@ -6,6 +6,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import NaverIcon from "./NaverIcon.png";
+import AudioRecord from "./audioRecord";
 
 library.add(faMagnifyingGlass);
 
@@ -525,6 +526,13 @@ const SearchBar = () => {
       
   }, []);
 
+  const sttFunction = (data) => {
+    setQuery(data.text);
+    const SearchSuggestions = getSuggestions(data.text);
+    setSuggestions(SearchSuggestions);
+    setShowSuggestions(true);
+  };
+
   return (
     <>
       <SearchContainer>
@@ -537,6 +545,7 @@ const SearchBar = () => {
             placeholder="검색하기"
             onKeyPress={handleKeyPress}
           />
+          <AudioRecord propFunction={sttFunction}></AudioRecord>
         </SearchSmallContainer>
         {query.length > 0 && showSuggestions && (
           <AutoSearchContainer>

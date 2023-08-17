@@ -9,11 +9,7 @@ const Day = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   const [interval, setInterval] = useState([]);
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
-
-  const getFormattedTime = (time) => {
+    const getFormattedTime = (time) => {
     const hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");
     const seconds = String(time.getSeconds()).padStart(2, "0");
@@ -50,7 +46,7 @@ const Day = (props) => {
               },
             }
           );
-          setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+          props.propFunction(res.data.lista);
           return res.data.data;
         });
 
@@ -203,49 +199,9 @@ const Day = (props) => {
     },
   };
 
-  useEffect(() => {
-    //lista 저장 후 데이터를 소리로 변환
-    if (lista !== null) {
-      axios
-        .post(
-          `https://stalksound.store/sonification/data_to_sound/`,
-          {
-            lista: lista,
-          },
-          { responseType: "arraybuffer" }
-        ) //arraybuffer 형태로 받아서
-        .then(async (res) => {
-          //AudioContext 생성
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
-          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
-          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [lista]);
-
-  //그래프 음향 출력
-  const playAudio = () => {
-    if (!isPlaying && audioBuffer) {
-      setIsPlaying(true);
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.onended = () => {
-        setIsPlaying(false); //재생 끝날 경우 false로 reset
-      };
-      source.start(0);
-    }
-  };
-
   return (
     <>
-      <div onClick={playAudio}>
+      <div>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </>

@@ -118,7 +118,6 @@ const Day = (props) => {
         );
 
         setStockData(newData);
-        console.log(newData);
 
         setMaxPrice(
           Math.max(...newData.map((item) => parseInt(item.현재가, 10)))

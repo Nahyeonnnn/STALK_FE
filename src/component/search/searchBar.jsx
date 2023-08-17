@@ -703,7 +703,7 @@ const SearchBar = () => {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [recentAxios]);
 
   // useEffect(() => {
   //   async function fetchData() {

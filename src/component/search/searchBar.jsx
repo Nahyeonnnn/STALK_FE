@@ -12,107 +12,81 @@ library.add(faMagnifyingGlass);
 
 function isUSStock(code) {
   const usStockCodes = [
-    "AMRS",
-    "WE",
-    "MWWC",
-    "HMBL",
-    "PTRA",
-    "ZRFY",
-    "TSLA",
-    "MIMO",
-    "CANO",
-    "DRNG",
-    "EBET",
-    "INND",
-    "HCMC",
-    "PHIL",
-    "RGTI",
-    "SFLM",
-    "TTOO",
-    "F",
-    "GNS",
-    "BBRW",
-    "PLTR",
-    "AMD",
-    "NIO",
-    "NKLA",
-    "NVDA",
     "AAPL",
-    "IONQ",
-    "BBD",
-    "BDPT",
-    "CBDD",
-    "MULN",
-    "GAXY",
-    "IDEX",
-    "KVUE",
-    "JNJ",
-    "SANP",
-    "AMZN",
-    "ACHR",
-    "DVLP",
-    "BAC",
-    "CCTR",
-    "MMEX",
-    "T",
-    "RIVN",
-    "AITX",
-    "MPW",
-    "NOUV",
-    "INTC",
-    "PGY",
-    "PLUG",
-    "TSOI",
-    "VALE",
-    "SOFI",
-    "LCID",
-    "FFIE",
-    "CCL",
-    "TIVC",
-    "INQD",
-    "EPAZ",
-    "BABA",
-    "AMC",
-    "BOMO",
-    "GOEV",
-    "IJJP",
-    "TSAT",
-    "MSFT",
-    "MARA",
-    "DIS",
-    "TLRY",
-    "DKNG",
-    "MCOA",
-    "CGC",
-    "GM",
-    "LYFT",
-    "DNA",
-    "GOOGL",
-    "COWI",
-    "MRNJ",
-    "PENN",
-    "PBR",
-    "PCG",
-    "SWN",
-    "ORGN",
-    "SPCE",
-    "RIOT",
-    "GRAB",
-    "CRKN",
-    "OXY",
-    "PFE",
-    "GZIC",
-    "UBER",
-    "NSAV",
-    "TWOH",
-    "IGPK",
-    "AAL",
-    "APLS",
-    "CLSK",
-    "RIG",
-    "LUMN",
-    "ETON",
-  ];
+  "MSFT",
+  "AMZN",
+  "NVDA",
+  "GOOGL",
+  "GOOG",
+  "TSLA",
+  "META",
+  "AVGO",
+  "ASML",
+  "PEP",
+  "COST",
+  "ADBE",
+  "CSCO",
+  "AZN",
+  "QQQ",
+  "CMCSA",
+  "NFLX",
+  "AMD",
+  "TMUS",
+  "TXN",
+  "INTC",
+  "AMGN",
+  "INTU",
+  "SNY",
+  "HON",
+  "QCOM",
+  "AMAT",
+  "BKNG",
+  "SBUX",
+  "PDD",
+  "MDLZ",
+  "GILD",
+  "VRTX",
+  "LRCX",
+  "REGN",
+  "ATVI",
+  "MU",
+  "SNPS",
+  "NTES",
+  "PANW",
+  "KLAC",
+  "PYPL",
+  "MELI",
+  "MNST",
+  "CDNS",
+  "VXUS",
+  "ABNB",
+  "NXPI",
+  "MRVL",
+  "WDAY",
+  "JD",
+  "KDP",
+  "LULU",
+  "FTNT",
+  "MCHP",
+  "CPRT",
+  "KHC",
+  "ROST",
+  "EXC",
+  "ON",
+  "TLT",
+  "MRNA",
+  "BIDU",
+  "BKR",
+  "LI",
+  "CRWD",
+  "TTD",
+  "EA",
+  "WBD",
+  "XEL",
+  "ARGX",
+  "CCEP",
+  "IEF",
+];
   return usStockCodes.includes(code);
 }
 
@@ -630,6 +604,7 @@ const SearchBar = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]);
   const [recentAxios, setRecentAxios] = useState(null);
+  const [showRecent, setShowRecent] = useState(false);
 
   const addToSearchHistory = (item) => {
     let newSearchArray = [...recentSearchData];
@@ -728,24 +703,73 @@ const SearchBar = () => {
       .catch((e) => {
         console.log(e);
       });
-    // Promise.all(axiosRequests)
-    // .then((responses) => {
-    //   const responseDataArray = responses.map((res) => res.data.chart_data);
-    //   const updatedFoundObjects = foundObjects.map((foundObj, i) => {
-    //     return {
-    //       ...foundObj,
-    //       responseData: responseDataArray[i]
-    //     };
-    //   });
-    //   setRecentAxios(updatedFoundObjects);
-    //   console.log(updatedFoundObjects);
-    // })
-    // .catch((e) => {
-    //   console.log(e);
-    // });
-
   }, []);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const recentSearchDataString = localStorage.getItem("recent");
+  
+  //     if (!recentSearchDataString) {
+  //       setRecentSearch([]);
+  //     } else {
+  //       setRecentSearch(JSON.parse(recentSearchDataString));
+  //     }
+  
+  //     const recentArray = JSON.parse(localStorage.getItem("recent"));
+  //     let filteredArray = [];
+  
+  //     if (recentArray && Array.isArray(recentArray) && recentArray.length > 0) {
+  //       filteredArray = recentArray
+  //         .filter((item) => item !== null && item !== undefined)
+  //         .filter((item) => stockList.some((obj) => obj.prdt_name === item));
+  //     }
+  
+  //     let foundObjects = stockList.filter((item) =>
+  //       filteredArray.includes(item.prdt_name)
+  //     );
+  
+  //     console.log("foundObjects", foundObjects);
+  
+  //     const axiosRequests = foundObjects.map(async (recentData) => {
+  //       const apiUrl = isUSStock(recentData.code) 
+  //         ? `https://stalksound.store/sonification/f_now_data/`
+  //         : `https://stalksound.store/sonification/now_data/`;
+  
+  //       try {
+  //         const response = await axios.get(apiUrl, {
+  //           params: {
+  //             symbol: recentData.code,
+  //           },
+  //         });
+  //         return response.data.chart_data;
+  //       } catch (error) {
+  //         console.log(error);
+  //         return null;
+  //       }
+  //     });
+  
+  //     try {
+  //       const responseDataArray = await Promise.all(axiosRequests);
+  //       const updatedFoundObjects = foundObjects.map((foundObj, i) => ({
+  //         ...foundObj,
+  //         responseData: responseDataArray[i],
+  //       }));
+  //       setRecentAxios(updatedFoundObjects);
+  //       console.log(updatedFoundObjects);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  
+  //   fetchData();
+  // }, []);
+  
+  useEffect(()=>{
+    if(recentAxios !== null){
+      console.log(recentAxios);
+      setShowRecent(true);
+    }
+  },[recentAxios]);
 
   const sttFunction = (data) => {
     setQuery(data.text);
@@ -842,7 +866,7 @@ const SearchBar = () => {
         {query.length === 0 && (
           <AutoSearchContainer>
             <RecentSearch>최근 검색 기록</RecentSearch>
-            {recentAxios !== null ? (
+            {showRecent !== false ? (
               recentAxios.map((recent) => (
                 
                 <EachDataDiv

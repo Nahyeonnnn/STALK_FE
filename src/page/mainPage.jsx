@@ -22,8 +22,6 @@ const MiddleBar = styled.div`
   position: sticky;
   top: 3rem;
   transition: background-color 0.3s ease;
-  font-family: ${({ isSticky }) =>
-    isSticky ? "'Inter', sans-serif" : "'Amaranth', sans-serif"};
 `;
 
 const InvestBtn = styled.button`

@@ -118,7 +118,7 @@ function isUSStock(code) {
 }
 
 //axios 연결 시 받을 주식 리스트 예시
-  export const stockList = [
+export const stockList = [
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG에너지솔루션", code: "373220" },
   { prdt_name: "SK하이닉스", code: "000660" },
@@ -535,6 +535,27 @@ const SearchBar = () => {
     setShowSuggestions(true);
   };
 
+  useEffect(() => {
+    async function fetchTransactionRank() {
+      try {
+        const response = await axios.get(
+          "https://stalksound.store/sonification/transaction_rank/"
+        );
+        if (response.status === 200) {
+          // setRankData(response.data["시가총액 순위"]);
+          console.log(response.data["시가총액 순위"]);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchTransactionRank();
+  }, []);
+
+  console.log("ㅎㅎ");
+  // console.log(rankData);
+
   return (
     <>
       <SearchContainer>
@@ -568,8 +589,8 @@ const SearchBar = () => {
                   {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
-                  <StockPrice>7500</StockPrice>
-                  <PercentData>+500 (+5%)</PercentData>
+                  <StockPrice>0</StockPrice>
+                  <PercentData>0%</PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}

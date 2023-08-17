@@ -49,17 +49,17 @@ const DetailStatic = () => {
           symbol: StockID1,
         },
       })
-      .then(response => {
+      .then((response) => {
         setData(response.data.chart_data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("에러에러에러", error);
       });
   }, [StockID1]);
 
   const textColor = parseFloat(data["전일 대비율"]) > 0 ? "#FF0000" : "#0000FF";
 
-  function TextToSpeech(text){
+  function TextToSpeech(text) {
     console.log(text);
     const t = `시가 : ${text["시가"]},
      고가 : ${text["고가"]},
@@ -73,20 +73,26 @@ const DetailStatic = () => {
 
   return (
     <>
-      <StaticBox onDoubleClick={()=>TextToSpeech(data)}>
+      <StaticBox onDoubleClick={() => TextToSpeech(data)}>
         <StaticInfoBox>
           <InfoTitle>시가</InfoTitle>
-          <InfoText textColor="#FFB229">{data["시가"]}</InfoText>
+          <InfoText textColor="#FFB229">
+            {parseInt(data["시가"]).toLocaleString()}
+          </InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
           <InfoTitle>고가</InfoTitle>
-          <InfoText textColor="#E685FF">{data["고가"]}</InfoText>
+          <InfoText textColor="#E685FF">
+            {parseInt(data["고가"]).toLocaleString()}
+          </InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
           <InfoTitle>저가</InfoTitle>
-          <InfoText textColor="#6BBDFF">{data["저가"]}</InfoText>
+          <InfoText textColor="#6BBDFF">
+            {parseInt(data["저가"]).toLocaleString()}
+          </InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
@@ -96,12 +102,14 @@ const DetailStatic = () => {
 
         <StaticInfoBox>
           <InfoTitle>누적 거래량</InfoTitle>
-          <InfoText>{data["누적 거래량"]}</InfoText>
+          <InfoText>{parseInt(data["누적 거래량"]).toLocaleString()}</InfoText>
         </StaticInfoBox>
 
         <StaticInfoBox>
           <InfoTitle>시가 총액</InfoTitle>
-          <InfoText>{data["HTS 시가총액"]}</InfoText>
+          <InfoText>
+            {parseInt(data["HTS 시가총액"]).toLocaleString()}(억)
+          </InfoText>
         </StaticInfoBox>
       </StaticBox>
       <DetailButton StockID={StockID1}></DetailButton>

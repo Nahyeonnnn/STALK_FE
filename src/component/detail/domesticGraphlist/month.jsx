@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 
-const Month = (props) => {
+const Month = ({StockID, propFunction}) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-
-  useEffect(() => {
-    // 3달 전 구하기
+  const fetchData = useCallback(async () => {
     const currentDate = new Date();
-    const daysToSubtract = 90; // 빼고 싶은 날짜 수
+    const daysToSubtract = 90;
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
-    const endDate = `${year}${month}${date}`; // 현재 날짜
+    const endDate = `${year}${month}${date}`;
 
     currentDate.setDate(currentDate.getDate() - daysToSubtract);
 
@@ -27,31 +25,76 @@ const Month = (props) => {
     month = String(currentDate.getMonth() + 1).padStart(2, "0");
     date = String(currentDate.getDate()).padStart(2, "0");
 
-    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
+    const beginDate = `${year}${month}${date}`;
 
-    axios
-      .get(`https://stalksound.store/sonification/day_data/`, {
+    try {
+      const res = await axios.get(`https://stalksound.store/sonification/day_data/`, {
         params: {
-          symbol: `${props.StockID}`,
+          symbol: `${StockID}`,
           begin: beginDate,
           end: endDate,
         },
-      })
-      .then((res) => {
-        props.propFunction(res.data.lista);
-        setStockData(res.data.data);
-
-        setMaxPrice(
-          Math.max(...res.data.data.map((item) => parseInt(item.시가, 10)))
-        );
-        setMinPrice(
-          Math.min(...res.data.data.map((item) => parseInt(item.시가, 10)))
-        );
-      })
-      .catch((e) => {
-        console.log(e);
       });
-  }, [props.StockID]);
+      propFunction(res.data.lista);
+      setStockData(res.data.data);
+
+      setMaxPrice(
+        Math.max(...res.data.data.map((item) => parseInt(item.시가, 10)))
+      );
+      setMinPrice(
+        Math.min(...res.data.data.map((item) => parseInt(item.시가, 10)))
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }, [StockID, propFunction]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  // useEffect(() => {
+  //   // 3달 전 구하기
+  //   const currentDate = new Date();
+  //   const daysToSubtract = 90; // 빼고 싶은 날짜 수
+
+  //   let year = currentDate.getFullYear();
+  //   let month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  //   let date = String(currentDate.getDate()).padStart(2, "0");
+
+  //   const endDate = `${year}${month}${date}`; // 현재 날짜
+
+  //   currentDate.setDate(currentDate.getDate() - daysToSubtract);
+
+  //   year = currentDate.getFullYear();
+  //   month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  //   date = String(currentDate.getDate()).padStart(2, "0");
+
+  //   const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
+
+  //   axios
+  //     .get(`https://stalksound.store/sonification/day_data/`, {
+  //       params: {
+  //         symbol: `${props.StockID}`,
+  //         begin: beginDate,
+  //         end: endDate,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       props.propFunction(res.data.lista);
+  //       setStockData(res.data.data);
+
+  //       setMaxPrice(
+  //         Math.max(...res.data.data.map((item) => parseInt(item.시가, 10)))
+  //       );
+  //       setMinPrice(
+  //         Math.min(...res.data.data.map((item) => parseInt(item.시가, 10)))
+  //       );
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // }, [props.StockID]);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {

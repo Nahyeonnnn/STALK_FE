@@ -567,7 +567,7 @@ const SearchBar = () => {
     );
     fetchData(
       "https://stalksound.store/sonification/f_transaction_rank/",
-      101,
+      0,
       200
     );
   }, []);

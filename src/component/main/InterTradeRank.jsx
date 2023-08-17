@@ -111,7 +111,7 @@ const InterTradeRank = () => {
               </Link>
             </div>
             <div>
-              <Current>\ {numberWithCommas(item["현재가"])}</Current>
+              <Current>₩ {numberWithCommas(item["현재가"])}</Current>
               <Ratio ratio={item["전일 대비율"]}>{item["전일 대비율"]}%</Ratio>
             </div>
           </RankItem>

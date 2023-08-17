@@ -542,8 +542,10 @@ const SearchBar = () => {
           "https://stalksound.store/sonification/transaction_rank/"
         );
         if (response.status === 200) {
-          // setRankData(response.data["시가총액 순위"]);
-          console.log(response.data["시가총액 순위"]);
+          const transactionRank = response.data["시가총액 순위"];
+          transactionRank.slice(0, 100).forEach((item) => {
+            console.log(item["현재가"]);
+          });
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -586,7 +588,6 @@ const SearchBar = () => {
                 <EachStockDataDiv>
                   <EachStockIcon src={NaverIcon} />
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
-                  {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
                   <StockPrice>0</StockPrice>

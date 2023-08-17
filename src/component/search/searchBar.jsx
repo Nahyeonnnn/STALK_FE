@@ -535,8 +535,29 @@ const SearchBar = () => {
           "https://stalksound.store/sonification/transaction_rank/"
         );
         if (response.status === 200) {
-          // setRankData(response.data["시가총액 순위"]);
-          console.log(response.data["시가총액 순위"]);
+          const transactionRank = response.data["시가총액 순위"];
+
+          // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
+          transactionRank.slice(0, 100).forEach((item) => {
+            const stockIndex = stockList.findIndex(
+              (stock) => stock.prdt_name === item["종목명"]
+            );
+            if (stockIndex !== -1) {
+              stockList[stockIndex]["현재가"] = parseInt(
+                item["현재가"]
+              ).toLocaleString();
+              stockList[stockIndex]["전일 대비율"] = parseFloat(
+                item["전일 대비율"]
+              );
+            }
+          });
+
+          // Print or process updated stockList
+          stockList.forEach((stock) => {
+            console.log("종목명:", stock.prdt_name);
+            console.log("현재가:", stock["현재가"]);
+            console.log("전일 대비율:", stock["전일 대비율"]);
+          });
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -579,11 +600,10 @@ const SearchBar = () => {
                 <EachStockDataDiv>
                   <EachStockIcon src={NaverIcon} />
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
-                  {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
-                  <StockPrice>0</StockPrice>
-                  <PercentData>0%</PercentData>
+                  <StockPrice>{result.현재가}원</StockPrice>
+                  <PercentData>{result["전일 대비율"]}%</PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}
@@ -613,7 +633,6 @@ const SearchBar = () => {
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon} />
                     <AutoSearchData>{recent}</AutoSearchData>
-                    {/* <EachStockData>주식 설명</EachStockData> */}
                   </EachStockDataDiv>
                   <EachPercentDataDiv>
                     <StockPrice>{7500}</StockPrice>

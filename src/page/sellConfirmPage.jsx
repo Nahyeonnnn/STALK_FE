@@ -28,7 +28,7 @@ const SellConfirmPage = () => {
       <TopBar></TopBar>
       <CompleteBox>
         <CompleteCheck>
-          <img src={Check}></img>
+          <img src={Check} alt="거래 완료"></img>
         </CompleteCheck>
         <CompleteText>판매 완료 !</CompleteText>
       </CompleteBox>

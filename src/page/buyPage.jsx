@@ -228,7 +228,6 @@ const Overlay = styled.div`
 const BuyPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
-  const [inputLength, setInputLength] = useState(0); // State to keep track of input length
   const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
   const [stockPrice, setStockPrice] = useState(0);
   
@@ -238,7 +237,6 @@ const BuyPage = () => {
       setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
-    setInputLength((prevLength) => prevLength + 1);
   };
 
   const removeDigit = () => {
@@ -247,7 +245,6 @@ const BuyPage = () => {
       setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
-    setInputLength((prevLength) => prevLength - 1);
   };
 
   const handleInputChange = (event) => {
@@ -276,14 +273,14 @@ const BuyPage = () => {
           quantity: parseInt(inputValue)
         }
       );
-
-      if (response.status === 200) {
+    
+      if (parseInt((response.status)/100) === 2) {
         navigate("/buy/confirm");
       } else {
         // 에러 상황 처리
       }
     } catch (error) {
-      console.error("매수 중 오류 발생:", error);
+      alert("매수 중 오류 발생!\n사유: " + error.response.data.error);
       // 에러 상황 처리
     }
   };
@@ -304,19 +301,15 @@ const BuyPage = () => {
         );
         setStockData(Number(response.data.chart_data.현재가));
         setStockPrice(response.data.chart_data.현재가);
-        console.log(response.data);
-        console.log(response.data.chart_data.현재가);
       } catch (error) {
         console.error("종목명 가져오기 실패 ", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [StockID2]);
 
   const nowPrice = stockData.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
-  console.log("nowPrice" + nowPrice);
-  console.log("stockData" + stockData);
   return (
     <>
       <TopBar></TopBar>

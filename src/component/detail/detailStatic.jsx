@@ -55,7 +55,7 @@ const DetailStatic = () => {
       .catch(error => {
         console.error("에러에러에러", error);
       });
-  }, []);
+  }, [StockID1]);
 
   const textColor = parseFloat(data["전일 대비율"]) > 0 ? "#FF0000" : "#0000FF";
 

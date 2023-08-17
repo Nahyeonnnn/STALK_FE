@@ -82,7 +82,7 @@ const Day = (props) => {
     };
 
     fetchData(timeIntervals[0]);
-  }, [props.StockID]);
+  }, [props.StockID, timeIntervals]);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {

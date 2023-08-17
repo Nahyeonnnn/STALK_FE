@@ -228,10 +228,8 @@ const Overlay = styled.div`
 const InterSellPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [active, setActive] = useState(0);
-  const [inputLength, setInputLength] = useState(0); // State to keep track of input length
   const [TotalAmountStockPrice, setTotalAmountStockPrice] = useState(0);
   const [stockPrice, setStockPrice] = useState(0);
-  //axios 연결 시 받을 주식 리스트 예시
 
   const addDigit = (digit) => {
     setInputValue((prevValue) => {
@@ -239,7 +237,6 @@ const InterSellPage = () => {
       setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
-    setInputLength((prevLength) => prevLength + 1);
   };
 
   const removeDigit = () => {
@@ -248,7 +245,6 @@ const InterSellPage = () => {
       setTotalAmountStockPrice(newValue * stockPrice); // Update the total amount when input changes
       return newValue;
     });
-    setInputLength((prevLength) => prevLength - 1);
   };
 
   const handleInputChange = (event) => {
@@ -278,22 +274,19 @@ const InterSellPage = () => {
         }
       );
 
-      if (response.status === 200) {
-        navigate("/sell/confirm");
+      if (parseInt((response.status)/100) === 2) {
+        navigate("/buy/confirm");
       } else {
         // 에러 상황 처리
       }
     } catch (error) {
-      console.error("매도 중 오류 발생:", error);
+      alert("매도 중 오류 발생!\n사유: " + error.response.data.error);
       // 에러 상황 처리
     }
   };
+  
   const { StockID6 } = useParams();
   const stock = stockList.find((item) => item.code === StockID6);
-
-  console.log(StockID6);
-  console.log(stock);
-
   const [stockData, setStockData] = useState([]);
 
   useEffect(() => {
@@ -309,20 +302,15 @@ const InterSellPage = () => {
         );
         setStockData(Number(response.data.chart_data.현재가));
         setStockPrice(response.data.chart_data.현재가);
-        console.log(response.data);
-        console.log(response.data.chart_data.현재가);
       } catch (error) {
         console.error("종목명 가져오기 실패 ", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [StockID6]);
 
   const nowPrice = stockData.toLocaleString("ko-KR"); //세자리수마다 콤마찍기
-  console.log("nowPrice : " + nowPrice);
-  console.log("stockData : " + stockData);
-
   return (
     <>
       <TopBar></TopBar>

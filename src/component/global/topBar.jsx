@@ -75,7 +75,11 @@ const TopBar = () => {
   }
 
   function moveToMain() {
-    navigate(`/main`);
+    const data = {
+      someKey: "someValue",
+      anotherKey: "anotherValue"
+    };
+    navigate(`/main`, {state : data});
   }
 
   return (

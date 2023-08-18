@@ -96,8 +96,7 @@ const MainMyInvest = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        "https://stalksound.store/sonification/user_info/",
-        {
+        "https://stalksound.store/sonification/user_info/",{withCredentials: true,
           headers: {
             accept: "application/json",
             "X-CSRFToken": "YOUR_CSRF_TOKEN", // Replace with your actual CSRF token

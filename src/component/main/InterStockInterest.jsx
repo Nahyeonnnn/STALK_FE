@@ -95,7 +95,8 @@ const InterStockInterest = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://stalksound.store/sonification/user_info/"
+          "https://stalksound.store/sonification/user_info/",
+          {withCredentials: true}
         );
         const interestList = response.data["찜한목록"];
         setFilteredInterestList(interestList);

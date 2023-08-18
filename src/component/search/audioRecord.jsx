@@ -132,6 +132,7 @@ const AudioRecord = (props) => {
         }
     catch (e) {
         console.log(e);
+        alert("음성 인식에 실패했습니다. 녹음을 다시 한번 시도해 주세요!");
     }
 }
 

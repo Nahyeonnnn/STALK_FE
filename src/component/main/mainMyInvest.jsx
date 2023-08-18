@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -21,11 +20,6 @@ const AmountTextRight = styled.div`
   justify-content: space-around;
   width: 50vw;
   color: rgba(241, 208, 10, 0.92);
-`;
-
-const AmountTextRightRate = styled.div`
-  display: flex;
-  color: ${(props) => (props.value.startsWith("-") ? "skyblue" : "red")};
 `;
 
 const InvestBox = styled.div`
@@ -59,14 +53,13 @@ const InvestRate = styled.div`
   margin-left: 4rem;
 `;
 
-const formatNumberWithCommas = (number) => {
-  return number.toLocaleString();
-};
+// const formatNumberWithCommas = (number) => {
+//   return number.toLocaleString();
+// };
 
 const MainMyInvest = () => {
   const [userInvestments, setUserInvestments] = useState([]);
   const [userAmount, setUserAmount] = useState({});
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -106,6 +99,7 @@ const MainMyInvest = () => {
       let t = `주식 : ${investment.stock}, 현재가 : ${investment.price}, 주식 등락률 : ${investment.rate_profit_loss}%`;
       const value = new SpeechSynthesisUtterance(t);
       window.speechSynthesis.speak(value);
+      return null;
     });
   }
   

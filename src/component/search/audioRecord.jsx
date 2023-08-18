@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +13,9 @@ const MicrophoneIcon = styled(FontAwesomeIcon)`
     bottom: 1rem;
     color: gray;
     right: 1rem;
+    &:hover {
+    cursor: pointer;
+  }
 `;
 
 const AudioRecord = (props) => {
@@ -96,10 +99,10 @@ const AudioRecord = (props) => {
     }
     
     // File 생성자를 사용해 파일로 변환
-    const sound = new File([audioUrl], "soundBlob", {
-      lastModified: new Date().getTime(),
-      type: "audio",
-    });
+    // const sound = new File([audioUrl], "soundBlob", {
+    //   lastModified: new Date().getTime(),
+    //   type: "audio",
+    // });
   	
     // setDisabled(false);
     serverPostRecord();

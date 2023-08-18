@@ -9,10 +9,6 @@ const Day = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   const [interval, setInterval] = useState([]);
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
-
   const getFormattedTime = (time) => {
     const hours = String(time.getHours()).padStart(2, "0");
     const minutes = String(time.getMinutes()).padStart(2, "0");
@@ -23,19 +19,73 @@ const Day = (props) => {
   const generateTimeIntervals = (currentTime, interval, count) => {
     const intervals = [];
     for (let i = 0; i < count; i++) {
-      intervals.push(currentTime - i * interval);
+      const intervalTime = new Date(currentTime);
+      intervalTime.setMinutes(intervalTime.getMinutes() - i * interval);
+      intervals.push(Number(getFormattedTime(intervalTime)));
     }
     return intervals;
   };
 
   const currentTime = new Date();
   const currentTimeString = getFormattedTime(currentTime);
-  const timeIntervals = generateTimeIntervals(
-    currentTimeString,
-    3000, // 30분을 밀리초로 변환
-    4 // 총 8개의 간격 생성 (2시간 분량)
-  );
-  console.log(timeIntervals);
+
+  let timeIntervals;
+  if ("000000" <= currentTimeString || currentTimeString <= "090000") {
+    timeIntervals = [153000, 150000, 143000, 140000];
+  } else if (currentTimeString <= "153000") {
+    timeIntervals = generateTimeIntervals(
+      currentTime,
+      30, // 30분 간격
+      4 // 총 4개의 간격 생성
+    );
+  } else {
+    timeIntervals = [153000, 150000, 143000, 140000];
+  }
+  // const fetchData = useCallback(async (end) => {
+  //   try {
+  //     const requests = timeIntervalsRef.current.map(async (interval) => {
+  //       const res = await axios.get(
+  //         `https://stalksound.store/sonification/hmm__minute_data/`,
+  //         {
+  //           params: {
+  //             symbol: `${props.StockID}`,
+  //             end: interval,
+  //           },
+  //         }
+  //       );
+  //       return res.data.data;
+  //     });
+
+  //     const responses = await Promise.all(requests);
+
+  //     const newData = responses.flatMap((data) =>
+  //       data.map((item) => ({
+  //         종목: item.종목,
+  //         날짜: item.날짜,
+  //         시가: item.시가,
+  //         현재가: item.현재가,
+  //         고가: item.고가,
+  //         저가: item.저가,
+  //       }))
+  //     );
+
+  //     setStockData(newData);
+  //     setMaxPrice(
+  //       Math.max(...newData.map((item) => parseInt(item.현재가, 10)))
+  //     );
+  //     setMinPrice(
+  //       Math.min(...newData.map((item) => parseInt(item.현재가, 10)))
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [props.StockID]);
+
+  // useEffect(() => {
+  //   setStockData([]);
+  //   fetchData(timeIntervalsRef.current[0]);
+  // }, [fetchData]);
+
   useEffect(() => {
     setStockData([]);
     const fetchData = async (end) => {
@@ -50,7 +100,7 @@ const Day = (props) => {
               },
             }
           );
-          setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+          props.propFunction(res.data.lista);
           return res.data.data;
         });
 
@@ -203,49 +253,9 @@ const Day = (props) => {
     },
   };
 
-  useEffect(() => {
-    //lista 저장 후 데이터를 소리로 변환
-    if (lista !== null) {
-      axios
-        .post(
-          `https://stalksound.store/sonification/data_to_sound/`,
-          {
-            lista: lista,
-          },
-          { responseType: "arraybuffer" }
-        ) //arraybuffer 형태로 받아서
-        .then(async (res) => {
-          //AudioContext 생성
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
-          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
-          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [lista]);
-
-  //그래프 음향 출력
-  const playAudio = () => {
-    if (!isPlaying && audioBuffer) {
-      setIsPlaying(true);
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.onended = () => {
-        setIsPlaying(false); //재생 끝날 경우 false로 reset
-      };
-      source.start(0);
-    }
-  };
-
   return (
     <>
-      <div onClick={playAudio}>
+      <div>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { React, useEffect} from 'react';
 import { useNavigate} from 'react-router-dom';
-import { library } from "@fortawesome/fontawesome-svg-core";
+// import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { styled } from 'styled-components';
@@ -44,9 +44,23 @@ const CallbackPage = () => {
         document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
     };
 
-    const deleteCookie = (name) => {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    };
+    // const deleteCookie = (name) => {
+    //     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    // };
+
+    // const getCookie = (name) => {
+    //     const cookieString = decodeURIComponent(document.cookie);
+    //     const cookies = cookieString.split(';');
+    
+    //     for (const cookie of cookies) {
+    //         const [cookieName, cookieValue] = cookie.split('=');
+    
+    //         if (cookieName.trim() === name) {
+    //             return cookieValue;
+    //         }
+    //     }
+    //     return null; // 해당하는 쿠키가 없는 경우
+    // }
 
     useEffect(()=>{
         axios
@@ -57,20 +71,29 @@ const CallbackPage = () => {
             .then((res)=>{
                 console.log('로그인 성공~');
                 console.log(res);
-                localStorage.setItem('accessToken', res.data.token.access);
-                localStorage.setItem('refreshToken',res.data.token.refresh);
+                // localStorage.setItem('accessToken', res.data.token.access);
+                // localStorage.setItem('refreshToken',res.data.token.refresh);
                 setCookie('accessToken', res.data.token.access, 1);
                 setCookie('refreshToken', res.data.token.refresh, 1);
+                setTimeout(function(){
+                navigate(`/main`);
+                },5000);
             })
             .catch((e)=>{
                 console.log(e);
+                alert('로그인 오류! 다시 시도해 주십시오');
+                navigate(`/login`);
             })
-    },[code]);
+    },[code, navigate]);
 
-    // 사용자 정보 받는 연결
     // function GetUserInfo(){
     //     axios
-    //         .get(`https://stalksound.store/accounts/userinfo/`,{withCredentials: true})
+    //         .get(`https://stalksound.store/accounts/userinfo/`,{
+    //         withCredentials: true,
+    //         headers: {
+    //             Authorization: `Bearer ${getCookie('accessToken')}`
+    //         }
+    //     })
     //         .then((res)=>{
     //             console.log(res);
     //         })
@@ -86,17 +109,27 @@ const CallbackPage = () => {
     //             console.log(res);
     //             deleteCookie('accessToken');
     //             deleteCookie('refreshToken');
-    //             localStorage.removeItem('accessToken');
-    //             localStorage.removeItem('refreshToken')
     //         })
     //         .catch((e)=>{
     //             console.log(e);
     //         })
     // }
 
-    setTimeout(function(){
-        navigate(`/main`);
-    },5000);
+    // function Test403(){
+    //     axios
+    //         .get(`https://stalksound.store/accounts/test403`,{
+    //             withCredentials: true,
+    //             headers: {
+    //                 Authorization: `Bearer ${getCookie('accessToken')}`
+    //             }
+    //         })
+    //         .then((res)=>{
+    //             console.log(res);
+    //         })
+    //         .catch((e)=>{
+    //             console.log(e);
+    //         })
+    // }
 
     return (
         <CallbackDiv>
@@ -105,7 +138,7 @@ const CallbackPage = () => {
             <LoginMsg>로그인 완료.</LoginMsg>
             <HorizonLine></HorizonLine>
             <LoginMsg>5초 후에 메인 페이지로 이동합니다.</LoginMsg>
-            {/* <button onClick={GetUserInfo}>userinfo 연습</button>          */}
+            {/* <button onClick={GetUserInfo}>userinfo 연습</button>*/}
         </CallbackDiv>
     );
 };

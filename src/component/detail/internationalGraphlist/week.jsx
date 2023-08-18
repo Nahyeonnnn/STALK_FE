@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import axios from "axios";
 import { stockList } from "../../search/searchBar";
 
-const Week = (props) => {
+const Week = ({StockID, propFunction}) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
+  const stock = stockList.find((item) => item.code === `${StockID}`);
 
-  const stock = stockList.find((item) => item.code === `${props.StockID}`);
-  useEffect(() => {
-    // 2주일 전 구하기
+  const fetchData = useCallback(async () => {
     const currentDate = new Date();
 
     let year = currentDate.getFullYear();
@@ -25,28 +21,30 @@ const Week = (props) => {
 
     const endDate = `${year}${month}${date}`; // 현재 날짜
 
-    axios
-      .get(`https://stalksound.store/sonification/f_day_data/`, {
+    try {
+      const response = await axios.get(`https://stalksound.store/sonification/f_day_data/`, {
         params: {
-          symbol: `${props.StockID}`,
+          symbol: `${StockID}`,
           end: endDate,
         },
-      })
-      .then((res) => {
-        setLista(res.data.lista);
-        setStockData(res.data.data);
+      });
+      propFunction(response.data.lista);
+      setStockData(response.data.data);
 
-        setMaxPrice(
-          Math.max(...res.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
+      setMaxPrice(
+        Math.max(...response.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
         );
         setMinPrice(
-          Math.min(...res.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
+        Math.min(...response.data.data.slice(-10).map((item) => parseFloat(item.종가, 10)))
         );
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [props.StockID]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [StockID, propFunction]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
  // 날짜와 종가 데이터 추출
  var dates = stockData.slice(-10).map(function (item) {
@@ -168,47 +166,8 @@ var prices = stockData
     },
   };
 
-  useEffect(() => {
-    //lista 저장 후 데이터를 소리로 변환
-    if (lista !== null) {
-      axios
-        .post(
-          `https://stalksound.store/sonification/data_to_sound/`,
-          {
-            lista: lista,
-          },
-          { responseType: "arraybuffer" }
-        ) //arraybuffer 형태로 받아서
-        .then(async (res) => {
-          console.log(res); //AudioContext 생성
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
-          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
-          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [lista]);
-
-  //그래프 음향 출력
-  const playAudio = () => {
-    if (!isPlaying && audioBuffer) {
-      setIsPlaying(true);
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.onended = () => {
-        setIsPlaying(false); //재생 끝날 경우 false로 reset
-      };
-      source.start(0);
-    }
-  };
-
   return (
-    <div onClick={playAudio}>
+    <div>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

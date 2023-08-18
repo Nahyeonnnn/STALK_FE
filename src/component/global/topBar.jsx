@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Stalklogo from "./StalkLogo";
 
 import {
   faArrowLeft,
@@ -67,11 +66,6 @@ const TopBar = () => {
   function moveToSearch() {
     // searchPage로 이동하는 함수
     navigate(`/search`);
-  }
-
-  function moveToSetting() {
-    // Setting로 이동하도록 변경해야함
-    navigate(`/myInfo`);
   }
 
   function moveToMain() {

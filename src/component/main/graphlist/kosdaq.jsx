@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 
 const StockBox = styled.div`
@@ -35,25 +35,21 @@ const AmountBox = styled.div`
   font-weight: bold;
 `;
 
-const Kosdaq = () => {
+const Kosdaq = ({ propFunction }) => {
   const [stockData, setStockData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   let interval = [];
 
-  const [lista, setLista] = useState(null); //lista 저장
-  const [audioBuffer, setAudioBuffer] = useState(null); //audio 파일 저장
-  const [isPlaying, setIsPlaying] = useState(false); //그래프 음향 출력 중복 방지
-
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     const currentDate = new Date();
-    const daysToSubtract = 30; // 빼고 싶은 날짜 수
+    const daysToSubtract = 30;
 
     let year = currentDate.getFullYear();
     let month = String(currentDate.getMonth() + 1).padStart(2, "0");
     let date = String(currentDate.getDate()).padStart(2, "0");
 
-    const endDate = `${year}${month}${date}`; // 현재 날짜
+    const endDate = `${year}${month}${date}`;
 
     currentDate.setDate(currentDate.getDate() - daysToSubtract);
 
@@ -61,18 +57,18 @@ const Kosdaq = () => {
     month = String(currentDate.getMonth() + 1).padStart(2, "0");
     date = String(currentDate.getDate()).padStart(2, "0");
 
-    const beginDate = `${year}${month}${date}`; // 일주일 전 날짜
+    const beginDate = `${year}${month}${date}`;
 
     axios
-      .get(`https://stalksound.store/sonification/a_day_data/`, {
+      .get(`https://stalksound.store/sonification/f_a_day_data/`, {
         params: {
-          symbol: "1001", // 코스피 0001 , 코스닥 1001
+          symbol: "NDX",
           begin: beginDate,
           end: endDate,
         },
       })
       .then((res) => {
-        setLista(res.data.lista); //axios 연결 후 lista 데이터 저장 (추가한 코드)
+        propFunction(res.data.lista);
         setStockData(res.data.data);
 
         setMaxPrice(
@@ -85,7 +81,11 @@ const Kosdaq = () => {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [propFunction]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   // 날짜와 종가 데이터 추출
   var dates = stockData.map(function (item) {
@@ -200,46 +200,6 @@ const Kosdaq = () => {
     },
   };
 
-  useEffect(() => {
-    //lista 저장 후 데이터를 소리로 변환
-    if (lista !== null) {
-      axios
-        .post(
-          `https://stalksound.store/sonification/data_to_sound/`,
-          {
-            lista: lista,
-          },
-          { responseType: "arraybuffer" }
-        ) //arraybuffer 형태로 받아서
-        .then(async (res) => {
-          console.log(res); //AudioContext 생성
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
-          const decodedBuffer = await audioContext.decodeAudioData(res.data); //decode
-          setAudioBuffer(decodedBuffer); //디코딩된 정보 저장
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }, [lista]);
-
-  //그래프 음향 출력
-  const playAudio = () => {
-    if (!isPlaying && audioBuffer) {
-      setIsPlaying(true);
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      source.onended = () => {
-        setIsPlaying(false); //재생 끝날 경우 false로 reset
-      };
-      source.start(0);
-    }
-  };
-
   return (
     <>
       <Container chartWidth={chartWidth}>
@@ -247,7 +207,7 @@ const Kosdaq = () => {
           <div>KOSDAQ</div>
           <AmountBox>{latelyPrices}</AmountBox>
         </TextBox>
-        <StockBox onClick={playAudio}>
+        <StockBox>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </StockBox>
       </Container>

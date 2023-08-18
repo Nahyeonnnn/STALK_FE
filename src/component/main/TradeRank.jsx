@@ -17,6 +17,12 @@ const Box = styled.div`
   padding-bottom: 4rem;
 `;
 
+const SmallBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const RankItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -33,6 +39,7 @@ const Num = styled.div`
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
+  position: absolute;
 `;
 
 const Name = styled.div`
@@ -43,7 +50,8 @@ const Name = styled.div`
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
-  margin-left: 2rem;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
 `;
 
 const Current = styled.div`
@@ -59,6 +67,14 @@ const Current = styled.div`
 
 const Price = styled.span`
   margin-left: 0.25rem;
+`;
+
+const LogoImg = styled.img`
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+  object-fit: cover; 
+  border-radius: 50%;
+  margin-left: 2rem;
 `;
 
 const numberWithCommas = (number) => {
@@ -87,9 +103,10 @@ const TradeRank = () => {
         const response = await axios.get(
           "https://stalksound.store/sonification/transaction_rank/"
         );
-        if (response.status === 200) {
+        if (parseInt(response.status / 100) === 2) {
           setRankData(response.data["시가총액 순위"]);
         }
+        console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -119,15 +136,16 @@ const TradeRank = () => {
             key={item["종목코드"]}
             onDoubleClick={() => TextToSpeech(item)}
           >
-            <div>
+            <SmallBox>
               <Num>{index + 1}</Num>
+              <LogoImg src={item["이미지URL"]}></LogoImg>
               <Link
                 to={`/detail/${item["종목코드"]}`}
                 style={{ textDecoration: "none" }}
               >
                 <Name>{item["종목명"]}</Name>
               </Link>
-            </div>
+            </SmallBox>
             <div>
               <Current>
                 <Price>₩ {numberWithCommas(item["현재가"])}</Price>

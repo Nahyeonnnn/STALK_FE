@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import BottomBar from "../component/global/bottomBar";
 import TopBar from "../component/global/topBar";
 import MyInform from "../component/myinfo/myInform";
@@ -27,7 +26,7 @@ const MyInfoPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [userName, userProperty]);
 
   return (
     <>

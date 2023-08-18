@@ -12,113 +12,86 @@ library.add(faMagnifyingGlass);
 
 function isUSStock(code) {
   const usStockCodes = [
-    "AMRS",
-    "WE",
-    "MWWC",
-    "HMBL",
-    "PTRA",
-    "ZRFY",
-    "TSLA",
-    "MIMO",
-    "CANO",
-    "DRNG",
-    "EBET",
-    "INND",
-    "HCMC",
-    "PHIL",
-    "RGTI",
-    "SFLM",
-    "TTOO",
-    "F",
-    "GNS",
-    "BBRW",
-    "PLTR",
-    "AMD",
-    "NIO",
-    "NKLA",
-    "NVDA",
     "AAPL",
-    "IONQ",
-    "BBD",
-    "BDPT",
-    "CBDD",
-    "MULN",
-    "GAXY",
-    "IDEX",
-    "KVUE",
-    "JNJ",
-    "SANP",
-    "AMZN",
-    "ACHR",
-    "DVLP",
-    "BAC",
-    "CCTR",
-    "MMEX",
-    "T",
-    "RIVN",
-    "AITX",
-    "MPW",
-    "NOUV",
-    "INTC",
-    "PGY",
-    "PLUG",
-    "TSOI",
-    "VALE",
-    "SOFI",
-    "LCID",
-    "FFIE",
-    "CCL",
-    "TIVC",
-    "INQD",
-    "EPAZ",
-    "BABA",
-    "AMC",
-    "BOMO",
-    "GOEV",
-    "IJJP",
-    "TSAT",
-    "MSFT",
-    "MARA",
-    "DIS",
-    "TLRY",
-    "DKNG",
-    "MCOA",
-    "CGC",
-    "GM",
-    "LYFT",
-    "DNA",
-    "GOOGL",
-    "COWI",
-    "MRNJ",
-    "PENN",
-    "PBR",
-    "PCG",
-    "SWN",
-    "ORGN",
-    "SPCE",
-    "RIOT",
-    "GRAB",
-    "CRKN",
-    "OXY",
-    "PFE",
-    "GZIC",
-    "UBER",
-    "NSAV",
-    "TWOH",
-    "IGPK",
-    "AAL",
-    "APLS",
-    "CLSK",
-    "RIG",
-    "LUMN",
-    "ETON",
-  ];
-
+  "MSFT",
+  "AMZN",
+  "NVDA",
+  "GOOGL",
+  "GOOG",
+  "TSLA",
+  "META",
+  "AVGO",
+  "ASML",
+  "PEP",
+  "COST",
+  "ADBE",
+  "CSCO",
+  "AZN",
+  "QQQ",
+  "CMCSA",
+  "NFLX",
+  "AMD",
+  "TMUS",
+  "TXN",
+  "INTC",
+  "AMGN",
+  "INTU",
+  "SNY",
+  "HON",
+  "QCOM",
+  "AMAT",
+  "BKNG",
+  "SBUX",
+  "PDD",
+  "MDLZ",
+  "GILD",
+  "VRTX",
+  "LRCX",
+  "REGN",
+  "ATVI",
+  "MU",
+  "SNPS",
+  "NTES",
+  "PANW",
+  "KLAC",
+  "PYPL",
+  "MELI",
+  "MNST",
+  "CDNS",
+  "VXUS",
+  "ABNB",
+  "NXPI",
+  "MRVL",
+  "WDAY",
+  "JD",
+  "KDP",
+  "LULU",
+  "FTNT",
+  "MCHP",
+  "CPRT",
+  "KHC",
+  "ROST",
+  "EXC",
+  "ON",
+  "TLT",
+  "MRNA",
+  "BIDU",
+  "BKR",
+  "LI",
+  "CRWD",
+  "TTD",
+  "EA",
+  "WBD",
+  "XEL",
+  "ARGX",
+  "CCEP",
+  "IEF",
+];
   return usStockCodes.includes(code);
 }
 
 //axios 연결 시 받을 주식 리스트 예시
-const stockList = [
+  export const stockList = [
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG에너지솔루션", code: "373220" },
   { prdt_name: "SK하이닉스", code: "000660" },
@@ -222,106 +195,302 @@ const stockList = [
 
   //미국 주식 추가
 
-  { prdt_name: "애플", code: "AAPL" },
-  { prdt_name: "마이크로소프트", code: "MSFT" },
-  { prdt_name: "아마존닷컴", code: "AMZN" },
-  { prdt_name: "엔비디아", code: "NVDA" },
-  { prdt_name: "알파벳 A", code: "GOOGL" },
-  { prdt_name: "알파벳 C", code: "GOOG" },
-  { prdt_name: "테슬라", code: "TSLA" },
-  { prdt_name: "메타 플랫폼스(페이스북)", code: "META" },
-  { prdt_name: "ASML 홀딩(ADR)", code: "ASML" },
-  { prdt_name: "펩시코", code: "PEP" },
-  { prdt_name: "어도비", code: "ADBE" },
-  { prdt_name: "시스코 시스템즈", code: "CSCO" },
-  { prdt_name: "아스트라제네카(ADR)", code: "AZN" },
-  { prdt_name: "INVESCO QQQ TRUST UNIT SER 1", code: "QQQ" },
-  { prdt_name: "넷플릭스", code: "NFLX" },
-  { prdt_name: "AMD", code: "AMD" },
-  { prdt_name: "T 모바일 US", code: "TMUS" },
-  { prdt_name: "텍사스 인스트루먼츠", code: "TXN" },
-  { prdt_name: "인텔", code: "INTC" },
-  { prdt_name: "인튜이트", code: "INTU" },
-  { prdt_name: "퀄컴", code: "QCOM" },
-  { prdt_name: "어플라이드 머티어리얼즈", code: "AMAT" },
-  { prdt_name: "스타벅스", code: "SBUX" },
-  { prdt_name: "인튜이티브 서지컬", code: "ISRG" },
-  { prdt_name: "핀둬둬(ADR)", code: "PDD" },
-  { prdt_name: "길리어드 사이언스", code: "GILD" },
-  { prdt_name: "애널로그 디바이시스", code: "ADI" },
-  { prdt_name: "마이크론 테크놀로지", code: "MU" },
-  { prdt_name: "팰로 앨토 네트웍스", code: "PANW" },
-  { prdt_name: "페이팔 홀딩스", code: "PYPL" },
-  { prdt_name: "넷이즈(ADR)", code: "NTES" },
-  { prdt_name: "케이던스 디자인 시스템", code: "CDNS" },
-  { prdt_name: "에어비앤비", code: "ABNB" },
-  { prdt_name: "징동닷컴(ADR)", code: "JD" },
-  { prdt_name: "룰루레몬 애슬레티카", code: "LULU" },
-  { prdt_name: "포티넷", code: "FTNT" },
-  { prdt_name: "코파트", code: "CPRT" },
-  { prdt_name: "크래프트 하인즈", code: "KHC" },
-  { prdt_name: "엑셀론", code: "EXC" },
-  { prdt_name: "ISHARES 20+Y TREASURY BOND ETF", code: "TLT" },
-  { prdt_name: "모더나", code: "MRNA" },
-  { prdt_name: "바이두(ADR)", code: "BIDU" },
-  { prdt_name: "트레이드 데스크", code: "TTD" },
-  { prdt_name: "워너 브로스 디스커버리", code: "WBD" },
-  { prdt_name: "리 오토(ADR)", code: "LI" },
-  { prdt_name: "아제닉스(ADR)", code: "ARGX" },
-  { prdt_name: "ISHARES 7-10Y TREASURY BOND ETF", code: "IEF" },
-  { prdt_name: "데이터도그", code: "DDOG" },
-  { prdt_name: "다이아몬드백 에너지", code: "FANG" },
-  { prdt_name: "트립닷컴 그룹(ADR)", code: "TCOM" },
-  { prdt_name: "앤시스", code: "ANSS" },
-  { prdt_name: "바이오엔테크(ADR)", code: "BNTX" },
-  { prdt_name: "나스닥", code: "NDAQ" },
-  { prdt_name: "보다폰 그룹(ADR)", code: "VOD" },
-  { prdt_name: "퍼스트 솔라", code: "FSLR" },
-  { prdt_name: "베리사인", code: "VRSN" },
-  { prdt_name: "지스케일러", code: "ZS" },
-  { prdt_name: "ISHARES SHORT TREASURY BOND ETF", code: "SHV" },
-  { prdt_name: "리비안 오토모티브", code: "RIVN" },
-  { prdt_name: "인페이즈 에너지", code: "ENPH" },
-  { prdt_name: "PROETF ULTRAPRO QQQ", code: "TQQQ" },
-  { prdt_name: "스틸 다이내믹스", code: "STLD" },
-  { prdt_name: "줌 비디오 커뮤니케이션스", code: "ZM" },
-  { prdt_name: "코인베이스 글로벌", code: "COIN" },
-  { prdt_name: "에릭슨 B(ADR)", code: "ERIC" },
-  { prdt_name: "루시드 그룹", code: "LCID" },
-  { prdt_name: "슈퍼 마이크로 컴퓨터", code: "SMCI" },
-  { prdt_name: "INVESCO NASDAQ 100 ETF", code: "QQQM" },
-  { prdt_name: "APA", code: "APA" },
-  { prdt_name: "비아트리스", code: "VTRS" },
-  { prdt_name: "드래프트킹스", code: "DKNG" },
-  { prdt_name: "그랩 홀딩스", code: "GRAB" },
-  { prdt_name: "아메리칸 에어라인스 그룹", code: "AAL" },
-  { prdt_name: "헨리 셰인", code: "HSIC" },
-  { prdt_name: "VANECK SEMICONDUCTOR ETF", code: "SMH" },
-  { prdt_name: "도큐사인", code: "DOCU" },
-  { prdt_name: "솔라엣지 테크놀로지스", code: "SEDG" },
-  { prdt_name: "파라마운트 글로벌 B", code: "PARA" },
-  { prdt_name: "엣시", code: "ETSY" },
-  { prdt_name: "질로우 그룹 C", code: "Z" },
-  { prdt_name: "ISHARES SEMICONDUCTOR ETF", code: "SOXX" },
-  { prdt_name: "GLOBAL X NASDAQ-100 COVERED CALL ETF", code: "QYLD" },
-  { prdt_name: "소파이 테크놀로지스", code: "SOFI" },
-  { prdt_name: "먼데이 컴", code: "MNDY" },
-  { prdt_name: "ISHARES MSCI CHINA ETF", code: "MCHI" },
-  { prdt_name: "크록스", code: "CROX" },
-  { prdt_name: "램버스", code: "RMBS" },
-  { prdt_name: "AGNC 인베스트먼트", code: "AGNC" },
-  { prdt_name: "플러그 파워", code: "PLUG" },
-  { prdt_name: "비리비리(ADR)", code: "BILI" },
-  { prdt_name: "J.P. MORGAN NASDAQ EQUITY PREMIUM INCOME ETF", code: "JEPQ" },
-  { prdt_name: "리프트", code: "LYFT" },
-  { prdt_name: "PROETF ULTRAPRO SHORT QQQ", code: "SQQQ" },
-  { prdt_name: "푸투 홀딩스(ADR)", code: "FUTU" },
-  { prdt_name: "스프라우츠 파머스 마켓", code: "SFM" },
-  { prdt_name: "비아샛", code: "VSAT" },
-  { prdt_name: "스톤코", code: "STNE" },
-  { prdt_name: "ISHARES TRUST GLOBAL CLEAN ENERGY ETF", code: "ICLN" },
-  { prdt_name: "선런", code: "RUN" },
-  { prdt_name: "인텔리아 테라퓨틱스", code: "NTLA" },
+  {
+    prdt_name: "애플",
+    code: "AAPL",
+  },
+  {
+    prdt_name: "마이크로소프트",
+    code: "MSFT",
+  },
+  {
+    prdt_name: "아마존닷컴",
+    code: "AMZN",
+  },
+  {
+    prdt_name: "엔비디아",
+    code: "NVDA",
+  },
+  {
+    prdt_name: "알파벳 A",
+    code: "GOOGL",
+  },
+  {
+    prdt_name: "알파벳 C",
+    code: "GOOG",
+  },
+  {
+    prdt_name: "테슬라",
+    code: "TSLA",
+  },
+  {
+    prdt_name: "메타 플랫폼스(페이스북)",
+    code: "META",
+  },
+  {
+    prdt_name: "브로드컴",
+    code: "AVGO",
+  },
+  {
+    prdt_name: "ASML 홀딩(ADR)",
+    code: "ASML",
+  },
+  {
+    prdt_name: "펩시코",
+    code: "PEP",
+  },
+  {
+    prdt_name: "코스트코 홀세일",
+    code: "COST",
+  },
+  {
+    prdt_name: "어도비",
+    code: "ADBE",
+  },
+  {
+    prdt_name: "시스코 시스템즈",
+    code: "CSCO",
+  },
+  {
+    prdt_name: "아스트라제네카(ADR)",
+    code: "AZN",
+  },
+  {
+    prdt_name: "INVESCO QQQ TRUST UNIT SER 1",
+    code: "QQQ",
+  },
+  {
+    prdt_name: "컴캐스트",
+    code: "CMCSA",
+  },
+  {
+    prdt_name: "넷플릭스",
+    code: "NFLX",
+  },
+  {
+    prdt_name: "AMD",
+    code: "AMD",
+  },
+  {
+    prdt_name: "T 모바일 US",
+    code: "TMUS",
+  },
+  {
+    prdt_name: "텍사스 인스트루먼츠",
+    code: "TXN",
+  },
+  {
+    prdt_name: "인텔",
+    code: "INTC",
+  },
+  {
+    prdt_name: "암젠",
+    code: "AMGN",
+  },
+  {
+    prdt_name: "인튜이트",
+    code: "INTU",
+  },
+  {
+    prdt_name: "사노피(ADR)",
+    code: "SNY",
+  },
+  {
+    prdt_name: "허니웰 인터내셔널",
+    code: "HON",
+  },
+  {
+    prdt_name: "퀄컴",
+    code: "QCOM",
+  },
+  {
+    prdt_name: "어플라이드 머티어리얼즈",
+    code: "AMAT",
+  },
+  {
+    prdt_name: "부킹 홀딩스",
+    code: "BKNG",
+  },
+  {
+    prdt_name: "스타벅스",
+    code: "SBUX",
+  },
+  {
+    prdt_name: "핀둬둬(ADR)",
+    code: "PDD",
+  },
+  {
+    prdt_name: "몬덜리즈 인터내셔널",
+    code: "MDLZ",
+  },
+  {
+    prdt_name: "길리어드 사이언스",
+    code: "GILD",
+  },
+  {
+    prdt_name: "버텍스 파머슈티컬",
+    code: "VRTX",
+  },
+  {
+    prdt_name: "램 리서치",
+    code: "LRCX",
+  },
+  {
+    prdt_name: "리제네론 파머슈티컬스",
+    code: "REGN",
+  },
+  {
+    prdt_name: "액티비전 블리자드",
+    code: "ATVI",
+  },
+  {
+    prdt_name: "마이크론 테크놀로지",
+    code: "MU",
+  },
+  {
+    prdt_name: "시놉시스",
+    code: "SNPS",
+  },
+  {
+    prdt_name: "넷이즈(ADR)",
+    code: "NTES",
+  },
+  {
+    prdt_name: "팰로 앨토 네트웍스",
+    code: "PANW",
+  },
+  {
+    prdt_name: "KLA",
+    code: "KLAC",
+  },
+  {
+    prdt_name: "페이팔 홀딩스",
+    code: "PYPL",
+  },
+  {
+    prdt_name: "메르카도리브레",
+    code: "MELI",
+  },
+  {
+    prdt_name: "몬스터 베버리지",
+    code: "MNST",
+  },
+  {
+    prdt_name: "케이던스 디자인 시스템",
+    code: "CDNS",
+  },
+  {
+    prdt_name: "VANGUARD TOTAL INTERNATIONAL STOCK ETF",
+    code: "VXUS",
+  },
+  {
+    prdt_name: "에어비앤비",
+    code: "ABNB",
+  },
+  {
+    prdt_name: "NXP 세미컨덕터스",
+    code: "NXPI",
+  },
+  {
+    prdt_name: "마블 테크놀로지 그룹",
+    code: "MRVL",
+  },
+  {
+    prdt_name: "워크데이",
+    code: "WDAY",
+  },
+  {
+    prdt_name: "징동닷컴(ADR)",
+    code: "JD",
+  },
+  {
+    prdt_name: "큐리그 닥터 페퍼",
+    code: "KDP",
+  },
+  {
+    prdt_name: "룰루레몬 애슬레티카",
+    code: "LULU",
+  },
+  {
+    prdt_name: "포티넷",
+    code: "FTNT",
+  },
+  {
+    prdt_name: "마이크로칩 테크놀로지",
+    code: "MCHP",
+  },
+  {
+    prdt_name: "코파트",
+    code: "CPRT",
+  },
+  {
+    prdt_name: "크래프트 하인즈",
+    code: "KHC",
+  },
+  {
+    prdt_name: "로스 스토어스",
+    code: "ROST",
+  },
+  {
+    prdt_name: "엑셀론",
+    code: "EXC",
+  },
+  {
+    prdt_name: "온 세미컨덕터",
+    code: "ON",
+  },
+  {
+    prdt_name: "ISHARES 20+Y TREASURY BOND ETF",
+    code: "TLT",
+  },
+  {
+    prdt_name: "모더나",
+    code: "MRNA",
+  },
+  {
+    prdt_name: "바이두(ADR)",
+    code: "BIDU",
+  },
+  {
+    prdt_name: "베이커 휴즈",
+    code: "BKR",
+  },
+  {
+    prdt_name: "리 오토(ADR)",
+    code: "LI",
+  },
+  {
+    prdt_name: "크라우드스트라이크 홀딩스",
+    code: "CRWD",
+  },
+  {
+    prdt_name: "트레이드 데스크",
+    code: "TTD",
+  },
+  {
+    prdt_name: "일렉트로닉 아츠",
+    code: "EA",
+  },
+  {
+    prdt_name: "워너 브로스 디스커버리",
+    code: "WBD",
+  },
+  {
+    prdt_name: "엑셀 에너지",
+    code: "XEL",
+  },
+  {
+    prdt_name: "아제닉스(ADR)",
+    code: "ARGX",
+  },
+  {
+    prdt_name: "코카콜라 유로퍼시픽 파트너스",
+    code: "CCEP",
+  },
+  {
+    prdt_name: "ISHARES 7-10Y TREASURY BOND ETF",
+    code: "IEF",
+  },
 ];
 
 const SearchContainer = styled.div`
@@ -391,13 +560,6 @@ const EachStockDataDiv = styled.div`
   z-index: 1000;
 `;
 
-const EachStockData = styled.p`
-  font-size: 12px;
-  color: gray;
-  margin: 0;
-  padding-left: 2.5rem;
-`;
-
 const EachStockIcon = styled.img`
   position: absolute;
   width: 1.875rem;
@@ -422,7 +584,7 @@ const PercentData = styled.p`
   margin: 0;
   font-size: 12px;
   margin-left: auto;
-  color: red; //조건 줘서 올라갈 경우 red, 내려갈 경우 blue로 보이게 설정하기
+  color: ${props => (props.isPositive ? 'red' : 'skyblue')}; 
 `;
 
 const RecentSearch = styled.p`
@@ -438,7 +600,8 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [recentSearchData, setRecentSearch] = useState([]);
-  const [recentAxios, setRecentAxios] = useState();
+  const [recentAxios, setRecentAxios] = useState(null);
+  const [showRecent, setShowRecent] = useState(false);
 
   const addToSearchHistory = (item) => {
     let newSearchArray = [...recentSearchData];
@@ -454,7 +617,7 @@ const SearchBar = () => {
     }
   };
 
-  function handleInputSearch(e) {
+  function handleInputSearch (e) {
     const { value } = e.target;
     setQuery(value);
     const SearchSuggestions = getSuggestions(value);
@@ -476,7 +639,18 @@ const SearchBar = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const recentSearchDataString = localStorage.getItem("recent");
+
+  //   if (!recentSearchDataString) {
+  //     setRecentSearch([]);
+  //   } else {
+  //     setRecentSearch(JSON.parse(recentSearchDataString));
+  //   }
+  // }, []);
+
   useEffect(() => {
+
     const recentSearchDataString = localStorage.getItem("recent");
 
     if (!recentSearchDataString) {
@@ -484,9 +658,7 @@ const SearchBar = () => {
     } else {
       setRecentSearch(JSON.parse(recentSearchDataString));
     }
-  }, []);
 
-  useEffect(() => {
     const recentArray = JSON.parse(localStorage.getItem("recent"));
     let filteredArray = [];
 
@@ -503,14 +675,17 @@ const SearchBar = () => {
     console.log('foundObjects', foundObjects);
 
     const axiosRequests = foundObjects.map((recentData) => {
-      return axios.get(`https://stalksound.store/sonification/now_data/`, {
+
+      const apiUrl = isUSStock(recentData.code) 
+        ? `https://stalksound.store/sonification/f_now_data/`
+        : `https://stalksound.store/sonification/now_data/`;
+
+      return axios.get(`${apiUrl}`, {
         params: {
           symbol: `${recentData.code}`,
         },
       });
     });
-
-    console.log(axiosRequests);
 
     Promise.all(axiosRequests)
       .then((responses) => {
@@ -519,6 +694,8 @@ const SearchBar = () => {
           foundObjects[i].responseData = responseDataArray[i];
         }
         setRecentAxios(foundObjects);
+        console.log(foundObjects);
+        console.log(recentAxios);
       })
       .catch((e) => {
         console.log(e);
@@ -526,12 +703,122 @@ const SearchBar = () => {
       
   }, []);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const recentSearchDataString = localStorage.getItem("recent");
+  
+  //     if (!recentSearchDataString) {
+  //       setRecentSearch([]);
+  //     } else {
+  //       setRecentSearch(JSON.parse(recentSearchDataString));
+  //     }
+  
+  //     const recentArray = JSON.parse(localStorage.getItem("recent"));
+  //     let filteredArray = [];
+  
+  //     if (recentArray && Array.isArray(recentArray) && recentArray.length > 0) {
+  //       filteredArray = recentArray
+  //         .filter((item) => item !== null && item !== undefined)
+  //         .filter((item) => stockList.some((obj) => obj.prdt_name === item));
+  //     }
+  
+  //     let foundObjects = stockList.filter((item) =>
+  //       filteredArray.includes(item.prdt_name)
+  //     );
+  
+  //     console.log("foundObjects", foundObjects);
+  
+  //     const axiosRequests = foundObjects.map(async (recentData) => {
+  //       const apiUrl = isUSStock(recentData.code) 
+  //         ? `https://stalksound.store/sonification/f_now_data/`
+  //         : `https://stalksound.store/sonification/now_data/`;
+  
+  //       try {
+  //         const response = await axios.get(apiUrl, {
+  //           params: {
+  //             symbol: recentData.code,
+  //           },
+  //         });
+  //         return response.data.chart_data;
+  //       } catch (error) {
+  //         console.log(error);
+  //         return null;
+  //       }
+  //     });
+  
+  //     try {
+  //       const responseDataArray = await Promise.all(axiosRequests);
+  //       const updatedFoundObjects = foundObjects.map((foundObj, i) => ({
+  //         ...foundObj,
+  //         responseData: responseDataArray[i],
+  //       }));
+  //       setRecentAxios(updatedFoundObjects);
+  //       console.log(updatedFoundObjects);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  
+  //   fetchData();
+  // }, []);
+  
+  useEffect(()=>{
+    if(recentAxios !== null){
+      console.log(recentAxios);
+      setShowRecent(true);
+    }
+  },[recentAxios]);
+
   const sttFunction = (data) => {
     setQuery(data.text);
     const SearchSuggestions = getSuggestions(data.text);
     setSuggestions(SearchSuggestions);
     setShowSuggestions(true);
   };
+
+  useEffect(() => {
+    async function fetchData(url, startIndex, endIndex) {
+      try {
+        const response = await axios.get(url);
+        if (response.status === 200) {
+          const transactionRank = response.data["시가총액 순위"];
+          console.log(response.data)
+          // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
+          transactionRank.slice(startIndex, endIndex).forEach((item) => {
+            const stockIndex = stockList.findIndex(
+              (stock) => stock.prdt_name === item["종목명"]
+            );
+            if (stockIndex !== -1) {
+              stockList[stockIndex]["현재가"] = parseInt(
+                item["현재가"]
+              ).toLocaleString();
+              stockList[stockIndex]["전일 대비율"] = parseFloat(
+                item["전일 대비율"]
+              );
+            }
+          });
+        }
+        stockList.forEach((stock) => {
+          // console.log("종목명:", stock.prdt_name);
+          // console.log("현재가:", stock["현재가"]);
+          // console.log("전일 대비율:", stock["전일 대비율"]);
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData(
+      "https://stalksound.store/sonification/transaction_rank/",
+      0,
+      500
+    );
+    fetchData(
+      "https://stalksound.store/sonification/f_transaction_rank/",
+      0,
+      500
+    );
+  }, []);
 
   return (
     <>
@@ -563,11 +850,13 @@ const SearchBar = () => {
                 <EachStockDataDiv>
                   <EachStockIcon src={NaverIcon} />
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
-                  <EachStockData>주식 설명</EachStockData>
+                  {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
-                  <StockPrice>7500</StockPrice>
-                  <PercentData>+500 (+5%)</PercentData>
+                  <StockPrice>{result.현재가}원</StockPrice>
+                  <PercentData isPositive={parseFloat(result["전일 대비율"]) >= 0}>
+                    {result["전일 대비율"]}%
+                  </PercentData>
                 </EachPercentDataDiv>
               </EachDataDiv>
             ))}
@@ -576,14 +865,15 @@ const SearchBar = () => {
         {query.length === 0 && (
           <AutoSearchContainer>
             <RecentSearch>최근 검색 기록</RecentSearch>
-            {recentSearchData !== null ? (
-              recentSearchData.map((recent) => (
+            {showRecent !== false ? (
+              recentAxios.map((recent) => (
+                
                 <EachDataDiv
+                  key={recent.code}
                   onClick={() => {
                     const selectedItem = stockList.find(
-                      (item) => item.prdt_name === recent
+                      (item) => item.prdt_name === recent.prdt_name
                     );
-
                     if (selectedItem) {
                       const detailUrl = isUSStock(selectedItem.code)
                         ? `/detail/inter/${selectedItem.code}`
@@ -597,11 +887,13 @@ const SearchBar = () => {
                   <EachStockDataDiv>
                     <EachStockIcon src={NaverIcon} />
                     <AutoSearchData>{recent}</AutoSearchData>
-                    <EachStockData>주식 설명</EachStockData>
+                    {/* <EachStockData>주식 설명</EachStockData> */}
                   </EachStockDataDiv>
-                  <EachPercentDataDiv>
-                    <StockPrice>{7500}</StockPrice>
-                    <PercentData>500 (+0.5)</PercentData>
+                  <EachPercentDataDiv 
+                  // onClick={()=>console.log(recent)}
+                  >
+                    <StockPrice>{recent["현재가"]}</StockPrice>
+                    <PercentData isPositive={parseFloat(recent["전일 대비율"]) >= 0}>{recent["전일 대비율"]}%</PercentData>
                   </EachPercentDataDiv>
                 </EachDataDiv>
               ))

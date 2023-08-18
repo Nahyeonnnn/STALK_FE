@@ -84,7 +84,7 @@ const CallbackPage = () => {
                 alert('로그인 오류! 다시 시도해 주십시오');
                 navigate(`/login`);
             })
-    },[code, navigate]);
+    },[code]);
 
     // function GetUserInfo(){
     //     axios

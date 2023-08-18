@@ -783,8 +783,9 @@ const SearchBar = () => {
         const response = await axios.get(url);
         if (response.status === 200) {
           const transactionRank = response.data["시가총액 순위"];
-          console.log(response.data)
-          // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
+          console.log(response.data);
+  
+          // Loop through transactionRank and update stockList with "현재가", "전일 대비율", and "이미지URL"
           transactionRank.slice(startIndex, endIndex).forEach((item) => {
             const stockIndex = stockList.findIndex(
               (stock) => stock.prdt_name === item["종목명"]
@@ -796,6 +797,7 @@ const SearchBar = () => {
               stockList[stockIndex]["전일 대비율"] = parseFloat(
                 item["전일 대비율"]
               );
+              stockList[stockIndex]["이미지URL"] = item["이미지URL"];
             }
           });
         }
@@ -803,12 +805,13 @@ const SearchBar = () => {
           // console.log("종목명:", stock.prdt_name);
           // console.log("현재가:", stock["현재가"]);
           // console.log("전일 대비율:", stock["전일 대비율"]);
+          // console.log("이미지URL:", stock["이미지URL"]);
         });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
-
+  
     fetchData(
       "https://stalksound.store/sonification/transaction_rank/",
       0,
@@ -820,7 +823,6 @@ const SearchBar = () => {
       500
     );
   }, []);
-
   return (
     <>
       <SearchContainer>

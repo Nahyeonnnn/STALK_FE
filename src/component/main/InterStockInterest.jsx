@@ -151,7 +151,7 @@ const InterStockInterest = () => {
               <Num>{index + 1}</Num>
               <LogoImg src={item["stock_image"]}></LogoImg>
               <Link
-                to={`/detail/${item.code}`}
+                to={`/detail/inter/${item.code}`}
                 style={{ textDecoration: "none" }}
               >
                 <Name>{item.prdt_name}</Name>

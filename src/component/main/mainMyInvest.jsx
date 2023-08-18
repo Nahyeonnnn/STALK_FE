@@ -13,22 +13,39 @@ const AmountBox = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: row; /* Change to column direction */
-
 `
+
+const Container2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const AmountTextLeft = styled.p`
 display: flex;
-justify-content: flex-start;
+font-size: large;
+color: white;
+`;
+
+const AmountTextRight = styled.div`
+  display: flex;
+  color: rgba(241, 208, 10, 0.92);
+  padding: 1rem;
+`;
+
+const AmountTextLeft1 = styled.p`
+display: flex;
 font-size: large;
 color: white;
 width : 40vw;
 `;
 
-const AmountTextRight = styled.div`
+const AmountTextRight1 = styled.div`
   display: flex;
   margin-top: 1.2rem;
   margin-left: 2rem;
   color: rgba(241, 208, 10, 0.92);
+  font-size:large;
 `;
 
 const InvestBox = styled.div`
@@ -60,6 +77,12 @@ const InvestRate = styled.div`
   justify-content: flex-end;
   color: ${({ value }) => (String(value).startsWith("-") ? "skyblue" : "red")};
   margin-left: 4rem;
+`;
+
+const Separator = styled.div`
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.7);
 `;
 
 // const formatNumberWithCommas = (number) => {
@@ -120,34 +143,42 @@ const MainMyInvest = () => {
     });
   }
   
+  const totalAssets = userAmount.user_property + userAmount.총자산;
 
   return (
     <>
       <AmountBox onDoubleClick={() => TextToSpeech(`자산 ${formatNumberWithCommas(userAmount.user_property)}원`)}>
-        <Container>
+      <Container>
+        <AmountTextLeft1>총 자산</AmountTextLeft1>
+        <AmountTextRight1>
+          {formatNumberWithCommas(totalAssets)} 원
+        </AmountTextRight1>
+        </Container>
+
+        <Container2>
         <AmountTextLeft>자산</AmountTextLeft>
         <AmountTextRight>
           {formatNumberWithCommas(userAmount.user_property)} 원
         </AmountTextRight>
-        </Container>
-        <Container>
         <AmountTextLeft>보유 주식</AmountTextLeft>
         <AmountTextRight>
           {formatNumberWithCommas(userAmount.총자산)} 원
         </AmountTextRight>
-        </Container>
+        </Container2>
         </AmountBox>
+
+        <Separator />
       <InvestBox onDoubleClick={() => TextToSpeechInvest(userInvestments)}>
         {userInvestments.map((investment) => (
           <InvestContainer key={investment.id}>
             <InvestName>
             <Link
-            
-  to={`/detail/${investment.is_domestic_stock.toString().toLowerCase() === "true" ? "" : "inter/"}${investment.stock_code}`}
-  style={{ textDecoration: "none", color: "white" }}
->
-  {investment.stock}
-</Link>
+                        
+              to={`/detail/${investment.is_domestic_stock.toString().toLowerCase() === "true" ? "" : "inter/"}${investment.stock_code}`}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              {investment.stock}
+            </Link>
 
             </InvestName>
             <InvestPrice>

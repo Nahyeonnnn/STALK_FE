@@ -41,6 +41,10 @@ const InterStatic = () => {
   const { StockID4 } = useParams();
   const [data, setData] = useState({});
 
+  const marketCap = data && parseInt(data["시가총액"]);
+  const abbreviatedMarketCap = marketCap && marketCap >= 100000000 ? `${(marketCap / 100000000).toFixed(2)} 억` : `${marketCap} 원`;
+
+
   useEffect(() => {
     const symbolUpperCase = StockID4.toUpperCase(); // Convert symbol to uppercase
     axios
@@ -103,11 +107,9 @@ const InterStatic = () => {
         </StaticInfoBox>
 
         <StaticInfoBox>
-          <InfoTitle>시가 총액</InfoTitle>
-          <InfoText>
-            {data && parseInt(data["시가총액"]).toLocaleString()}원
-          </InfoText>
-        </StaticInfoBox>
+  <InfoTitle>시가 총액</InfoTitle>
+  <InfoText>{abbreviatedMarketCap}</InfoText>
+</StaticInfoBox>
       </StaticBox>
       <InterButton StockID={StockID4}></InterButton>
     </>

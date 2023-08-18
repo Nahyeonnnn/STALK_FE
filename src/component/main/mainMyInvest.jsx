@@ -5,20 +5,29 @@ import { Link } from "react-router-dom";
 
 const AmountBox = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  height: 4rem;
-  align-items: center;
+  flex-direction: column; /* Change to column direction */
+  align-items: center; /* Center items horizontally */
+  justify-content: space-evenly; /* Distribute space evenly between sections */
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row; /* Change to column direction */
+
+`
+
 const AmountTextLeft = styled.p`
-  color: white;
-  font-size: larger;
+display: flex;
+justify-content: flex-start;
+font-size: large;
+color: white;
+width : 40vw;
 `;
 
 const AmountTextRight = styled.div`
   display: flex;
-  justify-content: space-around;
-  width: 50vw;
+  margin-top: 1.2rem;
+  margin-left: 2rem;
   color: rgba(241, 208, 10, 0.92);
 `;
 
@@ -36,7 +45,7 @@ const InvestContainer = styled.div`
 `;
 
 const InvestName = styled.div`
-  width: 40vw;
+  width: 50vw;
 `;
 
 const InvestPrice = styled.div`
@@ -80,20 +89,17 @@ const MainMyInvest = () => {
   };
 
   useEffect(() => {
-    // Fetch data initially
+    // Fetch initial data
     fetchUserData();
 
     // Fetch data every 5 seconds
-    const interval = setInterval(() => {
-      fetchUserData();
-    }, 5000);
+    const intervalId = setInterval(fetchUserData, 5000);
 
-    // Clear the interval on component unmount
     return () => {
-      clearInterval(interval);
+      // Clear the interval when the component is unmounted
+      clearInterval(intervalId);
     };
   }, []);
-
   const formatNumberWithCommas = (number) => {
     return number ? number.toLocaleString() : "";
   };
@@ -117,17 +123,26 @@ const MainMyInvest = () => {
 
   return (
     <>
-      <AmountBox onDoubleClick={() => TextToSpeech(`총 자산 ${formatNumberWithCommas(userAmount.user_property)}원`)}>
-        <AmountTextLeft>총 자산</AmountTextLeft>
+      <AmountBox onDoubleClick={() => TextToSpeech(`자산 ${formatNumberWithCommas(userAmount.user_property)}원`)}>
+        <Container>
+        <AmountTextLeft>자산</AmountTextLeft>
         <AmountTextRight>
           {formatNumberWithCommas(userAmount.user_property)} 원
         </AmountTextRight>
+        </Container>
+        <Container>
+        <AmountTextLeft>보유 주식</AmountTextLeft>
+        <AmountTextRight>
+          {formatNumberWithCommas(userAmount.총자산)} 원
+        </AmountTextRight>
+        </Container>
         </AmountBox>
       <InvestBox onDoubleClick={() => TextToSpeechInvest(userInvestments)}>
         {userInvestments.map((investment) => (
           <InvestContainer key={investment.id}>
             <InvestName>
             <Link
+            
   to={`/detail/${investment.is_domestic_stock.toString().toLowerCase() === "true" ? "" : "inter/"}${investment.stock_code}`}
   style={{ textDecoration: "none", color: "white" }}
 >

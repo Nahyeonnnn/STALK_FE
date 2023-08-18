@@ -91,7 +91,7 @@ function isUSStock(code) {
 }
 
 //axios 연결 시 받을 주식 리스트 예시
-export const stockList = [
+  export const stockList = [
   { prdt_name: "삼성전자", code: "005930" },
   { prdt_name: "LG에너지솔루션", code: "373220" },
   { prdt_name: "SK하이닉스", code: "000660" },
@@ -537,7 +537,6 @@ const AutoSearchData = styled.p`
   margin: 0%;
   padding-left: 2.5rem;
   width: inherit;
-  max-width: 60vw;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 2px;
@@ -557,8 +556,6 @@ const EachDataDiv = styled.div`
 `;
 
 const EachStockDataDiv = styled.div`
-  display: flex;
-  align-items: center;
   position: relative;
   z-index: 1000;
 `;
@@ -596,6 +593,7 @@ const RecentSearch = styled.p`
   margin: 0;
   padding-top: 1rem;
 `;
+
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -675,7 +673,7 @@ const SearchBar = () => {
       filteredArray.includes(item.prdt_name)
     );
 
-    console.log("foundObjects", foundObjects);
+    console.log('foundObjects', foundObjects);
 
     const axiosRequests = foundObjects.map((recentData) => {
 
@@ -703,7 +701,8 @@ const SearchBar = () => {
       .catch((e) => {
         console.log(e);
       });
-  }, [recentAxios]);
+      
+  }, []);
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -784,8 +783,9 @@ const SearchBar = () => {
         const response = await axios.get(url);
         if (response.status === 200) {
           const transactionRank = response.data["시가총액 순위"];
-          console.log(response.data)
-          // Loop through transactionRank and update stockList with "현재가" and "전일 대비율"
+          console.log(response.data);
+  
+          // Loop through transactionRank and update stockList with "현재가", "전일 대비율", and "이미지URL"
           transactionRank.slice(startIndex, endIndex).forEach((item) => {
             const stockIndex = stockList.findIndex(
               (stock) => stock.prdt_name === item["종목명"]
@@ -797,6 +797,7 @@ const SearchBar = () => {
               stockList[stockIndex]["전일 대비율"] = parseFloat(
                 item["전일 대비율"]
               );
+              stockList[stockIndex]["이미지URL"] = item["이미지URL"];
             }
           });
         }
@@ -804,12 +805,13 @@ const SearchBar = () => {
           // console.log("종목명:", stock.prdt_name);
           // console.log("현재가:", stock["현재가"]);
           // console.log("전일 대비율:", stock["전일 대비율"]);
+          // console.log("이미지URL:", stock["이미지URL"]);
         });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
-
+  
     fetchData(
       "https://stalksound.store/sonification/transaction_rank/",
       0,
@@ -821,7 +823,6 @@ const SearchBar = () => {
       500
     );
   }, []);
-
   return (
     <>
       <SearchContainer>
@@ -850,8 +851,9 @@ const SearchBar = () => {
                 }}
               >
                 <EachStockDataDiv>
-                  <EachStockIcon src={NaverIcon} />
+                <EachStockIcon src={result.이미지URL} />
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
+                  {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
                 <EachPercentDataDiv>
                   <StockPrice>{result.현재가}원</StockPrice>
@@ -886,8 +888,9 @@ const SearchBar = () => {
                   }}
                 >
                   <EachStockDataDiv>
-                    <EachStockIcon src={NaverIcon} />
+                  <EachStockIcon src={recent.이미지URL} />
                     <AutoSearchData>{recent.prdt_name}</AutoSearchData>
+                    {/* <EachStockData>주식 설명</EachStockData> */}
                   </EachStockDataDiv>
                   <EachPercentDataDiv 
                   // onClick={()=>console.log(recent)}

@@ -158,8 +158,8 @@ const MainGraph = () => {
   return (
     <>
       <ChartBox onClick={playAudio}>
-        <LeftArrow onClick={handlePreviousChart}>&#8249;</LeftArrow>
-        <RightArrow onClick={handleNextChart}>&#8250;</RightArrow>
+        {/* <LeftArrow onClick={handlePreviousChart}>&#8249;</LeftArrow>
+        <RightArrow onClick={handleNextChart}>&#8250;</RightArrow> */}
         {/* <ChartType> 코스피</ChartType> */}
         {renderInfo()}
       </ChartBox>

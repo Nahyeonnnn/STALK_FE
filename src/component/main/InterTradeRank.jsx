@@ -17,6 +17,12 @@ const Box = styled.div`
   padding-bottom: 4rem;
 `;
 
+const SmallBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const RankItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -44,7 +50,8 @@ const Name = styled.div`
   font-weight: 600;
   line-height: 1.42857rem;
   letter-spacing: -0.084rem;
-  margin-left: 2rem;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
 `;
 
 const Current = styled.div`
@@ -66,6 +73,14 @@ const Ratio = styled.div`
   font-weight: 400;
   line-height: 1.14286rem;
   color: ${({ ratio }) => (parseFloat(ratio) >= 0 ? "red" : "blue")};
+`;
+
+const LogoImg = styled.img`
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+  object-fit: cover; /* 이미지의 가로세로 비율을 유지하면서 적절하게 보여줍니다 */
+  border-radius: 50%;
+  margin-left: 2rem;
 `;
 
 const numberWithCommas = (number) => {
@@ -115,15 +130,16 @@ const InterTradeRank = () => {
             key={item["종목코드"]}
             onDoubleClick={() => TextToSpeech(item)}
           >
-            <div>
+            <SmallBox>
               <Num>{index + 1}</Num>
+              <LogoImg src={item["이미지URL"]}></LogoImg>
               <Link
                 to={`/detail/inter/${item["종목코드"]}`}
                 style={{ textDecoration: "none" }}
               >
                 <Name>{item["종목명"]}</Name>
               </Link>
-            </div>
+            </SmallBox>
             <div>
               <Current>₩ {numberWithCommas(item["현재가"])}</Current>
               <Ratio ratio={item["전일 대비율"]}>{item["전일 대비율"]}%</Ratio>

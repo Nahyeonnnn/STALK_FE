@@ -72,6 +72,23 @@ const Ratio = styled.div`
   color: ${({ ratio }) => (parseFloat(ratio) >= 0 ? "red" : "blue")};
 `;
 
+const LogoImg = styled.img`
+  width: 50px; /* 원하는 크기로 조정 */
+  height: 50px; /* 원하는 크기로 조정 */
+  object-fit: cover; 
+  border-radius: 50%;
+  margin-left: 2rem;
+`;
+
+
+const SmallBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+
+
 const StockInterest = () => {
   const [stockData, setStockData] = useState({});
   const [filteredInterestList, setFilteredInterestList] = useState([]);
@@ -130,15 +147,18 @@ const StockInterest = () => {
           .filter((item) => item.is_domestic_stock) // Filter only domestic stocks
           .map((item, index) => (
             <RankItem key={item.code}>
-              <div>
+              <SmallBox>
+              
                 <Num>{index + 1}</Num>
+                <LogoImg src={item["stock_image"]}></LogoImg>
                 <Link
                   to={`/detail/${item.code}`}
                   style={{ textDecoration: "none" }}
                 >
                   <Name>{item.prdt_name}</Name>
                 </Link>
-              </div>
+                </SmallBox>
+
               <div>
                 <Current>
                   <Price>

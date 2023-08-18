@@ -280,7 +280,7 @@ const Spx = (props) => {
     axios
       .get(`https://stalksound.store/sonification/f_a_day_data/`, {
         params: {
-          symbol: "NDX", // S&P 500 : SPX , 나스닥 100 : NDX
+          symbol: "SPX", // S&P 500 : SPX , 나스닥 100 : NDX
           begin: beginDate,
           end: endDate,
         },

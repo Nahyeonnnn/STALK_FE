@@ -594,6 +594,7 @@ const RecentSearch = styled.p`
   padding-top: 1rem;
 `;
 
+
 const SearchBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -848,7 +849,7 @@ const SearchBar = () => {
                 }}
               >
                 <EachStockDataDiv>
-                  <EachStockIcon src={NaverIcon} />
+                <EachStockIcon src={result.이미지URL} />
                   <AutoSearchData>{result.prdt_name}</AutoSearchData>
                   {/* <EachStockData>주식 설명</EachStockData> */}
                 </EachStockDataDiv>
@@ -885,8 +886,8 @@ const SearchBar = () => {
                   }}
                 >
                   <EachStockDataDiv>
-                    <EachStockIcon src={NaverIcon} />
-                    <AutoSearchData>{recent}</AutoSearchData>
+                  <EachStockIcon src={recent.이미지URL} />
+                    <AutoSearchData>{recent.prdt_name}</AutoSearchData>
                     {/* <EachStockData>주식 설명</EachStockData> */}
                   </EachStockDataDiv>
                   <EachPercentDataDiv 
